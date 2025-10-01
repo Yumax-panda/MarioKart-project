@@ -17,6 +17,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@repo/schema':
+        specifier: workspace:^
+        version: link:../../packages/schema
       hono:
         specifier: ^4.9.8
         version: 4.9.8
@@ -91,28 +94,6 @@ importers:
         version: 4.1.5
 
   packages/typescript-config: {}
-
-  packages/ui:
-    dependencies:
-      react:
-        specifier: ^19
-        version: 19.0.0
-    devDependencies:
-      '@repo/tailwind-config':
-        specifier: workspace:*
-        version: link:../tailwind-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@types/react':
-        specifier: ^19.1.0
-        version: 19.1.0
-      tailwindcss:
-        specifier: ^4.1.5
-        version: 4.1.5
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
 
 packages:
 
@@ -1628,11 +1609,6 @@ packages:
     dependencies:
       react: 19.1.0
       scheduler: 0.26.0
-    dev: false
-
-  /react@19.0.0:
-    resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
-    engines: {node: '>=0.10.0'}
     dev: false
 
   /react@19.1.0:
