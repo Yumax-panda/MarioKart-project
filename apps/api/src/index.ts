@@ -2,8 +2,8 @@ import { Hono } from "hono";
 
 const app = new Hono();
 
-app.get("/", (c) => {
+const routes = app.get("/", (c) => {
   return c.text("Hello Hono!");
 });
 
-export default app;
+export type AppType = typeof routes;
