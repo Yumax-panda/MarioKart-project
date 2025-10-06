@@ -1,21 +1,15 @@
+# MarioKart-projectのバックエンド
+
+## セットアップ
+
+*.env*を作成して以下の行を追加
 ```txt
-npm install
-npm run dev
+DATABASE_URL="your-database-url"
 ```
+[Prisma Postgres](https://www.prisma.io/postgres)を使う想定.
 
 ```txt
-npm run deploy
-```
-
-[For generating/synchronizing types based on your Worker configuration run](https://developers.cloudflare.com/workers/wrangler/commands/#types):
-
-```txt
-npm run cf-typegen
-```
-
-Pass the `CloudflareBindings` as generics when instantiation `Hono`:
-
-```ts
-// src/index.ts
-const app = new Hono<{ Bindings: CloudflareBindings }>()
+pnpm i
+pnpm db:generate
+pnpm dev
 ```
