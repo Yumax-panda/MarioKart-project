@@ -1,9 +1,13 @@
 import { Hono } from "hono";
 
-const app = new Hono();
+const app = new Hono<{
+  Bindings: {
+    DATABASE_URL: string;
+  };
+}>();
 
-const routes = app.get("/", (c) => {
+app.get("/", (c) => {
   return c.text("Hello Hono!");
 });
 
-export type AppType = typeof routes;
+export default app;
