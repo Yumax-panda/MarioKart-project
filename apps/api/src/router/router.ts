@@ -1,12 +1,8 @@
-import { Hono } from "hono";
 import { logger } from "hono/logger";
 import { prettyJSON } from "hono/pretty-json";
+import { createApp } from "./utils/factory";
 
-const app = new Hono<{
-  Bindings: {
-    DATABASE_URL: string;
-  };
-}>()
+const app = createApp()
   .use("*", prettyJSON(), logger())
   .get("/", (c) => {
     return c.text("Hello Hono!");
