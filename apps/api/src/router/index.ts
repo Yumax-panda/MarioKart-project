@@ -20,15 +20,11 @@ import type {
   TagRepository,
   UserRepository,
 } from "./../repository/types";
+import type { Env } from "./types";
+import { v1 } from "./v1";
 
-export const app = new Hono<{
-  Bindings: {
-    DATABASE_URL: string;
-  };
-  Variables: {
-    repo: Repository;
-  };
-}>()
+const app = new Hono<Env>()
+  .basePath("/api")
   .use("*", prettyJSON(), logger())
   .use(async (c, next) => {
     const prisma = getPrisma(c.env.DATABASE_URL);
@@ -62,12 +58,7 @@ export const app = new Hono<{
     c.set("repo", repo);
     await next();
   })
-  .get("/", (c) => {
-    return c.text("Hello Hono!");
-  })
-  .get("/user/:id", async (c) => {
-    return c.json(await c.var.repo.user.getById(c.req.param("id")));
-  });
+  .route("/v1", v1);
 
 export type AppType = typeof app;
 
