@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 
-type PrismaClientType = ReturnType<typeof getClient>;
+export type PrismaClientType = ReturnType<typeof getClient>;
 let prisma: PrismaClientType | undefined;
 
 function getClient(database_url: string) {

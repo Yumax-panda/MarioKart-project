@@ -1,8 +1,10 @@
-import type { AccountRepository } from "./accounts";
-import type { PostRepository } from "./posts";
-import type { SessionRepository } from "./sessions";
-import type { TagRepository } from "./tags";
-import type { UserRepository } from "./users";
+import type {
+  AccountRepository,
+  PostRepository,
+  SessionRepository,
+  TagRepository,
+  UserRepository,
+} from ".";
 
 export interface Repository {
   account: AccountRepository;
