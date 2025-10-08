@@ -38,5 +38,10 @@
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
+  },
+  "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
   }
 }
