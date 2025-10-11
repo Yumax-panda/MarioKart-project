@@ -5,8 +5,9 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "check-types": "turbo run check-types",
-    "format-and-lint": "biome check .",
-    "format-and-lint:fix": "biome check . --write"
+    "check": "biome check .",
+    "fix": "biome check . --write",
+    "fix:unsafe": "biome lint --write --unsafe && pnpm fix"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
