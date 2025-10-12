@@ -29,7 +29,6 @@ const app = new Hono<Env>()
   .use(async (c, next) => {
     const prisma = getPrisma(c.env.DATABASE_URL);
     container.registerInstance("PrismaClient", prisma);
-
     container.registerSingleton<AccountRepository>(
       "AccountRepository",
       AccountRepositoryImpl,
@@ -50,11 +49,8 @@ const app = new Hono<Env>()
       "UserRepository",
       UserRepositoryImpl,
     );
-
     container.registerSingleton<Repository>("Repository", RepositoryImpl);
-
     const repo = container.resolve<Repository>("Repository");
-
     c.set("repo", repo);
     await next();
   })
