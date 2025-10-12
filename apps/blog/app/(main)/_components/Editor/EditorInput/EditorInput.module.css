@@ -27,11 +27,6 @@
   word-wrap: break-word;
 }
 
-.editor,
-.result {
-  overflow: auto;
-}
-
 .editor-inner {
   margin: 8px;
   max-width: 100%;

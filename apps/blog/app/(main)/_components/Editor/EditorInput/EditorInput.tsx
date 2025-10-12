@@ -37,7 +37,7 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
   }, []);
 
   return (
-    <form className={styles.editor}>
+    <form>
       <link
         href="//esm.sh/@wooorm/starry-night@3/style/dark.css"
         rel="stylesheet"
