@@ -6,7 +6,11 @@
         "name": "next"
       }
     ],
-    "strict": true
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/lib/*": ["lib/*"]
+    }
   },
   "include": [
     "**/*.ts",

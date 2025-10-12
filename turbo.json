@@ -15,6 +15,7 @@
       "dependsOn": ["^check-types"]
     },
     "dev": {
+      "dependsOn": ["api#build"],
       "cache": false,
       "persistent": true
     }
