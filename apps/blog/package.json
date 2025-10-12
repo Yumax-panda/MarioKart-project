@@ -12,10 +12,18 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@wooorm/starry-night": "^3.8.0",
     "api": "workspace:*",
+    "hast-util-to-jsx-runtime": "^2.3.6",
     "next": "^15.4.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "rehype-slug": "^6.0.0",
+    "rehype-starry-night": "^2.2.0",
+    "remark-gfm": "^4.0.1",
+    "remark-toc": "^9.0.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
@@ -26,20 +34,20 @@
     "@storybook/addon-docs": "^9.1.10",
     "@storybook/addon-onboarding": "^9.1.10",
     "@storybook/addon-vitest": "^9.1.10",
+    "@storybook/nextjs-vite": "^9.1.10",
     "@tailwindcss/postcss": "^4.1.5",
     "@types/node": "^22.15.30",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.1",
+    "@vitest/browser": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.4",
     "autoprefixer": "^10.4.20",
     "clsx": "^2.1.1",
+    "playwright": "^1.56.0",
     "postcss": "^8.5.3",
     "storybook": "^9.1.10",
     "tailwindcss": "^4.1.5",
     "typescript": "5.9.2",
-    "@storybook/nextjs-vite": "^9.1.10",
-    "vitest": "^3.2.4",
-    "@vitest/browser": "^3.2.4",
-    "playwright": "^1.56.0",
-    "@vitest/coverage-v8": "^3.2.4"
+    "vitest": "^3.2.4"
   }
 }
