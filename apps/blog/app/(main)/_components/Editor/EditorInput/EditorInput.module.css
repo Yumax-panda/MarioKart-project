@@ -1,0 +1,53 @@
+.write,
+.draw {
+  font-family:
+    ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas",
+    "Liberation Mono", monospace;
+  font-feature-settings: normal;
+  font-size: smaller;
+}
+
+.draw,
+.write {
+  background: transparent;
+  border: none;
+  box-sizing: border-box;
+  font-size: 14px;
+  height: 100%;
+  letter-spacing: normal;
+  line-height: calc(1 * (1em + 1ex));
+  margin: 0;
+  outline: none;
+  overflow: hidden;
+  padding: 0;
+  resize: none;
+  tab-size: 4;
+  white-space: pre-wrap;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.editor,
+.result {
+  overflow: auto;
+}
+
+.editor-inner {
+  margin: 8px;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.write {
+  -webkit-print-color-adjust: exact;
+  caret-color: #58a6ff;
+  color: transparent;
+  position: absolute;
+  print-color-adjust: exact;
+}
+
+.write::selection {
+  color: #f6f8fa;
+  background-color: hsl(42.22deg 74.31% 57.25% / 66%);
+}

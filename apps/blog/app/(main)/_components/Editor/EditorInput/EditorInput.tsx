@@ -1,3 +1,6 @@
+// https://github.com/remarkjs/react-markdown/tree/website
+// https://github.com/wooorm/starry-night
+
 import { createStarryNight } from "@wooorm/starry-night";
 import sourceCss from "@wooorm/starry-night/source.css";
 import sourceJs from "@wooorm/starry-night/source.js";
@@ -8,6 +11,7 @@ import textMd from "@wooorm/starry-night/text.md";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { useEffect, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import styles from "./EditorInput.module.css";
 
 const grammars = [
   sourceCss,
@@ -25,7 +29,6 @@ type Props = {
   onChange: (text: string) => void;
 };
 
-// TODO: CSS
 export const EditorInput = ({ currentInputValue, onChange }: Props) => {
   const [starryNight, setStarryNight] = useState<StarryNight | null>(null);
 
@@ -34,9 +37,17 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
   }, []);
 
   return (
-    <form className="editor">
-      <div className="editor-inner">
-        <div className="draw">
+    <form className={styles.editor}>
+      <link
+        href="//esm.sh/@wooorm/starry-night@3/style/dark.css"
+        rel="stylesheet"
+      />
+      <link
+        href="//esm.sh/github-markdown-css@5/github-markdown.css"
+        rel="stylesheet"
+      />
+      <div className={styles["editor-inner"]}>
+        <div className={styles.draw}>
           {starryNight !== null
             ? toJsxRuntime(
                 starryNight.highlight(currentInputValue, "text.md"),
@@ -54,7 +65,7 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
         </div>
         <textarea
           spellCheck="false"
-          className="write"
+          className={styles.write}
           value={currentInputValue}
           rows={currentInputValue.split("\n").length + 1}
           onChange={(event) => {
