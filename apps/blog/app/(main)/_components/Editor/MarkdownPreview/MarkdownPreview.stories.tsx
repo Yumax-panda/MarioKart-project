@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 
-import { Preview } from "./Preview";
+import { MarkdownPreview } from "./MarkdownPreview";
 
 const meta = {
-  component: Preview,
-} satisfies Meta<typeof Preview>;
+  component: MarkdownPreview,
+} satisfies Meta<typeof MarkdownPreview>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

@@ -12,7 +12,7 @@ type Props = {
   markdown: string;
 };
 
-export const Preview = ({ markdown }: Props) => {
+export const MarkdownPreview = ({ markdown }: Props) => {
   return (
     <MarkdownHooks rehypePlugins={rehypePlugins} remarkPlugins={remarkPlugins}>
       {markdown}
