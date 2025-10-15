@@ -11,6 +11,7 @@ import textMd from "@wooorm/starry-night/text.md";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
 import { useEffect, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
+import { cn } from "@/lib/css";
 import styles from "./EditorInput.module.css";
 
 const grammars = [
@@ -37,15 +38,7 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
   }, []);
 
   return (
-    <form>
-      <link
-        href="//esm.sh/@wooorm/starry-night@3/style/dark.css"
-        rel="stylesheet"
-      />
-      <link
-        href="//esm.sh/github-markdown-css@5/github-markdown.css"
-        rel="stylesheet"
-      />
+    <form className={cn("bg-transparent")}>
       <div className={styles["editor-inner"]}>
         <div className={styles.draw}>
           {starryNight !== null

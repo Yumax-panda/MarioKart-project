@@ -6,7 +6,7 @@ export const thumbnailSchema = z.object({
   title: z.string().max(255),
 });
 
-export const BlogPostSchema = z.discriminatedUnion("published", [
+export const PostSchema = z.discriminatedUnion("published", [
   z.object({
     id: z.string(),
     userId: z.string(),
@@ -30,3 +30,5 @@ export const BlogPostSchema = z.discriminatedUnion("published", [
     updatedAt: DatetimeLikeStringSchema.optional(),
   }),
 ]);
+
+export const GetPostPathParamSchema = z.object({ postId: z.string() });

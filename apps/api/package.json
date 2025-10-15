@@ -4,8 +4,8 @@
   "exports": {
     "./lib/rpc": {
       "import": {
-        "types": "./dist/lib/rpc.d.ts",
-        "default": "./dist/lib/rpc.js"
+        "types": "./dist/src/lib/rpc.d.ts",
+        "default": "./dist/src/lib/rpc.js"
       }
     }
   },

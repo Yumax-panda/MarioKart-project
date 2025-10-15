@@ -25,7 +25,7 @@ import { v1 } from "./v1";
 
 const app = new Hono<Env>()
   .basePath("/api")
-  .use("*", prettyJSON(), logger())
+  .use(prettyJSON(), logger())
   .use(async (c, next) => {
     const prisma = getPrisma(c.env.DATABASE_URL);
     container.registerInstance("PrismaClient", prisma);
