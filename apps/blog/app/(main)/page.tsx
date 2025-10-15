@@ -65,7 +65,7 @@ const ArticlesGrid = () => {
 // Main App Component
 export default function Page() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0f0f23] to-[#1a1a2e] text-gray-200">
+    <div className="min-h-screen">
       <style>{`
         @keyframes shine {
           0% { transform: translateX(-100%); }

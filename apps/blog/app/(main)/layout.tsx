@@ -10,7 +10,7 @@ export default function MainLayout({
   return (
     <div
       className={cn(
-        "grid min-h-screen grid-cols-[100%] grid-rows-[auto_1fr_auto]",
+        "grid min-h-screen grid-cols-[100%] grid-rows-[auto_1fr_auto] bg-gradient-to-br from-[#0f0f23] to-[#1a1a2e] text-gray-200",
       )}
     >
       <Header />

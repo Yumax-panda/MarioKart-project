@@ -1,4 +1,6 @@
+import { notFound } from "next/navigation";
 import { client } from "@/lib/client";
+import { MarkdownPreview } from "./_components/Editor/MarkdownPreview";
 
 export default async function Page({
   params,
@@ -10,5 +12,11 @@ export default async function Page({
     param: { postId },
   });
 
-  const _data = await res.json();
+  if (!res.ok) notFound();
+
+  const post = await res.json();
+
+  if (!post.article) notFound();
+
+  return <MarkdownPreview markdown={post.article} />;
 }
