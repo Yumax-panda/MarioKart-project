@@ -20,7 +20,7 @@ export const PostCard = ({
   thumbnailUrl,
 }: Props) => {
   return (
-    <article className="hover:-translate-y-3 max-w-md overflow-hidden rounded-2xl border border-teal-400/10 bg-[#1a1a2e]/60 backdrop-blur-lg transition-all hover:border-teal-400/30 hover:shadow-2xl hover:shadow-teal-400/20">
+    <article className="hover:-translate-y-3 overflow-hidden rounded-2xl border border-teal-400/10 bg-[#1a1a2e]/60 backdrop-blur-lg transition-all hover:border-teal-400/30 hover:shadow-2xl hover:shadow-teal-400/20">
       <div className="relative h-48 w-full overflow-hidden">
         <Image
           src={thumbnailUrl}
@@ -31,7 +31,7 @@ export const PostCard = ({
         />
       </div>
       <div className="p-6">
-        <div>
+        <div className="mb-4 flex h-8 flex-wrap gap-2">
           {tags.map((tagName) => (
             <Tag name={tagName} key={tagName} />
           ))}

@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "picsum.photos" }],
+    remotePatterns: [{ protocol: "https", hostname: "api.lorem.space" }],
   },
 };
 
