@@ -1,6 +1,8 @@
 import type { Post, User } from "@prisma/client";
 
-type PostListItem = Pick<Post, "id" | "title" | "thumbnail" | "updatedAt"> & {
+export type PostListItem = Pick<Post, "id" | "updatedAt"> & {
+  title: NonNullable<Post["title"]>;
+  thumbnail: NonNullable<Post["thumbnail"]>;
   user: Pick<User, "name" | "image">;
   tags: string[];
 };

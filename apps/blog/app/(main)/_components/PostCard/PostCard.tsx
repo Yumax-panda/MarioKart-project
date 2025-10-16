@@ -5,25 +5,19 @@ import { urls } from "@/lib/urls";
 import { Tag } from "../Tag";
 
 type Props = {
-  postId: string;
+  id: string;
   title: string;
   date: Date;
   tags: string[];
-  thumbnailUrl: string;
+  thumbnail: string;
 };
 
-export const PostCard = ({
-  postId,
-  tags,
-  title,
-  date,
-  thumbnailUrl,
-}: Props) => {
+export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
   return (
     <article className="hover:-translate-y-3 overflow-hidden rounded-2xl border border-teal-400/10 bg-[#1a1a2e]/60 backdrop-blur-lg transition-all hover:border-teal-400/30 hover:shadow-2xl hover:shadow-teal-400/20">
       <div className="relative h-48 w-full overflow-hidden">
         <Image
-          src={thumbnailUrl}
+          src={thumbnail}
           alt={`Thumbnail: "${title}"`}
           fill
           className="object-cover"
@@ -40,7 +34,7 @@ export const PostCard = ({
         <div className="flex items-center justify-between text-gray-500 text-sm">
           <span>{formatDate(date)}</span>
           <Link
-            href={urls.postDetail(postId)}
+            href={urls.postDetail(id)}
             className="inline-block text-teal-300 transition-transform hover:translate-x-1"
           >
             続きを読む →

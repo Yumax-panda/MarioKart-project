@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client/edge";
 import { inject, injectable } from "tsyringe";
-import type { PostRepository } from "./types";
+import type { PostListItem, PostRepository } from "./types";
 
 // TODO:
 @injectable()
@@ -45,7 +45,7 @@ export class PostRepositoryImpl implements PostRepository {
     return rawPosts.map(({ tags, ...rest }) => ({
       tags: tags.map(({ tag: { name } }) => name),
       ...rest,
-    }));
+    })) as PostListItem[];
   }
   async getPublishedPostCount() {
     return await this.p.post.count({ where: { published: true } });

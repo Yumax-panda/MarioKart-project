@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+// TODO: fix url
 export const Header = () => {
   return (
     <header className="border-gray-500 border-b px-4 py-6">
