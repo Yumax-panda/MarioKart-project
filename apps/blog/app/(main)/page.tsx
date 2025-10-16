@@ -1,14 +1,14 @@
-import { ArticleCard } from "./_components/ArticleCard";
+import { PostCard } from "./_components/PostCard";
 
 const Hero = () => {
   return (
-    <div className="mx-auto px-8 py-16">
-      <div className="py-12 text-center">
+    <div className="mx-auto flex px-8 py-16">
+      <div className="mx-auto max-w-2xl py-12 text-center">
         <h1 className="mb-4 animate-pulse bg-gradient-to-r from-[#667eea] via-[#764ba2] to-[#f093fb] bg-clip-text font-bold text-6xl text-transparent">
-          最新技術を探求する
+          Welcome to TT!
         </h1>
         <p className="mb-8 text-gray-400 text-xl">
-          革新的な技術トレンドと開発のベストプラクティスをお届けします
+          東工大マリオカートサークルの日々のサークル活動の様子を発信します。
         </p>
         <a
           href="#articles"
@@ -23,30 +23,27 @@ const Hero = () => {
 
 // Articles Grid Component
 const ArticlesGrid = () => {
-  const articles = [
+  const posts = [
     {
-      category: "Web開発",
+      postId: "a",
+      tags: ["Web開発"],
       title: "React 19の新機能完全ガイド",
-      description:
-        "最新のReact 19で導入された革新的な機能とパフォーマンス改善について詳しく解説します。",
-      date: "2025年10月8日",
-      gradient: "from-purple-500 to-purple-700",
+      date: new Date(),
+      thumbnailUrl: "https://picsum.photos/id/10/2500/1667",
     },
     {
-      category: "AI/ML",
+      postId: "b",
+      tags: ["AI/ML"],
       title: "機械学習モデルの最適化テクニック",
-      description:
-        "本番環境での機械学習モデルのパフォーマンスを最大化するための実践的なアプローチを紹介します。",
-      date: "2025年10月5日",
-      gradient: "from-purple-500 to-purple-700",
+      date: new Date(),
+      thumbnailUrl: "https://picsum.photos/id/10/2500/1667",
     },
     {
-      category: "クラウド",
+      postId: "c",
+      tags: ["クラウド"],
       title: "Kubernetesセキュリティのベストプラクティス",
-      description:
-        "エンタープライズレベルのKubernetesクラスターを安全に運用するための重要なポイントを解説します。",
-      date: "2025年10月2日",
-      gradient: "from-purple-500 to-purple-700",
+      date: new Date(),
+      thumbnailUrl: "https://picsum.photos/id/10/2500/1667",
     },
   ];
 
@@ -55,8 +52,8 @@ const ArticlesGrid = () => {
       id={"articles"}
       className="mx-auto grid grid-cols-1 gap-8 px-8 py-16 md:grid-cols-2 lg:grid-cols-3"
     >
-      {articles.map((article) => (
-        <ArticleCard key={article.title} {...article} />
+      {posts.map((post) => (
+        <PostCard key={post.postId} {...post} />
       ))}
     </div>
   );
