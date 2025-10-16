@@ -31,4 +31,7 @@ export const PostSchema = z.discriminatedUnion("published", [
   }),
 ]);
 
-export const GetPostPathParamSchema = z.object({ postId: z.string() });
+export const GetPublishedPostListQuerySchema = z.object({
+  page: z.coerce.number().min(1),
+  perPage: z.coerce.number().max(12),
+});
