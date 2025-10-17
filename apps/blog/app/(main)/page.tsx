@@ -27,6 +27,7 @@ import { PostCard } from "./_components/PostCard";
 //   },
 // ];
 
+// TODO:
 export default async function Page() {
   const res = await client.api.v1.posts.$get({
     query: { page: "1", perPage: "3" },
@@ -39,10 +40,7 @@ export default async function Page() {
   return (
     <>
       <Hero />
-      <div
-        id={"articles"}
-        className="mx-auto grid grid-cols-1 gap-8 px-8 py-16 md:grid-cols-2 lg:grid-cols-3"
-      >
+      <div className="mx-auto grid grid-cols-1 gap-8 px-8 py-16 md:grid-cols-2 lg:grid-cols-3">
         {posts.map(({ updatedAt, ...rest }) => (
           <PostCard key={rest.id} {...rest} date={new Date(updatedAt)} />
         ))}
