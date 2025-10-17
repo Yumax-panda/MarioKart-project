@@ -21,6 +21,7 @@ import type {
   TagRepository,
   UserRepository,
 } from "@/repository/types";
+import { auth } from "./auth";
 import type { Env } from "./types";
 import { v1 } from "./v1";
 
@@ -62,7 +63,8 @@ const app = new Hono<Env>()
       credentials: true,
     }),
   )
-  .route("/v1", v1);
+  .route("/v1", v1)
+  .route("/auth", auth);
 
 export type AppType = typeof app;
 

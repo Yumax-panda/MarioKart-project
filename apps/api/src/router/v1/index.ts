@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getCookie } from "hono/cookie";
+import { deleteCookie, getCookie } from "hono/cookie";
 import {
   StatusInternalServerError,
   StatusUnauthorized,
@@ -18,9 +18,11 @@ export const v1 = new Hono<Env>()
   .route("/tags", tags)
   .route("/users", users);
 
+const cookieName = "session_id";
+
 export const v1WithAuth = new Hono<AuthRequiredEnv>()
   .use(async (c, next) => {
-    const sessionId = getCookie(c, "session_id");
+    const sessionId = getCookie(c, cookieName);
 
     if (!sessionId) {
       return c.text("Internal server error", StatusInternalServerError);
@@ -30,6 +32,11 @@ export const v1WithAuth = new Hono<AuthRequiredEnv>()
 
     if (!session) {
       return c.text("You are not logged in", StatusUnauthorized);
+    }
+
+    if (session.expires < new Date()) {
+      deleteCookie(c, cookieName);
+      return c.text("Session is expired.", StatusUnauthorized);
     }
 
     const user = await c.var.repo.user.getById(session.userId);

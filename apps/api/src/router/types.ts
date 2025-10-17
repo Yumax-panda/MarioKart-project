@@ -4,6 +4,7 @@ import type { Repository } from "../repository/types";
 export interface Env {
   Bindings: {
     DATABASE_URL: string;
+    ALLOWED_DISCORD_SERVER_ID: string;
   };
   Variables: {
     repo: Repository;
