@@ -3,8 +3,11 @@ import type { Repository } from "../repository/types";
 
 export interface Env {
   Bindings: {
+    BASE_URL: string;
     DATABASE_URL: string;
     ALLOWED_DISCORD_SERVER_ID: string;
+    DISCORD_CLIENT_ID: string;
+    DISCORD_CLIENT_SECRET: string;
   };
   Variables: {
     repo: Repository;

@@ -4,6 +4,7 @@ import {
   StatusInternalServerError,
   StatusUnauthorized,
 } from "@/lib/statusCode";
+import { SESSION_ID } from "../consts/cookie";
 import type { AuthRequiredEnv, Env } from "../types";
 import { accounts } from "./accounts";
 import { posts } from "./posts";
@@ -18,11 +19,9 @@ export const v1 = new Hono<Env>()
   .route("/tags", tags)
   .route("/users", users);
 
-const cookieName = "session_id";
-
 export const v1WithAuth = new Hono<AuthRequiredEnv>()
   .use(async (c, next) => {
-    const sessionId = getCookie(c, cookieName);
+    const sessionId = getCookie(c, SESSION_ID);
 
     if (!sessionId) {
       return c.text("Internal server error", StatusInternalServerError);
@@ -35,7 +34,7 @@ export const v1WithAuth = new Hono<AuthRequiredEnv>()
     }
 
     if (session.expires < new Date()) {
-      deleteCookie(c, cookieName);
+      deleteCookie(c, SESSION_ID);
       return c.text("Session is expired.", StatusUnauthorized);
     }
 

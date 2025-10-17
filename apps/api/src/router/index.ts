@@ -7,6 +7,7 @@ import { container } from "tsyringe";
 import { getPrisma } from "@/lib/prismaClient";
 import {
   AccountRepositoryImpl,
+  AuthStateRepositoryImpl,
   PostRepositoryImpl,
   RepositoryImpl,
   SessionRepositoryImpl,
@@ -15,6 +16,7 @@ import {
 } from "@/repository";
 import type {
   AccountRepository,
+  AuthStateRepository,
   PostRepository,
   Repository,
   SessionRepository,
@@ -34,6 +36,10 @@ const app = new Hono<Env>()
     container.registerSingleton<AccountRepository>(
       "AccountRepository",
       AccountRepositoryImpl,
+    );
+    container.registerSingleton<AuthStateRepository>(
+      "AuthStateRepository",
+      AuthStateRepositoryImpl,
     );
     container.registerSingleton<PostRepository>(
       "PostRepository",
