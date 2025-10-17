@@ -4,7 +4,7 @@ import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { prettyJSON } from "hono/pretty-json";
 import { container } from "tsyringe";
-import { getPrisma } from ".././lib/prismaClient";
+import { getPrisma } from "@/lib/prismaClient";
 import {
   AccountRepositoryImpl,
   PostRepositoryImpl,
@@ -12,7 +12,7 @@ import {
   SessionRepositoryImpl,
   TagRepositoryImpl,
   UserRepositoryImpl,
-} from "../repository";
+} from "@/repository";
 import type {
   AccountRepository,
   PostRepository,
@@ -20,7 +20,7 @@ import type {
   SessionRepository,
   TagRepository,
   UserRepository,
-} from "./../repository/types";
+} from "@/repository/types";
 import type { Env } from "./types";
 import { v1 } from "./v1";
 
