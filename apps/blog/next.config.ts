@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "api.lorem.space" }],
+    remotePatterns: [{ protocol: "https", hostname: "cdn.discordapp.com" }],
   },
 };
 

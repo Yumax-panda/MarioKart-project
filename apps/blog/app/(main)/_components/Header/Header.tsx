@@ -1,7 +1,12 @@
+"use client";
+import { useAccount } from "context/AccountContext";
 import Link from "next/link";
+import { AccountIcon } from "../AccountIcon";
 
-// TODO: fix url
+// TODO: fix
 export const Header = () => {
+  const { account } = useAccount();
+
   return (
     <header className="border-gray-500 border-b px-4 py-6">
       <nav className="mx-auto flex items-center justify-between">
@@ -17,6 +22,13 @@ export const Header = () => {
               </Link>
             </li>
           ))}
+          {account ? (
+            <AccountIcon
+              name={account.name}
+              image={account.image || ""}
+              onClick={() => {}}
+            />
+          ) : null}
         </ul>
       </nav>
     </header>
