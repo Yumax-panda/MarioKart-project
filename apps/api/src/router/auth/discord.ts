@@ -82,7 +82,6 @@ export const discord = new Hono<Env>()
     if (c.env.ENV_NAME === "production") {
       opts.sameSite = "none";
       opts.secure = true;
-      opts.partitioned = true;
     }
 
     setCookie(c, KEY_STATE_ID, id, opts);
@@ -260,7 +259,6 @@ export const discord = new Hono<Env>()
     if (c.env.ENV_NAME === "production") {
       opts.sameSite = "none";
       opts.secure = true;
-      opts.partitioned = true;
     }
 
     setCookie(c, KEY_SESSION_ID, newSession.sessionToken, opts);
