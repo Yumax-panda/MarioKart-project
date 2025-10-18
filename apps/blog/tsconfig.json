@@ -20,5 +20,5 @@
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"],
-  "references": [{ "path": "../api/tsconfig.build.json" }]
+  "references": [{ "path": "../api/tsconfig.json" }]
 }

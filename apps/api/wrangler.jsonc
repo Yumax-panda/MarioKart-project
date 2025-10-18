@@ -7,19 +7,26 @@
   "env": {
     "dev": {
       "vars": {
+        "ENV_NAME": "dev",
         "ALLOWED_DISCORD_SERVER_ID": "834383470021050399",
         "BASE_URL": "http://localhost:8787",
         "FRONTEND_BASE_URL": "http://localhost:3001",
-        "ENV_NAME": "dev"
+        // TODO:
+        "DATABASE_URL": "prisma+postgres://...",
+        "DISCORD_CLIENT_ID": "123456789",
+        "DISCORD_CLIENT_SECRET": "secret_here"
       }
     },
     "production": {
       "vars": {
+        "ENV_NAME": "production",
         "ALLOWED_DISCORD_SERVER_ID": "834383470021050399",
         // TODO:
         "BASE_URL": "",
         "FRONTEND_BASE_URL": "",
-        "ENV_NAME": "production"
+        "DATABASE_URL": "prisma+postgres://...",
+        "DISCORD_CLIENT_ID": "123456789",
+        "DISCORD_CLIENT_SECRET": "secret_here"
       }
     }
   }

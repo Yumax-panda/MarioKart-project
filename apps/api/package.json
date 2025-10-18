@@ -10,7 +10,7 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "pnpm cf-typegen && tsc",
     "dev": "wrangler dev src/router/index.ts --env dev",
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
