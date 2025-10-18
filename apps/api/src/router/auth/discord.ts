@@ -77,26 +77,18 @@ export const discord = new Hono<Env>()
       partitioned: true,
       maxAge: 300000,
     });
-    // const queries: string[] = [
-    //   "response_type=code",
-    //   `client_id=${c.env.DISCORD_CLIENT_ID}`,
-    //   "scope=email%20guilds",
-    //   `state=${stateValue}`,
-    //   `redirect_uri=${c.env.BASE_URL}/api/auth/discord/callback`,
-    //   "prompt=consent",
-    //   "",
-    // ];
 
-    const params = new URLSearchParams("https://discord.com/oauth2/authorize");
-    params.append("response_type", "code");
-    params.append("client_id", c.env.DISCORD_CLIENT_ID);
-    params.append("scope", "identify email guilds");
-    params.append("state", stateValue);
-    params.append(
-      "redirect_uri",
-      `${c.env.BASE_URL}/api/auth/discord/callback`,
+    const params = new URLSearchParams({
+      response_type: "code",
+      client_id: c.env.DISCORD_CLIENT_ID,
+      scope: "identify email guilds",
+      state: stateValue,
+      redirect_uri: `${c.env.BASE_URL}/api/auth/discord/callback`,
+    });
+    return c.text(
+      `https://discord.com/oauth2/authorize?${params.toString()}`,
+      StatusOK,
     );
-    return c.text(params.toString(), StatusOK);
   })
   .get("/callback", zValidator("query", GetCallbackQuerySchema), async (c) => {
     const { code, state } = c.req.valid("query");
