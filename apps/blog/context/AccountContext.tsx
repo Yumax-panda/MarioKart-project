@@ -5,11 +5,11 @@ import {
   useEffect,
   useState,
 } from "react";
+import { client } from "@/lib/client";
 
 type AccountInfo = {
-  userName: string;
-  image: string;
-  discordId: string;
+  name: string;
+  image: string | null;
 };
 
 type AccountContextType = {
@@ -19,9 +19,8 @@ type AccountContextType = {
 
 const AccountContext = createContext<AccountContextType>({
   account: {
-    userName: "",
-    image: "",
-    discordId: "",
+    name: "",
+    image: null,
   },
   syncAccountInfo: async () => {},
 });
@@ -31,13 +30,21 @@ type ProviderProps = {
 };
 
 export const AccountProvider = ({ children }: ProviderProps) => {
-  const [account, _setAccount] = useState<AccountInfo>({
-    userName: "",
-    image: "",
-    discordId: "",
+  const [account, setAccount] = useState<AccountInfo>({
+    name: "",
+    image: null,
   });
 
-  const syncAccountInfo = useCallback(async () => {}, []);
+  const syncAccountInfo = useCallback(async () => {
+    const res = await client.api.v1.users["@me"].$get();
+
+    if (!res.ok) return;
+
+    const {
+      user: { name, image },
+    } = await res.json();
+    setAccount({ name, image });
+  }, []);
 
   useEffect(() => {
     syncAccountInfo();

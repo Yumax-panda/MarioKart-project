@@ -12,14 +12,7 @@ import { sessions } from "./sessions";
 import { tags } from "./tags";
 import { users, usersWithAuth } from "./users";
 
-export const v1 = new Hono<Env>()
-  .route("/accounts", accounts)
-  .route("/posts", posts)
-  .route("/sessions", sessions)
-  .route("/tags", tags)
-  .route("/users", users);
-
-export const v1WithAuth = new Hono<AuthRequiredEnv>()
+const v1WithAuth = new Hono<AuthRequiredEnv>()
   .use(async (c, next) => {
     const sessionId = getCookie(c, KEY_SESSION_ID);
 
@@ -48,3 +41,11 @@ export const v1WithAuth = new Hono<AuthRequiredEnv>()
     await next();
   })
   .route("/users", usersWithAuth);
+
+export const v1 = new Hono<Env>()
+  .route("/accounts", accounts)
+  .route("/posts", posts)
+  .route("/sessions", sessions)
+  .route("/tags", tags)
+  .route("/users", users)
+  .route("/", v1WithAuth);
