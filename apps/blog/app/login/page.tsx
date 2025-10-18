@@ -2,9 +2,13 @@
 import Image from "next/image";
 import { client } from "@/lib/client";
 
+type SupportedProviders = "discord";
+
 export default function OAuthProviderSelection() {
-  const handleLogin = async () => {
-    window.location.href = client.api.auth.discord.login.$url().toString();
+  const handleLogin = (provider: SupportedProviders) => {
+    return async () => {
+      window.location.href = client.api.auth[provider].login.$url().toString();
+    };
   };
 
   return (
@@ -20,7 +24,7 @@ export default function OAuthProviderSelection() {
 
           <button
             type="button"
-            onClick={handleLogin}
+            onClick={handleLogin("discord")}
             className="flex w-full items-center justify-center gap-3 rounded-lg bg-[#5865F2] px-4 py-3 font-medium text-white transition-colors hover:bg-[#4752C4]"
           >
             <Image
