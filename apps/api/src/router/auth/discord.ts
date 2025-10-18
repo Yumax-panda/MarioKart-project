@@ -9,7 +9,9 @@ import {
   StatusOK,
 } from "@/lib/statusCode";
 import { randomString } from "@/lib/utils";
-import { STATE_ID } from "../consts/cookie";
+import { KEY_SESSION_ID, KEY_STATE_ID } from "../consts/cookie";
+import { AccountType, ProviderName } from "../consts/enum";
+import { sessionKeepAge, sessionMaxAge } from "../consts/session";
 import type { Env } from "../types";
 
 type TokenResponse = {
@@ -27,7 +29,7 @@ export type DiscordUser = {
   discriminator: string;
   avatar: string | null;
   verified: boolean;
-  email: string;
+  email: string | null;
   flags: number;
   banner: string | null;
   accent_color: number | null;
@@ -70,7 +72,7 @@ export const discord = new Hono<Env>()
   .get("/login", async (c) => {
     const stateValue = randomString(16);
     const { id } = await c.var.repo.authState.create(stateValue);
-    setCookie(c, STATE_ID, id, {
+    setCookie(c, KEY_STATE_ID, id, {
       httpOnly: true,
       sameSite: "none",
       secure: true,
@@ -92,7 +94,7 @@ export const discord = new Hono<Env>()
   })
   .get("/callback", zValidator("query", GetCallbackQuerySchema), async (c) => {
     const { code, state } = c.req.valid("query");
-    const stateId = getCookie(c, STATE_ID);
+    const stateId = getCookie(c, KEY_STATE_ID);
 
     if (!stateId) {
       return c.json({ error: "Missing state id." }, StatusBadRequest);
@@ -165,6 +167,7 @@ export const discord = new Hono<Env>()
 
     const guilds: DiscordPartialGuild[] = await guildsRes.json();
 
+    // 指定したDiscordサーバーに入っていなかったら却下
     if (!guilds.some((g) => g.id === c.env.ALLOWED_DISCORD_SERVER_ID)) {
       return c.json(
         { error: "You are not permitted to access." },
@@ -172,6 +175,81 @@ export const discord = new Hono<Env>()
       );
     }
 
-    // TODO:
-    return c.json({ message: "ok" }, StatusOK);
+    const discordAccount: DiscordUser = await accountInfoRes.json();
+
+    const storedUser = await c.var.repo.user.getByAccount({
+      provider: ProviderName.discord,
+      providerAccountId: discordAccount.id,
+    });
+
+    const storedAccount = await c.var.repo.account.getById({
+      provider: ProviderName.discord,
+      providerAccountId: discordAccount.id,
+    });
+
+    let userId: string | null = null;
+
+    if (storedUser === null) {
+      let image: null | string = null;
+
+      if (discordAccount.avatar) {
+        const format = discordAccount.avatar.startsWith("a_") ? "gif" : "png";
+        image = `https://cdn.discordapp.com/avatars/${discordAccount.id}/${discordAccount.avatar}.${format}`;
+      }
+
+      const newUser = await c.var.repo.user.create({
+        name: discordAccount.username,
+        email: discordAccount.email,
+        image,
+      });
+
+      userId = newUser.id;
+    } else {
+      userId = storedUser.id;
+    }
+
+    if (!storedAccount) {
+      await c.var.repo.account.create({
+        userId: userId,
+        provider: ProviderName.discord,
+        providerAccountId: discordAccount.id,
+        type: AccountType.oauth,
+        refresh_token: token.refresh_token,
+        access_token: token.access_token,
+        scope: token.scope,
+        token_type: token.token_type,
+        expires_at: Math.floor(Date.now() / 1000) + token.expires_in,
+      });
+    } else {
+      await c.var.repo.account.update({
+        provider: ProviderName.discord,
+        providerAccountId: discordAccount.id,
+        scope: token.scope,
+        type: AccountType.oauth,
+        refresh_token: token.refresh_token,
+        access_token: token.access_token,
+        token_type: token.token_type,
+        expires_at: Math.floor(Date.now() / 1000) + token.expires_in,
+      });
+    }
+
+    const sessionExpires = new Date(
+      Date.now() + (sessionMaxAge + sessionKeepAge) * 1000,
+    );
+
+    const newSession = await c.var.repo.session.create({
+      sessionToken: randomString(50),
+      userId,
+      expires: sessionExpires,
+    });
+
+    setCookie(c, KEY_SESSION_ID, newSession.sessionToken, {
+      expires: sessionExpires,
+      maxAge: sessionMaxAge + sessionKeepAge,
+      path: "/",
+      httpOnly: true,
+      sameSite: "none",
+    });
+
+    return c.redirect("/");
   });
