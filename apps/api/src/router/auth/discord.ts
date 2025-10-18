@@ -87,9 +87,8 @@ export const discord = new Hono<Env>()
       state: stateValue,
       redirect_uri: `${c.env.BASE_URL}/api/auth/discord/callback`,
     });
-    return c.text(
+    return c.redirect(
       `https://discord.com/oauth2/authorize?${params.toString()}`,
-      StatusOK,
     );
   })
   .get("/callback", zValidator("query", GetCallbackQuerySchema), async (c) => {
