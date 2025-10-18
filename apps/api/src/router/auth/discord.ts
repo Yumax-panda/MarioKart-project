@@ -22,7 +22,7 @@ type TokenResponse = {
   scope: string;
 };
 
-export type DiscordUser = {
+type DiscordUser = {
   id: string;
   username: string;
   global_name: string | null;
@@ -55,7 +55,7 @@ export type DiscordUser = {
   };
 };
 
-export type DiscordPartialGuild = {
+type DiscordPartialGuild = {
   id: string;
   name: string;
   icon: string | null;
