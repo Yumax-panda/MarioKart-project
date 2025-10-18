@@ -43,5 +43,8 @@
     "parser": {
       "unsafeParameterDecoratorsEnabled": true
     }
+  },
+  "files": {
+    "includes": ["**", "!apps/api/worker-configuration.d.ts"]
   }
 }
