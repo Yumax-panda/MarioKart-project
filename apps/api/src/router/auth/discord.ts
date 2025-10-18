@@ -249,13 +249,21 @@ export const discord = new Hono<Env>()
       expires: sessionExpires,
     });
 
-    setCookie(c, KEY_SESSION_ID, newSession.sessionToken, {
+    const opts: CookieOptions = {
       expires: sessionExpires,
       maxAge: sessionMaxAge + sessionKeepAge,
       path: "/",
       httpOnly: true,
-      sameSite: c.env.ENV_NAME === "production" ? "none" : "lax",
-    });
+      sameSite: "lax",
+    };
+
+    if (c.env.ENV_NAME === "production") {
+      opts.sameSite = "none";
+      opts.secure = true;
+      opts.partitioned = true;
+    }
+
+    setCookie(c, KEY_SESSION_ID, newSession.sessionToken, opts);
 
     return c.redirect(c.env.FRONTEND_BASE_URL);
   });
