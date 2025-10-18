@@ -6,7 +6,6 @@ import {
   StatusBadRequest,
   StatusForbidden,
   StatusInternalServerError,
-  StatusOK,
 } from "@/lib/statusCode";
 import { randomString } from "@/lib/utils";
 import { KEY_SESSION_ID, KEY_STATE_ID } from "../consts/cookie";
