@@ -2,6 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { GetCallbackQuerySchema } from "@repo/schema/auth/discord";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
+import type { CookieOptions } from "hono/utils/cookie";
 import {
   StatusBadRequest,
   StatusForbidden,
@@ -71,13 +72,20 @@ export const discord = new Hono<Env>()
   .get("/login", async (c) => {
     const stateValue = randomString(16);
     const { id } = await c.var.repo.authState.create(stateValue);
-    setCookie(c, KEY_STATE_ID, id, {
+
+    const opts: CookieOptions = {
       httpOnly: true,
-      sameSite: "none",
-      secure: true,
-      partitioned: true,
+      sameSite: "lax",
       maxAge: 300000,
-    });
+    };
+
+    if (c.env.ENV_NAME === "production") {
+      opts.sameSite = "none";
+      opts.secure = true;
+      opts.partitioned = true;
+    }
+
+    setCookie(c, KEY_STATE_ID, id, opts);
 
     const params = new URLSearchParams({
       response_type: "code",
@@ -246,8 +254,8 @@ export const discord = new Hono<Env>()
       maxAge: sessionMaxAge + sessionKeepAge,
       path: "/",
       httpOnly: true,
-      sameSite: "none",
+      sameSite: c.env.ENV_NAME === "production" ? "none" : "lax",
     });
 
-    return c.redirect("/");
+    return c.redirect(c.env.FRONTEND_BASE_URL);
   });
