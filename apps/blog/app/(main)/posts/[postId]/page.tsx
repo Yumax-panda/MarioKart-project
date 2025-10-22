@@ -2,12 +2,8 @@ import { notFound } from "next/navigation";
 import { client } from "@/lib/client";
 import { MarkdownPreview } from "./_components/Editor/MarkdownPreview";
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ postId: string }>;
-}) {
-  const { postId } = await params;
+export default async function Page(props: PageProps<"/posts/[postId]">) {
+  const { postId } = await props.params;
   const res = await client.api.v1.posts[":postId"].$get({
     param: { postId },
   });
