@@ -42,8 +42,9 @@ export class PostRepositoryImpl implements PostRepository {
       take: perPage,
     });
 
-    return rawPosts.map(({ tags, ...rest }) => ({
+    return rawPosts.map(({ tags, updatedAt, ...rest }) => ({
       tags: tags.map(({ tag: { name } }) => name),
+      updatedAt: updatedAt.toISOString(),
       ...rest,
     })) as PostListItem[];
   }

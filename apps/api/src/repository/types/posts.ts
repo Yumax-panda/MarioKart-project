@@ -1,8 +1,10 @@
 import type { Post, User } from "@prisma/client";
+import type { PublishedPostType } from "@repo/schema/post";
 
-export type PostListItem = Pick<Post, "id" | "updatedAt"> & {
-  title: NonNullable<Post["title"]>;
-  thumbnail: NonNullable<Post["thumbnail"]>;
+export type PostListItem = Pick<
+  PublishedPostType,
+  "id" | "title" | "thumbnail" | "updatedAt"
+> & {
   user: Pick<User, "name" | "image">;
   tags: string[];
 };
