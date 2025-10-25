@@ -51,7 +51,10 @@ export class PostRepositoryImpl implements PostRepository {
   async getPublishedPostCount() {
     return await this.p.post.count({ where: { published: true } });
   }
-  async getById(postId: string) {
-    return await this.p.post.findUnique({ where: { id: postId } });
+  async getDetailById(postId: string) {
+    return await this.p.post.findUnique({
+      where: { id: postId },
+      include: { user: { select: { id: true, name: true, image: true } } },
+    });
   }
 }

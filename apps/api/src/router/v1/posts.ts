@@ -18,7 +18,7 @@ export const posts = new Hono<Env>()
   })
   .get("/:postId", async (c) => {
     const postId = c.req.param("postId");
-    const post = await c.var.repo.post.getById(postId);
+    const post = await c.var.repo.post.getDetailById(postId);
 
     if (post === null) {
       return c.json({ error: "Not Found" }, StatusNotFound);

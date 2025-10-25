@@ -9,9 +9,11 @@ export type PostListItem = Pick<
   tags: string[];
 };
 
+type PostDetail = Post & { user: Pick<User, "id" | "name" | "image"> };
+
 // TODO:
 export interface PostRepository {
   getPublishedPostList(page: number, perPage: number): Promise<PostListItem[]>;
   getPublishedPostCount(): Promise<number>;
-  getById(postId: string): Promise<Post | null>;
+  getDetailById(postId: string): Promise<PostDetail | null>;
 }
