@@ -1,18 +1,38 @@
 import { notFound } from "next/navigation";
 import { client } from "@/lib/client";
-import { MarkdownPreview } from "./_components/Editor/MarkdownPreview";
+import { PostPreview } from "./_components/PostPreview";
 
 export default async function Page(props: PageProps<"/posts/[postId]">) {
   const { postId } = await props.params;
-  const res = await client.api.v1.posts[":postId"].$get({
+  const postRes = await client.api.v1.posts[":postId"].$get({
     param: { postId },
   });
 
-  if (!res.ok) notFound();
+  if (!postRes.ok) notFound();
 
-  const post = await res.json();
+  const post = await postRes.json();
 
-  if (!post.article) notFound();
+  if (!post.article || !post.thumbnail || !post.title) notFound();
 
-  return <MarkdownPreview markdown={post.article} />;
+  if (!post.published) {
+    const userRes = await client.api.v1.users["@me"].$get();
+
+    if (!userRes.ok) notFound();
+
+    const {
+      user: { id },
+    } = await userRes.json();
+
+    if (id !== post.userId) notFound();
+  }
+
+  return (
+    <div className="mx-auto my-2">
+      <PostPreview
+        title={post.title}
+        thumbnail={post.thumbnail}
+        article={post.article}
+      />
+    </div>
+  );
 }

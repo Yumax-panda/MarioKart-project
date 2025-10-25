@@ -1,3 +1,5 @@
+"use client";
+
 import { MarkdownHooks } from "react-markdown";
 import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
