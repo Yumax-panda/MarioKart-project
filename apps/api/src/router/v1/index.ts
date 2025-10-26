@@ -8,6 +8,7 @@ import { KEY_SESSION_ID } from "../consts/cookie";
 import type { AuthRequiredEnv, Env } from "../types";
 import { accounts } from "./accounts";
 import { posts } from "./posts";
+import { presignedURL } from "./presignedURL";
 import { sessions } from "./sessions";
 import { tags } from "./tags";
 import { users, usersWithAuth } from "./users";
@@ -40,7 +41,8 @@ const v1WithAuth = new Hono<AuthRequiredEnv>()
     c.set("user", user);
     await next();
   })
-  .route("/users", usersWithAuth);
+  .route("/users", usersWithAuth)
+  .route("/presignedURL", presignedURL);
 
 export const v1 = new Hono<Env>()
   .route("/accounts", accounts)
