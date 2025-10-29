@@ -90,14 +90,14 @@ export const Editor = ({
             </button>
           </div>
         </div>
-        <ContentWrapper className="mx-auto">
+        <ContentWrapper className="mx-auto flex flex-col gap-4">
           <input
             type="text"
             placeholder="タイトルを入力"
             value={currentTitle ?? ""}
             onChange={(e) => setTitle(e.target.value)}
-            className="mr-4 w-full border-none bg-transparent p-1 text-center font-bold text-2xl focus:ring-0"
-          ></input>
+            className="mr-4 w-full border-none bg-transparent p-1 text-center font-bold text-3xl focus:ring-0"
+          />
           {currentThumbnail && (
             <Thumbnail src={currentThumbnail} title={currentTitle} />
           )}

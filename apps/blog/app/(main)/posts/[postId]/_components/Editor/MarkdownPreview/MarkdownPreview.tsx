@@ -16,7 +16,12 @@ type Props = {
 
 export const MarkdownPreview = ({ markdown }: Props) => {
   return (
-    <MarkdownHooks rehypePlugins={rehypePlugins} remarkPlugins={remarkPlugins}>
+    <MarkdownHooks
+      rehypePlugins={rehypePlugins}
+      remarkPlugins={remarkPlugins}
+      // タイトルは別フィールドで入力するため
+      disallowedElements={["h1"]}
+    >
       {markdown}
     </MarkdownHooks>
   );
