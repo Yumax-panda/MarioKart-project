@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { GetPublishedPostListQuerySchema } from "@repo/schema/post";
 import { Hono } from "hono";
 import { StatusNotFound, StatusOK } from "@/lib/statusCode";
-import type { Env } from "../types";
+import type { AuthRequiredEnv, Env } from "../types";
 
 // TODO:
 export const posts = new Hono<Env>()
@@ -26,3 +26,11 @@ export const posts = new Hono<Env>()
 
     return c.json(post, 200);
   });
+
+export const postsWithAuth = new Hono<AuthRequiredEnv>().post(
+  "/create",
+  async (c) => {
+    const newPost = await c.var.repo.post.createOrGetEmpty(c.var.user.id);
+    return c.json({ post: newPost }, StatusOK);
+  },
+);

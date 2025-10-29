@@ -57,4 +57,19 @@ export class PostRepositoryImpl implements PostRepository {
       include: { user: { select: { id: true, name: true, image: true } } },
     });
   }
+
+  async createOrGetEmpty(userId: string) {
+    const emptyPost = await this.p.post.findFirst({
+      where: {
+        article: null,
+        title: null,
+        thumbnail: null,
+        userId,
+      },
+    });
+
+    if (emptyPost) return emptyPost;
+
+    return await this.p.post.create({ data: { userId, published: false } });
+  }
 }
