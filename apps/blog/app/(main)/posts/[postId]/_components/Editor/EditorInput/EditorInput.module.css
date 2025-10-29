@@ -1,14 +1,9 @@
-.write,
-.draw {
+.draw,
+.write {
   font-family:
     ui-monospace, "SFMono-Regular", "SF Mono", "Menlo", "Consolas",
     "Liberation Mono", monospace;
   font-feature-settings: normal;
-  font-size: smaller;
-}
-
-.draw,
-.write {
   background: transparent;
   border: none;
   box-sizing: border-box;
@@ -27,11 +22,18 @@
   word-wrap: break-word;
 }
 
-.editor-inner {
+.inner {
   margin: 8px;
   max-width: 100%;
   overflow: hidden;
   position: relative;
+  min-height: 500px; /* エディタの最小高さを確保 */
+}
+
+.draw {
+  position: absolute;
+  pointer-events: none; /* シンタックスハイライト部分はクリック不可 */
+  z-index: 0;
 }
 
 .write {
@@ -40,6 +42,10 @@
   color: transparent;
   position: absolute;
   print-color-adjust: exact;
+  top: 0;
+  left: 0;
+  z-index: 1; /* textareaを前面に */
+  cursor: text; /* カーソルをテキスト入力可能に */
 }
 
 .write::selection {

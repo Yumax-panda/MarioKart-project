@@ -38,8 +38,8 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
   }, []);
 
   return (
-    <form className={cn("bg-transparent")}>
-      <div className={styles["editor-inner"]}>
+    <div className={cn("bg-transparent")}>
+      <div className={styles.inner}>
         <div className={styles.draw}>
           {starryNight !== null
             ? toJsxRuntime(
@@ -58,7 +58,7 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
         </div>
         <textarea
           spellCheck="false"
-          className={styles.write}
+          className={cn(styles.write)}
           value={currentInputValue}
           rows={currentInputValue.split("\n").length + 1}
           onChange={(event) => {
@@ -66,6 +66,6 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
           }}
         />
       </div>
-    </form>
+    </div>
   );
 };

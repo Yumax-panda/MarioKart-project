@@ -1,5 +1,7 @@
-import Image from "next/image";
+import { ContentWrapper } from "../ContentWrapper";
 import { MarkdownPreview } from "../Editor/MarkdownPreview";
+import { MarkdownWrapper } from "../MarkdownWrapper";
+import { Thumbnail } from "../Thumbnail";
 
 type Props = {
   title: string;
@@ -8,18 +10,13 @@ type Props = {
 };
 
 export const PostPreview = ({ title, thumbnail, article }: Props) => (
-  <div className="prose dark:prose-invert">
-    <h1 className="mb-4 leading-tight" id={title}>
+  <ContentWrapper>
+    <h1 className="mb-4 text-center leading-tight" id={title}>
       {title}
     </h1>
-    <div className="not-prose relative h-80 w-full overflow-hidden rounded-2xl">
-      <Image
-        src={thumbnail}
-        alt={`Thumbnail: ${title}`}
-        className="object-cover"
-        fill
-      />
-    </div>
-    <MarkdownPreview markdown={article} />
-  </div>
+    <Thumbnail src={thumbnail} title={title} />
+    <MarkdownWrapper>
+      <MarkdownPreview markdown={article} />
+    </MarkdownWrapper>
+  </ContentWrapper>
 );
