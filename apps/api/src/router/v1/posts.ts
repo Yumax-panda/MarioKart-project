@@ -24,6 +24,10 @@ export const posts = new Hono<Env>()
       return c.json({ error: "Not Found" }, StatusNotFound);
     }
 
+    if (!post.published && !(c.var.user && c.var.user.id === post.userId)) {
+      return c.json({ error: "Not Found" }, StatusNotFound);
+    }
+
     return c.json(post, 200);
   });
 

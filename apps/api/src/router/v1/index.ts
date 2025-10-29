@@ -1,11 +1,8 @@
 import { Hono } from "hono";
-import { deleteCookie, getCookie } from "hono/cookie";
-import {
-  StatusInternalServerError,
-  StatusUnauthorized,
-} from "@/lib/statusCode";
+import { getCookie } from "hono/cookie";
+import { StatusUnauthorized } from "@/lib/statusCode";
 import { KEY_SESSION_ID } from "../consts/cookie";
-import type { AuthRequiredEnv, Env } from "../types";
+import type { Env } from "../types";
 import { accounts } from "./accounts";
 import { posts, postsWithAuth } from "./posts";
 import { presignedURL } from "./presignedURL";
@@ -13,32 +10,12 @@ import { sessions } from "./sessions";
 import { tags } from "./tags";
 import { users, usersWithAuth } from "./users";
 
-const v1WithAuth = new Hono<AuthRequiredEnv>()
+const v1WithAuth = new Hono<Env>()
   .use(async (c, next) => {
-    const sessionId = getCookie(c, KEY_SESSION_ID);
-
-    if (!sessionId) {
-      return c.text("Internal server error", StatusInternalServerError);
-    }
-
-    const session = await c.var.repo.session.getBySessionToken(sessionId);
-
-    if (!session) {
-      return c.text("You are not logged in", StatusUnauthorized);
-    }
-
-    if (session.expires < new Date()) {
-      deleteCookie(c, KEY_SESSION_ID);
-      return c.text("Session is expired.", StatusUnauthorized);
-    }
-
-    const user = await c.var.repo.user.getById(session.userId);
-
+    const user = c.var.user;
     if (!user) {
-      return c.text("Internal server error", StatusInternalServerError);
+      return c.text("You must be logged in.", StatusUnauthorized);
     }
-
-    c.set("user", user);
     await next();
   })
   .route("/posts", postsWithAuth)
@@ -46,6 +23,19 @@ const v1WithAuth = new Hono<AuthRequiredEnv>()
   .route("/presignedURL", presignedURL);
 
 export const v1 = new Hono<Env>()
+  .use(async (c, next) => {
+    const sessionId = getCookie(c, KEY_SESSION_ID);
+    c.set("user", null);
+
+    if (sessionId) {
+      const session = await c.var.repo.session.getBySessionToken(sessionId);
+      if (session && session.expires >= new Date()) {
+        const user = await c.var.repo.user.getById(session.userId);
+        c.set("user", user);
+      }
+    }
+    await next();
+  })
   .route("/accounts", accounts)
   .route("/posts", posts)
   .route("/sessions", sessions)

@@ -97,8 +97,8 @@ export const Editor = ({
             value={currentTitle ?? ""}
             onChange={(e) => setTitle(e.target.value)}
             className="mr-4 w-full border-none bg-transparent p-1 text-center font-bold text-2xl focus:ring-0"
-          />
-          {currentThumbnail ?? (
+          ></input>
+          {currentThumbnail && (
             <Thumbnail src={currentThumbnail} title={currentTitle} />
           )}
           <MarkdownWrapper>

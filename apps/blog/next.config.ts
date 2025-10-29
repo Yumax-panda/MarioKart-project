@@ -5,7 +5,13 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "cdn.discordapp.com" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "cdn.discordapp.com" },
+      {
+        protocol: "https",
+        hostname: process.env.R2_HOSTNAME || "",
+      },
+    ],
   },
 };
 

@@ -1,6 +1,7 @@
 "use client";
 import { useAccount } from "context/AccountContext";
 import Link from "next/link";
+import { urls } from "@/lib/urls";
 import { AccountIcon } from "../AccountIcon";
 
 // TODO: fix
@@ -12,10 +13,10 @@ export const Header = () => {
       <nav className="mx-auto flex items-center justify-between">
         <div className="text-2xl">東工大マリオカートサークル</div>
         <ul className="flex gap-8">
-          {["ホーム", "記事", "About", "Contact"].map((item, index) => (
+          {["ホーム", "記事", "About"].map((item, index) => (
             <li key={item}>
               <Link
-                href={`#${["home", "articles", "about", "contact"][index]}`}
+                href={`${[urls.index(), urls.post(), urls.about()][index]}`}
                 className="group relative text-gray-200 text-lg transition-colors hover:text-teal-300"
               >
                 {item}

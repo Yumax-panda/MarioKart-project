@@ -5,6 +5,7 @@ type Bindings = Cloudflare.Env;
 
 interface Variables {
   repo: Repository;
+  user: User | null;
 }
 
 export interface Env {

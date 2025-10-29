@@ -14,6 +14,7 @@ export const presignedURL = new Hono<AuthRequiredEnv>().post(
   async (c) => {
     const s3Client = new S3Client({
       endpoint: `https://${c.env.S3_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+      region: "apac",
       credentials: {
         accessKeyId: c.env.S3_ACCESS_KEY_ID,
         secretAccessKey: c.env.S3_ACCESS_KEY_SECRET,
@@ -44,7 +45,7 @@ export const presignedURL = new Hono<AuthRequiredEnv>().post(
             ok: true,
             presignedURL,
             fileName: key,
-            fileURL: `https://${c.env.S3_BUCKET_NAME}.${c.env.S3_ACCOUNT_ID}.r2.dev/${key}`,
+            fileURL: `${c.env.S3_FILE_BASE_URL}/${key}`,
           },
           StatusOK,
         );

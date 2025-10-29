@@ -7,10 +7,13 @@ import {
 } from "react";
 import { client } from "@/lib/client";
 
-type AccountInfo = {
-  name: string;
-  image: string | null;
-} | null;
+type AccountInfo =
+  | {
+      name: string;
+      image: string | null;
+    }
+  | null
+  | undefined;
 
 type AccountContextType = {
   account: AccountInfo;
@@ -27,13 +30,13 @@ type ProviderProps = {
 };
 
 export const AccountProvider = ({ children }: ProviderProps) => {
-  const [account, setAccount] = useState<AccountInfo>(null);
+  const [account, setAccount] = useState<AccountInfo>(undefined);
 
   const syncAccountInfo = useCallback(async () => {
     const res = await client.api.v1.users["@me"].$get();
 
     if (!res.ok) {
-      return;
+      return setAccount(null);
     }
 
     const {

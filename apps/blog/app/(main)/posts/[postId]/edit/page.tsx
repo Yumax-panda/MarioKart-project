@@ -1,34 +1,62 @@
+"use client";
+
+import { Loading } from "app/(main)/_components/Loading";
+import { useAccount } from "context/AccountContext";
 import { notFound } from "next/navigation";
+import { use, useEffect, useState } from "react";
 import { client } from "@/lib/client";
 import { Editor } from "../_components/Editor";
 
-// const post = {
-//   id: "1",
-//   article: "## here",
-//   title: null,
-//   thumbnail: null,
-//   published: false,
-// };
+export default function Page(props: PageProps<"/posts/[postId]">) {
+  const { postId } = use(props.params);
+  const [post, setPost] = useState<Parameters<typeof Editor>[0] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [shouldNotFound, setShouldNotFound] = useState(false);
+  const { account } = useAccount();
 
-// TODO:
-export default async function Page(props: PageProps<"/posts/[postId]">) {
-  const { postId } = await props.params;
+  useEffect(() => {
+    if (account === undefined) {
+      return;
+    }
 
-  const [postRes, userRes] = await Promise.all([
-    client.api.v1.posts[":postId"].$get({ param: { postId } }),
-    client.api.v1.users["@me"].$get(),
-  ]);
+    if (!account) {
+      setShouldNotFound(true);
+      return;
+    }
 
-  if (!(postRes.ok && userRes.ok)) notFound();
+    setIsLoading(true);
+    client.api.v1.posts[":postId"]
+      .$get({ param: { postId } })
+      .then(async (res) => {
+        if (!res.ok) {
+          setShouldNotFound(true);
+          return;
+        }
+        const data = await res.json();
+        setPost({
+          postId: data.id,
+          markdown: data.article,
+          title: data.title,
+          thumbnail: data.thumbnail,
+          published: data.published,
+        });
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setShouldNotFound(true);
+      });
+  }, [postId, account]);
 
-  const [post, { user }] = await Promise.all([postRes.json(), userRes.json()]);
+  if (shouldNotFound) {
+    notFound();
+  }
 
-  if (post.userId !== user.id) notFound();
+  if (isLoading || !post) return <Loading />;
 
   return (
     <Editor
-      postId={post.id}
-      markdown={post.article}
+      postId={post.postId}
+      markdown={post.markdown}
       title={post.title}
       thumbnail={post.thumbnail}
       published={post.published}
