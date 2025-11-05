@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getCurrentUser } from "@/lib/auth";
 import { client } from "@/lib/client";
 import { PostPreview } from "./_components/PostPreview";
 
@@ -14,24 +15,23 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
 
   if (!post.article || !post.thumbnail || !post.title) notFound();
 
-  if (!post.published) {
-    const userRes = await client.api.v1.users["@me"].$get();
+  // Check if current user is the post owner
+  const currentUser = await getCurrentUser();
+  const isOwner = currentUser?.id === post.userId;
 
-    if (!userRes.ok) notFound();
-
-    const {
-      user: { id },
-    } = await userRes.json();
-
-    if (id !== post.userId) notFound();
+  // If post is not published, only the owner can view it
+  if (!post.published && !isOwner) {
+    notFound();
   }
 
   return (
     <div className="min-h-screen">
       <PostPreview
+        postId={postId}
         title={post.title}
         thumbnail={post.thumbnail}
         article={post.article}
+        isEditable={isOwner}
       />
     </div>
   );
