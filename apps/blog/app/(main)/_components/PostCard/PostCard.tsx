@@ -14,24 +14,31 @@ type Props = {
 
 export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
   return (
-    <article className="hover:-translate-y-3 overflow-hidden rounded-2xl border border-teal-400/10 bg-[#1a1a2e]/60 backdrop-blur-lg transition-all hover:border-teal-400/30 hover:shadow-2xl hover:shadow-teal-400/20">
-      <div className="relative h-48 w-full overflow-hidden">
+    <article className="hover:-translate-y-2 flex h-full flex-col overflow-hidden rounded-2xl border border-teal-400/10 bg-[#1a1a2e]/60 backdrop-blur-lg transition-all hover:border-teal-400/30 hover:shadow-2xl hover:shadow-teal-400/20">
+      <Link
+        href={urls.postDetail(id)}
+        className="relative h-56 w-full overflow-hidden sm:h-64"
+      >
         <Image
           src={thumbnail}
           alt={`Thumbnail: "${title}"`}
           fill
-          className="object-cover"
+          className="object-cover transition-transform hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-      </div>
-      <div className="p-6">
-        <div className="mb-4 flex h-8 flex-wrap gap-2">
+      </Link>
+      <div className="flex flex-1 flex-col p-6">
+        <div className="mb-4 flex min-h-8 flex-wrap gap-2">
           {tags.map((tagName) => (
             <Tag name={tagName} key={tagName} />
           ))}
         </div>
-        <h2 className="mb-2 font-bold text-2xl text-white">{title}</h2>
-        <div className="flex items-center justify-between text-gray-500 text-sm">
+        <Link href={urls.postDetail(id)}>
+          <h2 className="mb-4 line-clamp-2 font-bold text-white text-xl transition-colors hover:text-teal-300 sm:text-2xl">
+            {title}
+          </h2>
+        </Link>
+        <div className="mt-auto flex items-center justify-between text-gray-500 text-sm">
           <span>{formatDate(date)}</span>
           <Link
             href={urls.postDetail(id)}
