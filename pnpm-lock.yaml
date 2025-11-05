@@ -60,6 +60,9 @@ importers:
 
   apps/blog:
     dependencies:
+      '@repo/schema':
+        specifier: workspace:^
+        version: link:../../packages/schema
       '@wooorm/starry-night':
         specifier: ^3.8.0
         version: 3.8.0
