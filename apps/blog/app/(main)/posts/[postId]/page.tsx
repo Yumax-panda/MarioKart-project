@@ -27,7 +27,7 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
   }
 
   return (
-    <div className="mx-auto my-2">
+    <div className="min-h-screen">
       <PostPreview
         title={post.title}
         thumbnail={post.thumbnail}

@@ -10,7 +10,7 @@ type Props = {
 };
 
 export const PostPreview = ({ title, thumbnail, article }: Props) => (
-  <ContentWrapper>
+  <ContentWrapper className="mx-auto flex flex-col gap-4">
     <h1 className="mb-4 text-center leading-tight" id={title}>
       {title}
     </h1>
