@@ -12,6 +12,7 @@ export const Thumbnail = ({ src, title }: Props) => (
       alt={`Thumbnail: ${title}`}
       className="object-cover"
       fill
+      loading="eager"
     />
   </div>
 );

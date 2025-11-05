@@ -1,4 +1,5 @@
-import type { ChangeEvent } from "react";
+import { UpdatePostBodySchema } from "@repo/schema/post";
+import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { client } from "@/lib/client";
 
@@ -64,8 +65,28 @@ export const useEditor = ({
   const toggleShowPreview = () => setShowPreview((v) => !v);
 
   // TODO
-  const handleSubmit = () => {
-    console.log(postId);
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const result = UpdatePostBodySchema.safeParse({
+      article: currentMarkdown || undefined,
+      title: currentTitle || undefined,
+      thumbnail: currentThumbnail || undefined,
+      published: currentPublished,
+    });
+
+    if (!result.success) {
+      // TODO
+      return console.log("parse failed");
+    }
+
+    const res = await client.api.v1.posts[":postId"].$patch({
+      param: { postId },
+      json: result.data,
+    });
+
+    // TODO
+    if (res.ok) return console.log("updated");
   };
 
   return {

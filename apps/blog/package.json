@@ -13,6 +13,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@repo/schema": "workspace:^",
     "@wooorm/starry-night": "^3.8.0",
     "api": "workspace:*",
     "hast-util-to-jsx-runtime": "^2.3.6",
