@@ -1,6 +1,6 @@
 import type { PrismaClient } from "@prisma/client/edge";
 import { inject, injectable } from "tsyringe";
-import type { PostListItem, PostRepository } from "./types";
+import type { PostListItem, PostRepository, UpdatePostProps } from "./types";
 
 // TODO:
 @injectable()
@@ -71,5 +71,10 @@ export class PostRepositoryImpl implements PostRepository {
     if (emptyPost) return emptyPost;
 
     return await this.p.post.create({ data: { userId, published: false } });
+  }
+
+  async update(data: UpdatePostProps) {
+    const { id, ...rest } = data;
+    return await this.p.post.update({ where: { id }, data: rest });
   }
 }

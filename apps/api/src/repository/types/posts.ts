@@ -10,6 +10,8 @@ export type PostListItem = Pick<
 };
 
 type PostDetail = Post & { user: Pick<User, "id" | "name" | "image"> };
+export type UpdatePostProps = Pick<Post, "id"> &
+  Partial<Omit<Post, "id" | "userId" | "createdAt" | "updatedAt">>;
 
 export interface PostRepository {
   getPublishedPostList(page: number, perPage: number): Promise<PostListItem[]>;
@@ -20,4 +22,5 @@ export interface PostRepository {
    * @param userId - 記事を作成するユーザーのID
    */
   createOrGetEmpty(userId: string): Promise<Post>;
+  update(data: UpdatePostProps): Promise<Post>;
 }

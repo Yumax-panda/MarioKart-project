@@ -1,7 +1,10 @@
 import { zValidator } from "@hono/zod-validator";
-import { GetPublishedPostListQuerySchema } from "@repo/schema/post";
+import {
+  GetPublishedPostListQuerySchema,
+  UpdatePostBodySchema,
+} from "@repo/schema/post";
 import { Hono } from "hono";
-import { StatusNotFound, StatusOK } from "@/lib/statusCode";
+import { StatusNoContent, StatusNotFound, StatusOK } from "@/lib/statusCode";
 import type { AuthRequiredEnv, Env } from "../types";
 
 // TODO:
@@ -31,10 +34,14 @@ export const posts = new Hono<Env>()
     return c.json(post, 200);
   });
 
-export const postsWithAuth = new Hono<AuthRequiredEnv>().post(
-  "/create",
-  async (c) => {
+export const postsWithAuth = new Hono<AuthRequiredEnv>()
+  .post("/", async (c) => {
     const newPost = await c.var.repo.post.createOrGetEmpty(c.var.user.id);
     return c.json({ post: newPost }, StatusOK);
-  },
-);
+  })
+  .patch("/:postId", zValidator("json", UpdatePostBodySchema), async (c) => {
+    const postId = c.req.param("postId");
+    const data = c.req.valid("json");
+    await c.var.repo.post.update({ id: postId, ...data });
+    return new Response(null, { status: StatusNoContent });
+  });
