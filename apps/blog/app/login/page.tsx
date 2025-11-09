@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { client } from "@/lib/client";
+import { client } from "@/lib/rpc-browser";
 
 type SupportedProviders = "discord";
 

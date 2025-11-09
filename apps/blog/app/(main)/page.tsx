@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { client } from "@/lib/client";
+import { client } from "@/lib/rpc-browser";
 import { Hero } from "./_components/Hero";
 import { PostCard } from "./_components/PostCard";
 

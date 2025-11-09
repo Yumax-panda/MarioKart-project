@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { getCookieHeader, getCurrentUser } from "@/lib/auth";
-import { client } from "@/lib/client";
+import { getCurrentUser } from "@/lib/auth";
+import { getRpc } from "@/lib/rpc-server";
 import { Editor } from "../_components/Editor";
 
 export default async function Page(props: PageProps<"/posts/[postId]">) {
@@ -14,17 +14,10 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
   }
 
   // Get post data with authentication
-  const cookieHeader = await getCookieHeader();
-  const postRes = await client.api.v1.posts[":postId"].$get(
-    {
-      param: { postId },
-    },
-    {
-      headers: {
-        Cookie: cookieHeader,
-      },
-    },
-  );
+  const client = await getRpc();
+  const postRes = await client.api.v1.posts[":postId"].$get({
+    param: { postId },
+  });
 
   if (!postRes.ok) {
     notFound();

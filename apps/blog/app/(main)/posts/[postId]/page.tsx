@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { client } from "@/lib/client";
+import { client } from "@/lib/rpc-browser";
 import { PostPreview } from "./_components/PostPreview";
 
 export default async function Page(props: PageProps<"/posts/[postId]">) {

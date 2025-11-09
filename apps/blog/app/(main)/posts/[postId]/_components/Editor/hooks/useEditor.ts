@@ -1,7 +1,7 @@
 import { UpdatePostBodySchema } from "@repo/schema/post";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
-import { client } from "@/lib/client";
+import { client } from "@/lib/rpc-browser";
 
 type Props = {
   postId: string;

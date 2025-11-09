@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { client } from "@/lib/client";
+import { client } from "@/lib/rpc-browser";
 
 type AccountInfo =
   | {
