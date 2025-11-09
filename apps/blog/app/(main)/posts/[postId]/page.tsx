@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { client } from "@/lib/rpc-browser";
+import { EditButton } from "./_components/EditButton";
 import { PostPreview } from "./_components/PostPreview";
 
 export default async function Page(props: PageProps<"/posts/[postId]">) {
@@ -27,12 +28,11 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
   return (
     <div className="min-h-screen">
       <PostPreview
-        postId={postId}
         title={post.title}
         thumbnail={post.thumbnail}
         article={post.article}
-        isEditable={isOwner}
       />
+      {isOwner && <EditButton postId={postId} />}
     </div>
   );
 }
