@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getCurrentUser } from "@/lib/auth";
+import { getCookieHeader, getCurrentUser } from "@/lib/auth";
 import { client } from "@/lib/client";
 import { Editor } from "../_components/Editor";
 
@@ -13,10 +13,18 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
     notFound();
   }
 
-  // Get post data
-  const postRes = await client.api.v1.posts[":postId"].$get({
-    param: { postId },
-  });
+  // Get post data with authentication
+  const cookieHeader = await getCookieHeader();
+  const postRes = await client.api.v1.posts[":postId"].$get(
+    {
+      param: { postId },
+    },
+    {
+      headers: {
+        Cookie: cookieHeader,
+      },
+    },
+  );
 
   if (!postRes.ok) {
     notFound();
