@@ -9,6 +9,7 @@ import { client } from "@/lib/rpc-browser";
 
 type AccountInfo =
   | {
+      id: string;
       name: string;
       image: string | null;
     }
@@ -40,9 +41,9 @@ export const AccountProvider = ({ children }: ProviderProps) => {
     }
 
     const {
-      user: { name, image },
+      user: { id, name, image },
     } = await res.json();
-    setAccount({ name, image });
+    setAccount({ id, name, image });
   }, []);
 
   useEffect(() => {

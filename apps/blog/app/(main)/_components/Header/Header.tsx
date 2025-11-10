@@ -25,9 +25,9 @@ export const Header = () => {
           ))}
           {account ? (
             <AccountIcon
+              userId={account.id}
               name={account.name}
               image={account.image || ""}
-              onClick={() => {}}
             />
           ) : null}
         </ul>
