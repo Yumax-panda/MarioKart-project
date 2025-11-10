@@ -10,11 +10,11 @@ import type { AuthRequiredEnv, Env } from "../types";
 // TODO:
 export const posts = new Hono<Env>()
   .get("/", zValidator("query", GetPublishedPostListQuerySchema), async (c) => {
-    const { page, perPage } = c.req.valid("query");
+    const { page, perPage, userId } = c.req.valid("query");
 
     const [posts, totalCount] = await Promise.all([
-      c.var.repo.post.getPublishedPostList(page, perPage),
-      c.var.repo.post.getPublishedPostCount(),
+      c.var.repo.post.getPublishedPostList(page, perPage, userId),
+      c.var.repo.post.getPublishedPostCount(userId),
     ]);
 
     return c.json({ posts, totalCount }, StatusOK);

@@ -40,6 +40,7 @@ export type PostType = z.infer<typeof PostSchema>;
 export const GetPublishedPostListQuerySchema = z.object({
   page: z.coerce.number().min(1),
   perPage: z.coerce.number().max(12),
+  userId: z.string().optional(),
 });
 
 const UpdatePublishedPostBodySchema = z.object({

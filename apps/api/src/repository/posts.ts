@@ -6,12 +6,13 @@ import type { PostListItem, PostRepository, UpdatePostProps } from "./types";
 @injectable()
 export class PostRepositoryImpl implements PostRepository {
   constructor(@inject("PrismaClient") private p: PrismaClient) {}
-  async getPublishedPostList(page: number, perPage: number) {
+  async getPublishedPostList(page: number, perPage: number, userId?: string) {
     const skip = (page - 1) * perPage;
 
     const rawPosts = await this.p.post.findMany({
       where: {
         published: true,
+        ...(userId ? { userId } : {}),
       },
       select: {
         id: true,
@@ -48,8 +49,13 @@ export class PostRepositoryImpl implements PostRepository {
       ...rest,
     })) as PostListItem[];
   }
-  async getPublishedPostCount() {
-    return await this.p.post.count({ where: { published: true } });
+  async getPublishedPostCount(userId?: string) {
+    return await this.p.post.count({
+      where: {
+        published: true,
+        ...(userId ? { userId } : {}),
+      },
+    });
   }
   async getDetailById(postId: string) {
     return await this.p.post.findUnique({

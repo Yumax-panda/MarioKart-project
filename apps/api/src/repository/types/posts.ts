@@ -14,8 +14,12 @@ export type UpdatePostProps = Pick<Post, "id"> &
   Partial<Omit<Post, "id" | "userId" | "createdAt" | "updatedAt">>;
 
 export interface PostRepository {
-  getPublishedPostList(page: number, perPage: number): Promise<PostListItem[]>;
-  getPublishedPostCount(): Promise<number>;
+  getPublishedPostList(
+    page: number,
+    perPage: number,
+    userId?: string,
+  ): Promise<PostListItem[]>;
+  getPublishedPostCount(userId?: string): Promise<number>;
   getDetailById(postId: string): Promise<PostDetail | null>;
   /**
    * 何も入力されていない空の記事を返す。もともと空の記事が存在していた場合はそれを返し、存在しなければ新しく作る。
