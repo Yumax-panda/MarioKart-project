@@ -79,8 +79,10 @@ export const discord = new Hono<Env>()
       maxAge: 300000,
     };
 
-    if (c.env.ENV_NAME === "production") {
-      opts.sameSite = "none";
+    if (
+      c.env.ENV_NAME === "production" ||
+      c.env.ENV_NAME === "local-production"
+    ) {
       opts.secure = true;
     }
 

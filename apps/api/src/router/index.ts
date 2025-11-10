@@ -66,7 +66,7 @@ const app = new Hono<Env>()
   })
   .use(
     cors({
-      origin: ["http://localhost:3001"],
+      origin: ["http://localhost:3000", "http://localhost:3001"],
       allowHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"],
       credentials: true,
     }),
