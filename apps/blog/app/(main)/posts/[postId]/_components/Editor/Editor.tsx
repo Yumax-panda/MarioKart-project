@@ -38,7 +38,7 @@ export const Editor = ({
     fieldErrors,
     generalError,
     isSaving,
-    saveSuccess,
+    hasChanges,
   } = useEditor({
     postId,
     initialMarkdown: markdown,
@@ -94,20 +94,16 @@ export const Editor = ({
 
             <button
               type="submit"
-              disabled={isSaving}
+              disabled={isSaving || !hasChanges}
               className={cn(
                 "rounded px-4 py-2 font-semibold text-white",
-                isSaving
+                isSaving || !hasChanges
                   ? "cursor-not-allowed bg-gray-400"
                   : "bg-indigo-600 hover:bg-indigo-700",
               )}
             >
-              {isSaving ? "保存中..." : "保存"}
+              {isSaving ? "保存中..." : !hasChanges ? "保存済み" : "保存"}
             </button>
-
-            {saveSuccess && (
-              <span className="text-green-400 text-sm">保存しました!</span>
-            )}
           </div>
         </div>
 

@@ -48,10 +48,27 @@ export const useEditor = ({
   const [currentPublished, setPublished] = useState(initialPublished);
   const [currentShowPreview, setShowPreview] = useState(false);
 
+  // 保存成功後の比較基準となる値（初期値から更新される）
+  const [lastSavedTitle, setLastSavedTitle] = useState(initialTitle ?? "");
+  const [lastSavedThumbnail, setLastSavedThumbnail] = useState(
+    initialThumbnail ?? "",
+  );
+  const [lastSavedMarkdown, setLastSavedMarkdown] = useState(
+    initialMarkdown ?? "",
+  );
+  const [lastSavedPublished, setLastSavedPublished] =
+    useState(initialPublished);
+
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // 変更があるかどうかをチェック（最後に保存した値と比較）
+  const hasChanges =
+    currentTitle !== lastSavedTitle ||
+    currentThumbnail !== lastSavedThumbnail ||
+    currentMarkdown !== lastSavedMarkdown ||
+    currentPublished !== lastSavedPublished;
 
   const clearErrors = useCallback(() => {
     setFieldErrors({});
@@ -120,7 +137,6 @@ export const useEditor = ({
 
   const savePost = useCallback(async () => {
     setIsSaving(true);
-    setSaveSuccess(false);
     clearErrors();
 
     // クライアントサイドバリデーション（@repo/schemaのZodスキーマを使用）
@@ -165,10 +181,13 @@ export const useEditor = ({
       return;
     }
 
-    // 成功
-    setSaveSuccess(true);
+    // 成功 - 保存した値を記録
+    setLastSavedTitle(currentTitle);
+    setLastSavedThumbnail(currentThumbnail);
+    setLastSavedMarkdown(currentMarkdown);
+    setLastSavedPublished(currentPublished);
+
     setIsSaving(false);
-    setTimeout(() => setSaveSuccess(false), 3000);
   }, [
     currentMarkdown,
     currentTitle,
@@ -210,6 +229,6 @@ export const useEditor = ({
     fieldErrors,
     generalError,
     isSaving,
-    saveSuccess,
+    hasChanges,
   };
 };
