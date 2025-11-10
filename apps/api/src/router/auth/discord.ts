@@ -3,6 +3,7 @@ import { GetCallbackQuerySchema } from "@repo/schema/auth/discord";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import type { CookieOptions } from "hono/utils/cookie";
+import { isCrossDomain } from "@/lib/cookie";
 import {
   StatusBadRequest,
   StatusForbidden,
@@ -75,6 +76,7 @@ export const discord = new Hono<Env>()
 
     const opts: CookieOptions = {
       httpOnly: true,
+      // https://developer.mozilla.org/ja/docs/Web/HTTP/Reference/Headers/Set-Cookie#samesitesamesite-value
       sameSite: "lax",
       maxAge: 300000,
     };
@@ -263,6 +265,10 @@ export const discord = new Hono<Env>()
       c.env.ENV_NAME === "local-production"
     ) {
       opts.secure = true;
+      // Only use sameSite: "none" if domains are different
+      if (isCrossDomain(c.env.FRONTEND_BASE_URL, c.env.BASE_URL)) {
+        opts.sameSite = "none";
+      }
     }
 
     setCookie(c, KEY_SESSION_ID, newSession.sessionToken, opts);

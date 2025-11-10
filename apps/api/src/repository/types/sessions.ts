@@ -6,4 +6,5 @@ export type CreateSessionProps = Omit<Session, "createdAt" | "updatedAt">;
 export interface SessionRepository {
   create(session: CreateSessionProps): Promise<Session>;
   getBySessionToken(sessionToken: string): Promise<Session | null>;
+  deleteBySessionToken(sessionToken: string): Promise<Session | null>;
 }

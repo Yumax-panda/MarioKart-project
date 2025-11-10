@@ -64,13 +64,13 @@ const app = new Hono<Env>()
     c.set("repo", repo);
     await next();
   })
-  .use(
-    cors({
-      origin: ["http://localhost:3000", "http://localhost:3001"],
+  .use(async (c, next) => {
+    return cors({
+      origin: [c.env.FRONTEND_BASE_URL],
       allowHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept"],
       credentials: true,
-    }),
-  )
+    })(c, next);
+  })
   .route("/v1", v1)
   .route("/auth", auth);
 

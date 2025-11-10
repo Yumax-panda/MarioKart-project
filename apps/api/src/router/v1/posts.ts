@@ -4,7 +4,12 @@ import {
   UpdatePostBodySchema,
 } from "@repo/schema/post";
 import { Hono } from "hono";
-import { StatusNoContent, StatusNotFound, StatusOK } from "@/lib/statusCode";
+import {
+  StatusForbidden,
+  StatusNoContent,
+  StatusNotFound,
+  StatusOK,
+} from "@/lib/statusCode";
 import type { AuthRequiredEnv, Env } from "../types";
 
 // TODO:
@@ -41,6 +46,16 @@ export const postsWithAuth = new Hono<AuthRequiredEnv>()
   })
   .patch("/:postId", zValidator("json", UpdatePostBodySchema), async (c) => {
     const postId = c.req.param("postId");
+    const post = await c.var.repo.post.getDetailById(postId);
+
+    if (!post) {
+      return c.json({ error: "Not Found" }, StatusNotFound);
+    }
+
+    if (post.userId !== c.var.user.id) {
+      return c.json({ error: "Forbidden" }, StatusForbidden);
+    }
+
     const data = c.req.valid("json");
     await c.var.repo.post.update({ id: postId, ...data });
     return new Response(null, { status: StatusNoContent });

@@ -14,4 +14,12 @@ export class SessionRepositoryImpl implements SessionRepository {
   async create(session: CreateSessionProps) {
     return await this.p.session.create({ data: session });
   }
+
+  async deleteBySessionToken(sessionToken: string): Promise<Session | null> {
+    try {
+      return await this.p.session.delete({ where: { sessionToken } });
+    } catch {
+      return null;
+    }
+  }
 }
