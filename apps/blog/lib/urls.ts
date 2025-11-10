@@ -1,14 +1,15 @@
-export const urls = {
-  index: () => "/",
-  about: () => "/about",
-  post: (page?: number, searchParams?: Record<string, string>) => {
-    if (page === undefined) {
-      return "/posts";
-    }
-    return buildPaginationUrl("/posts", page, searchParams);
-  },
-  postDetail: (postId: string) => `/posts/${postId}`,
-  postDetailEdit: (postId: string) => `/posts/${postId}/edit`,
+/**
+ * Search parameters for posts listing page
+ */
+export type PostsSearchParams = {
+  userId?: string;
+};
+
+/**
+ * Search parameters for posts page including pagination
+ */
+export type PostsPageSearchParams = PostsSearchParams & {
+  page?: string;
 };
 
 /**
@@ -24,4 +25,19 @@ export const buildPaginationUrl = (
     page: page.toString(),
   });
   return `${basePath}?${params.toString()}`;
+};
+
+const postUrl = (page?: number, searchParams?: PostsSearchParams): string => {
+  if (page === undefined) {
+    return "/posts";
+  }
+  return buildPaginationUrl("/posts", page, searchParams);
+};
+
+export const urls = {
+  index: () => "/",
+  about: () => "/about",
+  post: postUrl,
+  postDetail: (postId: string) => `/posts/${postId}`,
+  postDetailEdit: (postId: string) => `/posts/${postId}/edit`,
 };

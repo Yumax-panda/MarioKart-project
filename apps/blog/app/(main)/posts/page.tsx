@@ -1,16 +1,13 @@
 import { notFound } from "next/navigation";
 import { getRpc } from "@/lib/rpc-server";
-import { urls } from "@/lib/urls";
+import { type PostsPageSearchParams, urls } from "@/lib/urls";
 import { Pagination } from "../_components/Pagination";
 import { PostCard } from "../_components/PostCard";
 
 const POSTS_PER_PAGE = 12;
 
 type Props = {
-  searchParams: Promise<{
-    userId?: string;
-    page?: string;
-  }>;
+  searchParams: Promise<PostsPageSearchParams>;
 };
 
 export default async function PostsPage({ searchParams }: Props) {
