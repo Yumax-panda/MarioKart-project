@@ -18,8 +18,10 @@ export const MarkdownPreview = ({ markdown }: Props) => {
     <MarkdownHooks
       rehypePlugins={rehypePlugins}
       remarkPlugins={remarkPlugins}
-      // タイトルは別フィールドで入力するため
-      disallowedElements={["h1"]}
+      components={{
+        // タイトルは別フィールドで入力するため、h1はプレーンテキストとして表示
+        h1: ({ children }) => <p># {children}</p>,
+      }}
     >
       {markdown}
     </MarkdownHooks>
