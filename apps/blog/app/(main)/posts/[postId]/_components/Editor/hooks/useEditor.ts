@@ -1,6 +1,12 @@
+import type { ValidationErrorDetail } from "@repo/schema/errorCodes";
 import { UpdatePostBodySchema } from "@repo/schema/post";
+import { groupErrorsByField, parseZodError } from "@repo/schema/zodErrorMapper";
 import type { ChangeEvent, FormEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
+import {
+  getBusinessErrorMessage,
+  getValidationErrorMessage,
+} from "@/lib/errorMessages";
 import { client } from "@/lib/rpc-browser";
 
 type Props = {
@@ -11,7 +17,24 @@ type Props = {
   initialPublished: boolean;
 };
 
-// TODO:
+type FieldErrors = {
+  title?: string;
+  thumbnail?: string;
+  article?: string;
+};
+
+// ValidationErrorDetailをフィールドエラーに変換
+function convertToFieldErrors(errors: ValidationErrorDetail[]): FieldErrors {
+  const grouped = groupErrorsByField(errors);
+  const fieldErrors: FieldErrors = {};
+
+  for (const [field, error] of Object.entries(grouped)) {
+    fieldErrors[field as keyof FieldErrors] = getValidationErrorMessage(error);
+  }
+
+  return fieldErrors;
+}
+
 export const useEditor = ({
   postId,
   initialTitle,
@@ -25,25 +48,50 @@ export const useEditor = ({
   const [currentPublished, setPublished] = useState(initialPublished);
   const [currentShowPreview, setShowPreview] = useState(false);
 
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  const clearErrors = useCallback(() => {
+    setFieldErrors({});
+    setGeneralError(null);
+  }, []);
+
+  const handleTitleChange = (value: string) => {
+    setTitle(value);
+    if (fieldErrors.title) {
+      setFieldErrors((prev) => ({ ...prev, title: undefined }));
+    }
+  };
+
+  const handleMarkdownChange = (value: string) => {
+    setMarkdown(value);
+    if (fieldErrors.article) {
+      setFieldErrors((prev) => ({ ...prev, article: undefined }));
+    }
+  };
+
   const handleThumbnailUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
-
     if (!files || !files.length) return;
 
     const file = files[0];
-
-    if (!file) return; // 起こり得ない
+    if (!file) return;
 
     const presignedURLRes = await client.api.v1.presignedURL.generate.$post({
       json: {
         purpose: "uploadThumbnail",
         size: file.size,
-        // @ts-expect-error: zodでバリデーションするのでOK,
+        // @ts-expect-error: zodでバリデーションするのでOK
         imageType: file.type,
       },
     });
 
-    if (!presignedURLRes.ok) return; // TODO
+    if (!presignedURLRes.ok) {
+      setGeneralError("サムネイルのアップロードに失敗しました");
+      return;
+    }
 
     const { presignedURL, fileURL } = await presignedURLRes.json();
 
@@ -55,17 +103,27 @@ export const useEditor = ({
       body: file,
     });
 
-    if (!r2Res.ok) return; // TODO
+    if (!r2Res.ok) {
+      setGeneralError("サムネイルのアップロードに失敗しました");
+      return;
+    }
 
     setThumbnail(fileURL);
+    if (fieldErrors.thumbnail) {
+      setFieldErrors((prev) => ({ ...prev, thumbnail: undefined }));
+    }
   };
 
   const togglePublished = () => setPublished((v) => !v);
 
   const toggleShowPreview = () => setShowPreview((v) => !v);
 
-  // 保存処理の本体
   const savePost = useCallback(async () => {
+    setIsSaving(true);
+    setSaveSuccess(false);
+    clearErrors();
+
+    // クライアントサイドバリデーション（@repo/schemaのZodスキーマを使用）
     const result = UpdatePostBodySchema.safeParse({
       article: currentMarkdown || undefined,
       title: currentTitle || undefined,
@@ -74,23 +132,50 @@ export const useEditor = ({
     });
 
     if (!result.success) {
-      // TODO
-      return console.log("parse failed");
+      // クライアント側のバリデーションエラー
+      const validationErrors = parseZodError(result.error);
+      setFieldErrors(convertToFieldErrors(validationErrors));
+      setIsSaving(false);
+      return;
     }
 
+    // API リクエスト
     const res = await client.api.v1.posts[":postId"].$patch({
       param: { postId },
       json: result.data,
     });
 
-    // TODO
-    if (res.ok) return console.log("updated");
+    if (!res.ok) {
+      // サーバーエラーの処理
+      try {
+        const errorData = await res.json();
+
+        if (errorData.type === "validation") {
+          // サーバー側のバリデーションエラー
+          setFieldErrors(convertToFieldErrors(errorData.errors));
+        } else if (errorData.type === "business") {
+          // ビジネスロジックエラー
+          setGeneralError(getBusinessErrorMessage(errorData.code));
+        }
+      } catch {
+        setGeneralError("予期しないエラーが発生しました");
+      }
+
+      setIsSaving(false);
+      return;
+    }
+
+    // 成功
+    setSaveSuccess(true);
+    setIsSaving(false);
+    setTimeout(() => setSaveSuccess(false), 3000);
   }, [
     currentMarkdown,
     currentTitle,
     currentThumbnail,
     currentPublished,
     postId,
+    clearErrors,
   ]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -112,15 +197,19 @@ export const useEditor = ({
 
   return {
     currentTitle,
-    setTitle,
+    setTitle: handleTitleChange,
     currentThumbnail,
     handleThumbnailUpload,
     currentMarkdown,
-    setMarkdown,
+    setMarkdown: handleMarkdownChange,
     currentPublished,
     togglePublished,
     currentShowPreview,
     toggleShowPreview,
     handleSubmit,
+    fieldErrors,
+    generalError,
+    isSaving,
+    saveSuccess,
   };
 };

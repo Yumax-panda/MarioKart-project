@@ -35,6 +35,10 @@ export const Editor = ({
     currentShowPreview,
     toggleShowPreview,
     handleSubmit,
+    fieldErrors,
+    generalError,
+    isSaving,
+    saveSuccess,
   } = useEditor({
     postId,
     initialMarkdown: markdown,
@@ -46,6 +50,12 @@ export const Editor = ({
   return (
     <div className={cn("min-h-screen p-4 text-white")}>
       <form onSubmit={handleSubmit}>
+        {/* 全体的なエラーメッセージ */}
+        {generalError && (
+          <div className="mb-4 rounded border border-red-500 bg-red-500/20 p-3 text-red-300">
+            {generalError}
+          </div>
+        )}
         <div className="mb-4 flex justify-end">
           <div className="flex items-center space-x-4">
             <label className="cursor-pointer rounded bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
@@ -84,31 +94,65 @@ export const Editor = ({
 
             <button
               type="submit"
-              className="rounded bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700"
+              disabled={isSaving}
+              className={cn(
+                "rounded px-4 py-2 font-semibold text-white",
+                isSaving
+                  ? "cursor-not-allowed bg-gray-400"
+                  : "bg-indigo-600 hover:bg-indigo-700",
+              )}
             >
-              保存
+              {isSaving ? "保存中..." : "保存"}
             </button>
+
+            {saveSuccess && (
+              <span className="text-green-400 text-sm">保存しました!</span>
+            )}
           </div>
         </div>
+
         <ContentWrapper className="mx-auto flex flex-col gap-4">
-          <input
-            type="text"
-            placeholder="タイトルを入力"
-            value={currentTitle ?? ""}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mr-4 w-full border-none bg-transparent p-1 text-center font-bold text-3xl focus:ring-0"
-          />
+          <div>
+            <input
+              type="text"
+              placeholder="タイトルを入力"
+              value={currentTitle ?? ""}
+              onChange={(e) => setTitle(e.target.value)}
+              className={cn(
+                "mr-4 w-full border-none bg-transparent p-1 text-center font-bold text-3xl focus:ring-0",
+                fieldErrors.title && "ring-2 ring-red-500",
+              )}
+            />
+            {fieldErrors.title && (
+              <p className="mt-1 text-center text-red-400 text-sm">
+                {fieldErrors.title}
+              </p>
+            )}
+          </div>
+
           {currentThumbnail && (
             <Thumbnail src={currentThumbnail} title={currentTitle} />
           )}
+          {fieldErrors.thumbnail && (
+            <p className="text-red-400 text-sm">{fieldErrors.thumbnail}</p>
+          )}
+
           <MarkdownWrapper>
             {currentShowPreview ? (
               <MarkdownPreview markdown={currentMarkdown} />
             ) : (
-              <EditorInput
-                currentInputValue={currentMarkdown}
-                onChange={setMarkdown}
-              />
+              <div>
+                <EditorInput
+                  currentInputValue={currentMarkdown}
+                  onChange={setMarkdown}
+                  hasError={!!fieldErrors.article}
+                />
+                {fieldErrors.article && (
+                  <p className="mt-2 text-red-400 text-sm">
+                    {fieldErrors.article}
+                  </p>
+                )}
+              </div>
             )}
           </MarkdownWrapper>
         </ContentWrapper>

@@ -28,9 +28,14 @@ type StarryNight = Awaited<ReturnType<typeof createStarryNight>>;
 type Props = {
   currentInputValue: string;
   onChange: (text: string) => void;
+  hasError?: boolean;
 };
 
-export const EditorInput = ({ currentInputValue, onChange }: Props) => {
+export const EditorInput = ({
+  currentInputValue,
+  onChange,
+  hasError,
+}: Props) => {
   const [starryNight, setStarryNight] = useState<StarryNight | null>(null);
 
   useEffect(() => {
@@ -38,7 +43,12 @@ export const EditorInput = ({ currentInputValue, onChange }: Props) => {
   }, []);
 
   return (
-    <div className={cn("bg-transparent")}>
+    <div
+      className={cn(
+        "bg-transparent",
+        hasError && "rounded ring-2 ring-red-500",
+      )}
+    >
       <div className={styles.inner}>
         <div className={styles.draw}>
           {starryNight !== null

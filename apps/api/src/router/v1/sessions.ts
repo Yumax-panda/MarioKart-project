@@ -15,5 +15,5 @@ export const sessions = new Hono<Env>().delete("/logout", async (c) => {
 
   deleteCookie(c, KEY_SESSION_ID);
 
-  return new Response(null, { status: StatusNoContent });
+  return c.body(null, StatusNoContent);
 });

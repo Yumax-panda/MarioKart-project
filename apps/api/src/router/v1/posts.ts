@@ -1,14 +1,20 @@
 import { zValidator } from "@hono/zod-validator";
+import { BusinessErrorCodes } from "@repo/schema/errorCodes";
 import {
   GetPublishedPostListQuerySchema,
   UpdatePostBodySchema,
 } from "@repo/schema/post";
 import { Hono } from "hono";
 import {
+  createBusinessErrorResponse,
+  createValidationErrorResponse,
+} from "@/lib/errorResponse";
+import {
   StatusForbidden,
   StatusNoContent,
   StatusNotFound,
   StatusOK,
+  StatusUnprocessableEntity,
 } from "@/lib/statusCode";
 import type { AuthRequiredEnv, Env } from "../types";
 
@@ -29,11 +35,17 @@ export const posts = new Hono<Env>()
     const post = await c.var.repo.post.getDetailById(postId);
 
     if (post === null) {
-      return c.json({ error: "Not Found" }, StatusNotFound);
+      return c.json(
+        createBusinessErrorResponse(BusinessErrorCodes.POST_NOT_FOUND),
+        StatusNotFound,
+      );
     }
 
     if (!post.published && !(c.var.user && c.var.user.id === post.userId)) {
-      return c.json({ error: "Not Found" }, StatusNotFound);
+      return c.json(
+        createBusinessErrorResponse(BusinessErrorCodes.POST_NOT_FOUND),
+        StatusNotFound,
+      );
     }
 
     return c.json(post, 200);
@@ -44,19 +56,36 @@ export const postsWithAuth = new Hono<AuthRequiredEnv>()
     const newPost = await c.var.repo.post.createOrGetEmpty(c.var.user.id);
     return c.json({ post: newPost }, StatusOK);
   })
-  .patch("/:postId", zValidator("json", UpdatePostBodySchema), async (c) => {
-    const postId = c.req.param("postId");
-    const post = await c.var.repo.post.getDetailById(postId);
+  .patch(
+    "/:postId",
+    zValidator("json", UpdatePostBodySchema, (result, c) => {
+      if (!result.success) {
+        return c.json(
+          createValidationErrorResponse(result.error),
+          StatusUnprocessableEntity,
+        );
+      }
+    }),
+    async (c) => {
+      const postId = c.req.param("postId");
+      const post = await c.var.repo.post.getDetailById(postId);
 
-    if (!post) {
-      return c.json({ error: "Not Found" }, StatusNotFound);
-    }
+      if (!post) {
+        return c.json(
+          createBusinessErrorResponse(BusinessErrorCodes.POST_NOT_FOUND),
+          StatusNotFound,
+        );
+      }
 
-    if (post.userId !== c.var.user.id) {
-      return c.json({ error: "Forbidden" }, StatusForbidden);
-    }
+      if (post.userId !== c.var.user.id) {
+        return c.json(
+          createBusinessErrorResponse(BusinessErrorCodes.POST_FORBIDDEN),
+          StatusForbidden,
+        );
+      }
 
-    const data = c.req.valid("json");
-    await c.var.repo.post.update({ id: postId, ...data });
-    return new Response(null, { status: StatusNoContent });
-  });
+      const data = c.req.valid("json");
+      await c.var.repo.post.update({ id: postId, ...data });
+      return c.body(null, StatusNoContent);
+    },
+  );
