@@ -11,6 +11,7 @@ type Props = {
   image: string;
 };
 
+// TODO: LinkのonClickを修正
 export const AccountIcon = ({ userId, name, image }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -60,6 +61,7 @@ export const AccountIcon = ({ userId, name, image }: Props) => {
             <Link
               href={urls.post(1, { userId })}
               className="block px-4 py-2 text-gray-700 text-sm transition-colors hover:bg-gray-100"
+              onClick={() => setIsOpen(false)}
             >
               記事一覧
             </Link>
