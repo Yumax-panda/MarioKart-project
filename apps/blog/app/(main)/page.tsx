@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
-import { client } from "@/lib/rpc-browser";
+import { getRpc } from "@/lib/rpc-server";
 import { Hero } from "./_components/Hero";
 import { PostCard } from "./_components/PostCard";
 
 export default async function Page() {
+  const client = await getRpc();
   const res = await client.api.v1.posts.$get({
     query: { page: "1", perPage: "3" },
   });
