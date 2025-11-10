@@ -1,28 +1,34 @@
 import { notFound } from "next/navigation";
 import { getRpc } from "@/lib/rpc-server";
+import { urls } from "@/lib/urls";
+import { Pagination } from "../_components/Pagination";
 import { PostCard } from "../_components/PostCard";
+
+const POSTS_PER_PAGE = 12;
 
 type Props = {
   searchParams: Promise<{
     userId?: string;
+    page?: string;
   }>;
 };
 
 export default async function PostsPage({ searchParams }: Props) {
-  const { userId } = await searchParams;
+  const params = await searchParams;
+  const currentPage = params.page ? Number.parseInt(params.page, 10) : 1;
   const rpc = await getRpc();
 
   const res = await rpc.api.v1.posts.$get({
     query: {
-      page: "1",
-      perPage: "12",
-      ...(userId ? { userId } : {}),
+      page: currentPage.toString(),
+      perPage: POSTS_PER_PAGE.toString(),
+      ...(params.userId && { userId: params.userId }),
     },
   });
 
   if (!res.ok) notFound();
 
-  const { posts } = await res.json();
+  const { posts, totalCount } = await res.json();
 
   if (!posts.length) notFound();
 
@@ -33,6 +39,14 @@ export default async function PostsPage({ searchParams }: Props) {
           <PostCard key={rest.id} {...rest} date={new Date(updatedAt)} />
         ))}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalCount={totalCount}
+        perPage={POSTS_PER_PAGE}
+        buildUrl={(page) =>
+          urls.post(page, params.userId ? { userId: params.userId } : {})
+        }
+      />
     </div>
   );
 }
