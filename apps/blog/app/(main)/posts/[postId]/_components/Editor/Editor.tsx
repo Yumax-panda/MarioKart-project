@@ -5,6 +5,8 @@ import { ContentWrapper } from "../ContentWrapper";
 import { MarkdownWrapper } from "../MarkdownWrapper";
 import { Thumbnail } from "../Thumbnail";
 import { EditorInput } from "./EditorInput";
+import { EditorToolbar } from "./EditorToolbar";
+import { FieldError } from "./FieldError";
 import { useEditor } from "./hooks/useEditor";
 import { MarkdownPreview } from "./MarkdownPreview";
 
@@ -56,56 +58,17 @@ export const Editor = ({
             {generalError}
           </div>
         )}
-        <div className="mb-4 flex justify-end">
-          <div className="flex items-center space-x-4">
-            <label className="cursor-pointer rounded bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
-              サムネイル {currentThumbnail ? "更新" : "設定"}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleThumbnailUpload}
-                className="hidden"
-              />
-            </label>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm">公開:</span>
-              <button
-                type="button"
-                onClick={togglePublished}
-                className={cn(
-                  "h-6 w-12 rounded-full p-1 transition-colors",
-                  currentPublished
-                    ? "justify-end bg-green-500"
-                    : "justify-start bg-gray-500",
-                  "flex items-center",
-                )}
-              >
-                <span className="block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform" />
-              </button>
-            </div>
 
-            <button
-              type="button"
-              onClick={toggleShowPreview}
-              className="rounded bg-gray-600 px-3 py-2 text-sm text-white hover:bg-gray-700"
-            >
-              {currentShowPreview ? "エディタに戻る" : "プレビューを見る"}
-            </button>
-
-            <button
-              type="submit"
-              disabled={isSaving || !hasChanges}
-              className={cn(
-                "rounded px-4 py-2 font-semibold text-white",
-                isSaving || !hasChanges
-                  ? "cursor-not-allowed bg-gray-400"
-                  : "bg-indigo-600 hover:bg-indigo-700",
-              )}
-            >
-              {isSaving ? "保存中..." : !hasChanges ? "保存済み" : "保存"}
-            </button>
-          </div>
-        </div>
+        <EditorToolbar
+          currentThumbnail={currentThumbnail}
+          handleThumbnailUpload={handleThumbnailUpload}
+          currentPublished={currentPublished}
+          togglePublished={togglePublished}
+          currentShowPreview={currentShowPreview}
+          toggleShowPreview={toggleShowPreview}
+          isSaving={isSaving}
+          hasChanges={hasChanges}
+        />
 
         <ContentWrapper className="mx-auto flex flex-col gap-4">
           <div>
@@ -120,9 +83,10 @@ export const Editor = ({
               )}
             />
             {fieldErrors.title && (
-              <p className="mt-1 text-center text-red-400 text-sm">
-                {fieldErrors.title}
-              </p>
+              <FieldError
+                message={fieldErrors.title}
+                className="mt-1 text-center"
+              />
             )}
           </div>
 
@@ -130,7 +94,7 @@ export const Editor = ({
             <Thumbnail src={currentThumbnail} title={currentTitle} />
           )}
           {fieldErrors.thumbnail && (
-            <p className="text-red-400 text-sm">{fieldErrors.thumbnail}</p>
+            <FieldError message={fieldErrors.thumbnail} />
           )}
 
           <MarkdownWrapper>
@@ -144,9 +108,7 @@ export const Editor = ({
                   hasError={!!fieldErrors.article}
                 />
                 {fieldErrors.article && (
-                  <p className="mt-2 text-red-400 text-sm">
-                    {fieldErrors.article}
-                  </p>
+                  <FieldError message={fieldErrors.article} className="mt-2" />
                 )}
               </div>
             )}
