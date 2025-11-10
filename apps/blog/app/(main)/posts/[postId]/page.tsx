@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { client } from "@/lib/rpc-browser";
+import { getRpc } from "@/lib/rpc-server";
 import { EditButton } from "./_components/EditButton";
 import { PostPreview } from "./_components/PostPreview";
 
 export default async function Page(props: PageProps<"/posts/[postId]">) {
   const { postId } = await props.params;
+  const client = await getRpc();
   const postRes = await client.api.v1.posts[":postId"].$get({
     param: { postId },
   });
