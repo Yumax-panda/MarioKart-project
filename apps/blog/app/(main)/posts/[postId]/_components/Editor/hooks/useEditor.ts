@@ -1,6 +1,6 @@
 import { UpdatePostBodySchema } from "@repo/schema/post";
 import type { ChangeEvent, FormEvent } from "react";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { client } from "@/lib/rpc-browser";
 
 type Props = {
@@ -64,10 +64,8 @@ export const useEditor = ({
 
   const toggleShowPreview = () => setShowPreview((v) => !v);
 
-  // TODO
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  // 保存処理の本体
+  const savePost = useCallback(async () => {
     const result = UpdatePostBodySchema.safeParse({
       article: currentMarkdown || undefined,
       title: currentTitle || undefined,
@@ -87,7 +85,30 @@ export const useEditor = ({
 
     // TODO
     if (res.ok) return console.log("updated");
+  }, [
+    currentMarkdown,
+    currentTitle,
+    currentThumbnail,
+    currentPublished,
+    postId,
+  ]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await savePost();
   };
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+        savePost();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [savePost]);
 
   return {
     currentTitle,
