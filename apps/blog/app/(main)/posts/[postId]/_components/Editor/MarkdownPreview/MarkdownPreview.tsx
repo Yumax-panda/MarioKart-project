@@ -1,13 +1,12 @@
 "use client";
 
 import { MarkdownHooks } from "react-markdown";
-import rehypeRaw from "rehype-raw";
 import rehypeSlug from "rehype-slug";
 import rehypeStarryNight from "rehype-starry-night";
 import remarkGfm from "remark-gfm";
 import remarkToc from "remark-toc";
 
-const rehypePlugins = [rehypeRaw, rehypeSlug, rehypeStarryNight];
+const rehypePlugins = [rehypeSlug, rehypeStarryNight];
 const remarkPlugins = [remarkGfm, remarkToc];
 
 type Props = {
