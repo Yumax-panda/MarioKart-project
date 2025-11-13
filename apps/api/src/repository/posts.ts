@@ -1,6 +1,11 @@
 import type { PrismaClient } from "@prisma/client/edge";
 import { inject, injectable } from "tsyringe";
-import type { PostListItem, PostRepository, UpdatePostProps } from "./types";
+import type {
+  PostListItem,
+  PostRepository,
+  UpdatePostProps,
+  UserPostListItem,
+} from "./types";
 
 // TODO:
 @injectable()
@@ -82,5 +87,51 @@ export class PostRepositoryImpl implements PostRepository {
   async update(data: UpdatePostProps) {
     const { id, ...rest } = data;
     return await this.p.post.update({ where: { id }, data: rest });
+  }
+
+  async getUserAllPosts(userId: string, page: number, perPage: number) {
+    const skip = (page - 1) * perPage;
+
+    const rawPosts = await this.p.post.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        id: true,
+        title: true,
+        thumbnail: true,
+        updatedAt: true,
+        published: true,
+        tags: {
+          select: {
+            tag: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      skip,
+      take: perPage,
+    });
+
+    return rawPosts.map(({ tags, updatedAt, ...rest }) => ({
+      tags: tags.map(({ tag: { name } }) => name),
+      updatedAt: updatedAt.toISOString(),
+      ...rest,
+    })) as UserPostListItem[];
+  }
+
+  async getUserPostCount(userId: string) {
+    return await this.p.post.count({
+      where: {
+        userId,
+      },
+    });
   }
 }

@@ -8,7 +8,7 @@ import { posts, postsWithAuth } from "./posts";
 import { presignedURL } from "./presignedURL";
 import { sessions } from "./sessions";
 import { tags } from "./tags";
-import { users, usersWithAuth } from "./users";
+import { usersWithAuth } from "./users";
 
 const v1WithAuth = new Hono<Env>()
   .use(async (c, next) => {
@@ -40,5 +40,4 @@ export const v1 = new Hono<Env>()
   .route("/posts", posts)
   .route("/sessions", sessions)
   .route("/tags", tags)
-  .route("/users", users)
   .route("/", v1WithAuth);

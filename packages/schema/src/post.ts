@@ -43,6 +43,11 @@ export const GetPublishedPostListQuerySchema = z.object({
   userId: z.string().optional(),
 });
 
+export const GetUserPostListQuerySchema = z.object({
+  page: z.coerce.number().min(1).default(1),
+  perPage: z.coerce.number().max(100).default(20),
+});
+
 const UpdatePublishedPostBodySchema = z.object({
   article: ArticleSchema,
   title: TitleSchema,

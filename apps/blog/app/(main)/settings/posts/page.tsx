@@ -8,16 +8,11 @@ import { Tag } from "../../_components/Tag";
 
 type Post = {
   id: string;
-  title: string;
-  thumbnail: string;
+  title: string | null;
+  thumbnail: string | null;
   tags: string[];
   updatedAt: string;
-  user: {
-    name: string;
-    image: string | null;
-  };
-  // TODO: Add published field when backend endpoint is updated
-  published?: boolean;
+  published: boolean;
 };
 
 export default async function PostsManagementPage() {
@@ -28,11 +23,10 @@ export default async function PostsManagementPage() {
   }
 
   const client = await getRpc();
-  const res = await client.api.v1.posts.$get({
+  const res = await client.api.v1.users["@me"].posts.$get({
     query: {
-      userId: currentUser.id,
       page: "1",
-      perPage: "3",
+      perPage: "100",
     },
   });
 
@@ -41,6 +35,9 @@ export default async function PostsManagementPage() {
   }
 
   const { posts } = await res.json();
+
+  // Filter out empty posts (posts with no title)
+  const validPosts = posts.filter((post: Post) => post.title !== null);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
@@ -55,7 +52,7 @@ export default async function PostsManagementPage() {
       </div>
 
       <div className="space-y-4">
-        {posts.length === 0 ? (
+        {validPosts.length === 0 ? (
           <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-12 text-center">
             <p className="text-gray-400">まだ記事がありません</p>
             <Link
@@ -66,7 +63,7 @@ export default async function PostsManagementPage() {
             </Link>
           </div>
         ) : (
-          posts.map((post: Post) => (
+          validPosts.map((post: Post) => (
             <article
               key={post.id}
               className="flex items-start justify-between gap-4 rounded-lg border border-gray-700 bg-gray-800/50 p-6 transition-colors hover:border-gray-600 hover:bg-gray-800/70"
