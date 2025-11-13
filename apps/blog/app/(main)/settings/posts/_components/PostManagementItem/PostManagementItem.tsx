@@ -24,7 +24,7 @@ export const PostManagementItem = ({
       <div className="min-w-0 flex-1">
         <div className="mb-2 flex items-center gap-3">
           <Link
-            href={urls.postDetail(id)}
+            href={urls.postsDetail(id)}
             className="truncate font-semibold text-blue-400 text-lg hover:text-blue-300 hover:underline"
           >
             {title}
@@ -57,7 +57,7 @@ export const PostManagementItem = ({
 
       <div className="flex shrink-0 items-center gap-2">
         <Link
-          href={urls.postDetailEdit(id)}
+          href={urls.postsDetailEdit(id)}
           className="rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-2 text-gray-300 text-sm transition-colors hover:border-gray-500 hover:bg-gray-700"
         >
           編集

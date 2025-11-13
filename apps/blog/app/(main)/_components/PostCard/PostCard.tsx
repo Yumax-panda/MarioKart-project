@@ -16,7 +16,7 @@ export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
   return (
     <article className="hover:-translate-y-2 flex h-full flex-col overflow-hidden rounded-2xl border border-teal-400/10 bg-[#1a1a2e]/60 backdrop-blur-lg transition-all hover:border-teal-400/30 hover:shadow-2xl hover:shadow-teal-400/20">
       <Link
-        href={urls.postDetail(id)}
+        href={urls.postsDetail(id)}
         className="relative h-56 w-full overflow-hidden sm:h-64"
       >
         <Image
@@ -33,7 +33,7 @@ export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
             <Tag name={tagName} key={tagName} />
           ))}
         </div>
-        <Link href={urls.postDetail(id)}>
+        <Link href={urls.postsDetail(id)}>
           <h2 className="mb-4 line-clamp-2 font-bold text-white text-xl transition-colors hover:text-teal-300 sm:text-2xl">
             {title}
           </h2>
@@ -41,7 +41,7 @@ export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
         <div className="mt-auto flex items-center justify-between text-gray-500 text-sm">
           <span>{formatDate(date)}</span>
           <Link
-            href={urls.postDetail(id)}
+            href={urls.postsDetail(id)}
             className="inline-block text-teal-300 transition-transform hover:translate-x-1"
           >
             続きを読む →

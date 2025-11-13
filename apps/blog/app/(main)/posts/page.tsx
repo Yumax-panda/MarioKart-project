@@ -41,7 +41,7 @@ export default async function PostsPage({ searchParams }: Props) {
         totalCount={totalCount}
         perPage={POSTS_PER_PAGE}
         buildUrl={(page) =>
-          urls.post(page, params.userId ? { userId: params.userId } : {})
+          urls.posts(page, params.userId ? { userId: params.userId } : {})
         }
       />
     </div>

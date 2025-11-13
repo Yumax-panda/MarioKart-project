@@ -17,7 +17,7 @@ export type UserPostListItem = Omit<
   tags: string[];
 };
 
-type PostDetail = Post & { user: Pick<User, "id" | "name" | "image"> };
+type postsDetail = Post & { user: Pick<User, "id" | "name" | "image"> };
 export type UpdatePostProps = Pick<Post, "id"> &
   Partial<Omit<Post, "id" | "userId" | "createdAt" | "updatedAt">>;
 
@@ -44,7 +44,7 @@ export interface PostRepository {
    * @param userId - 記事数を取得するユーザーのID
    */
   getUserPostCount(userId: string): Promise<number>;
-  getDetailById(postId: string): Promise<PostDetail | null>;
+  getDetailById(postId: string): Promise<postsDetail | null>;
   /**
    * 何も入力されていない空の記事を返す。もともと空の記事が存在していた場合はそれを返し、存在しなければ新しく作る。
    * @param userId - 記事を作成するユーザーのID

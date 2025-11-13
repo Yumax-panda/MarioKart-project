@@ -1,6 +1,6 @@
 // EditorInputとPreviewは以下のlinkからCSSを読み込むためここで指定している
 
-export default function PostDetailLayout({
+export default function postsDetailLayout({
   children,
 }: {
   children: React.ReactNode;

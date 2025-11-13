@@ -20,7 +20,7 @@ export const CreatePostButton = () => {
       }
 
       const { post } = await res.json();
-      router.push(urls.postDetailEdit(post.id));
+      router.push(urls.postsDetailEdit(post.id));
     } catch (error) {
       console.error("Error creating post:", error);
     } finally {

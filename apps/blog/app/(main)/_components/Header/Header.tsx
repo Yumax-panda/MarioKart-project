@@ -16,7 +16,7 @@ export const Header = () => {
           {["ホーム", "記事", "About"].map((item, index) => (
             <li key={item}>
               <Link
-                href={`${[urls.index(), urls.post(), urls.about()][index]}`}
+                href={`${[urls.index(), urls.posts(), urls.about()][index]}`}
                 className="group relative text-gray-200 text-lg transition-colors hover:text-teal-300"
               >
                 {item}

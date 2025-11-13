@@ -11,7 +11,7 @@ export const Hero = () => (
         東工大マリオカートサークルの日々のサークル活動の様子を発信します。
       </p>
       <Link
-        href={urls.post()}
+        href={urls.posts()}
         className="hover:-translate-y-1 inline-block rounded-full bg-gradient-to-r from-purple-500 to-purple-700 px-8 py-4 text-white transition-all hover:shadow-2xl hover:shadow-purple-500/50"
       >
         記事を読む
