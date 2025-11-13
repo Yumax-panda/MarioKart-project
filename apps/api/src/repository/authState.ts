@@ -2,7 +2,6 @@ import type { PrismaClient } from "@prisma/client/edge";
 import { inject, injectable } from "tsyringe";
 import type { AuthStateRepository } from "./types";
 
-// TODO:
 @injectable()
 export class AuthStateRepositoryImpl implements AuthStateRepository {
   constructor(@inject("PrismaClient") private p: PrismaClient) {}

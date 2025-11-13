@@ -28,7 +28,6 @@ import { auth } from "./auth";
 import type { Env } from "./types";
 import { v1 } from "./v1";
 
-// Dependency injection
 // 先にインスタンスを作成しておいて、ミドルウェアが呼ばれたときにはrepoを入れるだけにする
 // TODO: env.ENV_NAMEによってrepoをmockされたものへ変更したい
 const prisma = getPrisma(env.DATABASE_URL);

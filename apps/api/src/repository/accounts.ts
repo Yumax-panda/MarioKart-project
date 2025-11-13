@@ -7,7 +7,6 @@ import type {
   UpdateAccountProps,
 } from "./types";
 
-// TODO:
 @injectable()
 export class AccountRepositoryImpl implements AccountRepository {
   constructor(@inject("PrismaClient") private p: PrismaClient) {}

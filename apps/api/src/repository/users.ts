@@ -6,7 +6,6 @@ import type {
   UserRepository,
 } from "./types";
 
-// TODO:
 @injectable()
 export class UserRepositoryImpl implements UserRepository {
   constructor(@inject("PrismaClient") private p: PrismaClient) {}

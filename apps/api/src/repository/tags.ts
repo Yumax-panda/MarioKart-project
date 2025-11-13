@@ -2,7 +2,6 @@ import type { PrismaClient, Tag } from "@prisma/client/edge";
 import { inject, injectable } from "tsyringe";
 import type { TagRepository } from "./types";
 
-// TODO:
 @injectable()
 export class TagRepositoryImpl implements TagRepository {
   constructor(@inject("PrismaClient") private p: PrismaClient) {}

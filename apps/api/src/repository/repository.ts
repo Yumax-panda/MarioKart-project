@@ -9,7 +9,6 @@ import type {
   UserRepository,
 } from "./types";
 
-// TODO:
 @injectable()
 export class RepositoryImpl implements Repository {
   constructor(

@@ -3,7 +3,6 @@ import { getCookie } from "hono/cookie";
 import { StatusUnauthorized } from "@/lib/statusCode";
 import { KEY_SESSION_ID } from "../consts/cookie";
 import type { Env } from "../types";
-import { accounts } from "./accounts";
 import { posts, postsWithAuth } from "./posts";
 import { presignedURL } from "./presignedURL";
 import { sessions } from "./sessions";
@@ -36,7 +35,6 @@ export const v1 = new Hono<Env>()
     }
     await next();
   })
-  .route("/accounts", accounts)
   .route("/posts", posts)
   .route("/sessions", sessions)
   .route("/tags", tags)

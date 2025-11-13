@@ -18,7 +18,6 @@ import {
 } from "@/lib/statusCode";
 import type { AuthRequiredEnv, Env } from "../types";
 
-// TODO:
 export const posts = new Hono<Env>()
   .get("/", zValidator("query", GetPublishedPostListQuerySchema), async (c) => {
     const { page, perPage, userId } = c.req.valid("query");

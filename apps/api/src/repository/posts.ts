@@ -7,7 +7,6 @@ import type {
   UserPostListItem,
 } from "./types";
 
-// TODO:
 @injectable()
 export class PostRepositoryImpl implements PostRepository {
   constructor(@inject("PrismaClient") private p: PrismaClient) {}
