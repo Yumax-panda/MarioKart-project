@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  compiler: {
+    // https://nextjs.org/docs/architecture/nextjs-compiler#remove-console
+    removeConsole: process.env.NODE_ENV === "production",
+  },
 };
 
 export default nextConfig;
