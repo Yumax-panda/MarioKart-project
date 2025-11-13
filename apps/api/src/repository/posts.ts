@@ -95,6 +95,7 @@ export class PostRepositoryImpl implements PostRepository {
     const rawPosts = await this.p.post.findMany({
       where: {
         userId,
+        OR: [{ title: { not: null } }, { article: { not: null } }],
       },
       select: {
         id: true,
@@ -131,6 +132,7 @@ export class PostRepositoryImpl implements PostRepository {
     return await this.p.post.count({
       where: {
         userId,
+        OR: [{ title: { not: null } }, { article: { not: null } }],
       },
     });
   }
