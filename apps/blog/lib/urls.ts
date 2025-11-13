@@ -1,8 +1,5 @@
-export type PostsSearchParams = {
+export type PostsPageSearchParams = {
   userId?: string;
-};
-
-export type PostsPageSearchParams = PostsSearchParams & {
   page?: string;
 };
 
