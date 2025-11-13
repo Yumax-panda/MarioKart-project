@@ -41,6 +41,15 @@ export const posts = new Hono<Env>()
       );
     }
 
+    // Check if the post is completely empty (no title, article, or thumbnail)
+    const isEmpty = !post.title && !post.article && !post.thumbnail;
+    if (isEmpty) {
+      return c.json(
+        createBusinessErrorResponse(BusinessErrorCodes.POST_NOT_FOUND),
+        StatusNotFound,
+      );
+    }
+
     if (!post.published && !(c.var.user && c.var.user.id === post.userId)) {
       return c.json(
         createBusinessErrorResponse(BusinessErrorCodes.POST_NOT_FOUND),

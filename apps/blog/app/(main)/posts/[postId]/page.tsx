@@ -15,8 +15,6 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
 
   const post = await postRes.json();
 
-  if (!post.article || !post.thumbnail || !post.title) notFound();
-
   // Check if current user is the post owner
   const currentUser = await getCurrentUser();
   const isOwner = currentUser?.id === post.userId;
@@ -29,9 +27,9 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
   return (
     <div className="min-h-screen">
       <PostPreview
-        title={post.title}
-        thumbnail={post.thumbnail}
-        article={post.article}
+        title={post.title || "No title"}
+        thumbnail={post.thumbnail || ""}
+        article={post.article || ""}
       />
       {isOwner && <EditButton postId={postId} />}
     </div>
