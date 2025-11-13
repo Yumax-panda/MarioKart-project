@@ -5,7 +5,7 @@ import { Thumbnail } from "../Thumbnail";
 
 type Props = {
   title: string;
-  thumbnail: string;
+  thumbnail: string | null;
   article: string;
 };
 
@@ -16,7 +16,7 @@ export const PostPreview = ({ title, thumbnail, article }: Props) => (
         {title}
       </h1>
     </div>
-    <Thumbnail src={thumbnail} title={title} />
+    {thumbnail && <Thumbnail src={thumbnail} title={title} />}
     <MarkdownWrapper>
       <MarkdownPreview markdown={article} />
     </MarkdownWrapper>
