@@ -6,15 +6,6 @@ import { getRpc } from "@/lib/rpc-server";
 import { urls } from "@/lib/urls";
 import { Tag } from "../../_components/Tag";
 
-type Post = {
-  id: string;
-  title: string | null;
-  thumbnail: string | null;
-  tags: string[];
-  updatedAt: string;
-  published: boolean;
-};
-
 export default async function PostsManagementPage() {
   const currentUser = await getCurrentUser();
 
@@ -36,13 +27,14 @@ export default async function PostsManagementPage() {
 
   const { posts } = await res.json();
 
-  // Filter out empty posts (posts with no title)
-  const validPosts = posts.filter((post: Post) => post.title !== null);
+  const validPosts = posts.filter((post) => post.title !== null);
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="font-bold text-3xl text-white">あなたの記事</h1>
+        <h1 className="font-bold text-3xl text-white">
+          {currentUser.name}の記事
+        </h1>
         <Link
           href="/posts/new"
           className="rounded-lg bg-teal-500 px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-teal-600"
@@ -63,7 +55,7 @@ export default async function PostsManagementPage() {
             </Link>
           </div>
         ) : (
-          validPosts.map((post: Post) => (
+          validPosts.map((post) => (
             <article
               key={post.id}
               className="flex items-start justify-between gap-4 rounded-lg border border-gray-700 bg-gray-800/50 p-6 transition-colors hover:border-gray-600 hover:bg-gray-800/70"
