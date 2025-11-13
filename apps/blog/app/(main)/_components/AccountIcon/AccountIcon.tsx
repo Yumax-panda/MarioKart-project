@@ -6,13 +6,12 @@ import { useEffect, useRef, useState } from "react";
 import { urls } from "@/lib/urls";
 
 type Props = {
-  userId: string;
   name: string;
   image: string;
 };
 
 // TODO: LinkのonClickを修正
-export const AccountIcon = ({ userId, name, image }: Props) => {
+export const AccountIcon = ({ name, image }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -52,18 +51,11 @@ export const AccountIcon = ({ userId, name, image }: Props) => {
         <div className="absolute top-12 right-0 z-50 min-w-48 rounded-lg border border-gray-200 bg-white shadow-lg">
           <div className="py-1">
             <Link
-              href="/profile"
+              href={urls.settingsPosts()}
               className="block px-4 py-2 text-gray-700 text-sm transition-colors hover:bg-gray-100"
               onClick={() => setIsOpen(false)}
             >
-              プロフィール
-            </Link>
-            <Link
-              href={urls.post(1, { userId })}
-              className="block px-4 py-2 text-gray-700 text-sm transition-colors hover:bg-gray-100"
-              onClick={() => setIsOpen(false)}
-            >
-              記事一覧
+              記事の管理
             </Link>
             <Link
               href="/logout"

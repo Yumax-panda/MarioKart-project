@@ -40,4 +40,5 @@ export const urls = {
   post: postUrl,
   postDetail: (postId: string) => `/posts/${postId}`,
   postDetailEdit: (postId: string) => `/posts/${postId}/edit`,
+  settingsPosts: () => "/settings/posts",
 };

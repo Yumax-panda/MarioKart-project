@@ -24,11 +24,7 @@ export const Header = () => {
             </li>
           ))}
           {account ? (
-            <AccountIcon
-              userId={account.id}
-              name={account.name}
-              image={account.image || ""}
-            />
+            <AccountIcon name={account.name} image={account.image || ""} />
           ) : null}
         </ul>
       </nav>
