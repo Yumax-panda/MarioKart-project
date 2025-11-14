@@ -25,11 +25,13 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-16">
       <PostPreview
         title={post.title || "No title"}
         thumbnail={post.thumbnail}
         article={post.article || ""}
+        authorName={post.user.name}
+        authorImage={post.user.image}
       />
       {isOwner && <EditButton postId={postId} />}
     </div>
