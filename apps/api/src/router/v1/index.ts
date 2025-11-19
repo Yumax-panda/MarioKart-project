@@ -1,12 +1,11 @@
 import { Hono } from "hono";
 import { getCookie } from "hono/cookie";
 import { StatusUnauthorized } from "@/lib/statusCode";
+import type { Env } from "@/utils/types";
 import { KEY_SESSION_ID } from "../consts/cookie";
-import type { Env } from "../types";
 import { posts, postsWithAuth } from "./posts";
 import { presignedURL } from "./presignedURL";
 import { sessions } from "./sessions";
-import { tags } from "./tags";
 import { usersWithAuth } from "./users";
 
 const v1WithAuth = new Hono<Env>()
@@ -37,5 +36,4 @@ export const v1 = new Hono<Env>()
   })
   .route("/posts", posts)
   .route("/sessions", sessions)
-  .route("/tags", tags)
   .route("/", v1WithAuth);

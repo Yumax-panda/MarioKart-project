@@ -4,7 +4,7 @@ import { zValidator } from "@hono/zod-validator";
 import { GeneratePresignedURLBodySchema } from "@repo/schema/presignedURL";
 import { Hono } from "hono";
 import { StatusOK } from "@/lib/statusCode";
-import type { AuthRequiredEnv } from "../types";
+import type { AuthRequiredEnv } from "@/utils/types";
 
 const EXPIRES_IN = 60 * 3; // 3 min
 

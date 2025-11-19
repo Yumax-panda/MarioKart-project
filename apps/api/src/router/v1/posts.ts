@@ -16,7 +16,7 @@ import {
   StatusOK,
   StatusUnprocessableEntity,
 } from "@/lib/statusCode";
-import type { AuthRequiredEnv, Env } from "../types";
+import type { AuthRequiredEnv, Env } from "@/utils/types";
 
 export const posts = new Hono<Env>()
   .get("/", zValidator("query", GetPublishedPostListQuerySchema), async (c) => {

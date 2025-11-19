@@ -10,10 +10,10 @@ import {
   StatusInternalServerError,
 } from "@/lib/statusCode";
 import { randomString } from "@/lib/utils";
+import type { Env } from "@/utils/types";
 import { KEY_SESSION_ID, KEY_STATE_ID } from "../consts/cookie";
 import { AccountType, ProviderName } from "../consts/enum";
 import { sessionKeepAge, sessionMaxAge } from "../consts/session";
-import type { Env } from "../types";
 
 type TokenResponse = {
   access_token: string;

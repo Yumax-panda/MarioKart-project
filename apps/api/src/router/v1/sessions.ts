@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { deleteCookie, getCookie } from "hono/cookie";
 import { StatusNoContent, StatusUnauthorized } from "@/lib/statusCode";
+import type { Env } from "@/utils/types";
 import { KEY_SESSION_ID } from "../consts/cookie";
-import type { Env } from "../types";
 
 export const sessions = new Hono<Env>().delete("/logout", async (c) => {
   const sessionToken = getCookie(c, KEY_SESSION_ID);

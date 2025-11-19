@@ -2,7 +2,7 @@ import { zValidator } from "@hono/zod-validator";
 import { GetUserPostListQuerySchema } from "@repo/schema/post";
 import { Hono } from "hono";
 import { StatusOK } from "@/lib/statusCode";
-import type { AuthRequiredEnv } from "../types";
+import type { AuthRequiredEnv } from "@/utils/types";
 
 const me = new Hono<AuthRequiredEnv>()
   .get("/", async (c) => {
