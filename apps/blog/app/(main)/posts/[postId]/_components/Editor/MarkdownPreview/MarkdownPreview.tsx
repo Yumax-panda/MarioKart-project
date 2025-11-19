@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { MarkdownHooks } from "react-markdown";
 import rehypeSlug from "rehype-slug";
 import rehypeStarryNight from "rehype-starry-night";
@@ -13,7 +14,7 @@ type Props = {
   markdown: string;
 };
 
-export const MarkdownPreview = ({ markdown }: Props) => {
+export const MarkdownPreview = memo(({ markdown }: Props) => {
   return (
     <MarkdownHooks
       rehypePlugins={rehypePlugins}
@@ -26,4 +27,4 @@ export const MarkdownPreview = ({ markdown }: Props) => {
       {markdown}
     </MarkdownHooks>
   );
-};
+});
