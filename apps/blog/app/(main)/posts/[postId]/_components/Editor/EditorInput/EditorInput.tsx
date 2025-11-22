@@ -9,7 +9,8 @@ import sourceTsx from "@wooorm/starry-night/source.tsx";
 import textHtmlBasic from "@wooorm/starry-night/text.html.basic";
 import textMd from "@wooorm/starry-night/text.md";
 import { toJsxRuntime } from "hast-util-to-jsx-runtime";
-import { useEffect, useState } from "react";
+import type { JSX } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { Fragment, jsx, jsxs } from "react/jsx-runtime";
 import { cn } from "@/lib/css";
 import styles from "./EditorInput.module.css";
@@ -31,51 +32,59 @@ type Props = {
   hasError?: boolean;
 };
 
-export const EditorInput = ({
-  currentInputValue,
-  onChange,
-  hasError,
-}: Props) => {
-  const [starryNight, setStarryNight] = useState<StarryNight | null>(null);
+export const EditorInput = memo(
+  ({ currentInputValue, onChange, hasError }: Props) => {
+    const [starryNight, setStarryNight] = useState<StarryNight | null>(null);
 
-  useEffect(() => {
-    createStarryNight(grammars).then(setStarryNight);
-  }, []);
+    useEffect(() => {
+      createStarryNight(grammars).then(setStarryNight);
+    }, []);
 
-  return (
-    <div
-      className={cn(
-        "bg-transparent",
-        hasError && "rounded ring-2 ring-red-500",
-      )}
-    >
-      <div className={styles.inner}>
-        <div className={styles.draw}>
-          {starryNight !== null
-            ? toJsxRuntime(
-                starryNight.highlight(currentInputValue, "text.md"),
-                {
-                  Fragment,
-                  jsx,
-                  jsxs,
-                },
-              )
-            : undefined}
-          {/* Trailing whitespace in a `textarea` is shown, but not in a `div`
+    const highlightedContent = useMemo((): JSX.Element | undefined => {
+      if (starryNight === null) return undefined;
+      return toJsxRuntime(starryNight.highlight(currentInputValue, "text.md"), {
+        Fragment,
+        jsx,
+        jsxs,
+      }) as JSX.Element;
+    }, [starryNight, currentInputValue]);
+
+    const hasTrailingNewline = useMemo(
+      () => /\n[ \t]*$/.test(currentInputValue),
+      [currentInputValue],
+    );
+
+    const rowCount = useMemo(
+      () => currentInputValue.split("\n").length + 1,
+      [currentInputValue],
+    );
+
+    return (
+      <div
+        className={cn(
+          "bg-transparent",
+          hasError && "rounded ring-2 ring-red-500",
+        )}
+      >
+        <div className={styles.inner}>
+          <div className={styles.draw}>
+            {highlightedContent}
+            {/* Trailing whitespace in a `textarea` is shown, but not in a `div`
           with `white-space: pre-wrap`.
           Add a `br` to make the last newline explicit. */}
-          {/\n[ \t]*$/.test(currentInputValue) ? <br /> : undefined}
+            {hasTrailingNewline ? <br /> : undefined}
+          </div>
+          <textarea
+            spellCheck="false"
+            className={cn(styles.write)}
+            value={currentInputValue}
+            rows={rowCount}
+            onChange={(event) => {
+              onChange(event.target.value);
+            }}
+          />
         </div>
-        <textarea
-          spellCheck="false"
-          className={cn(styles.write)}
-          value={currentInputValue}
-          rows={currentInputValue.split("\n").length + 1}
-          onChange={(event) => {
-            onChange(event.target.value);
-          }}
-        />
       </div>
-    </div>
-  );
-};
+    );
+  },
+);

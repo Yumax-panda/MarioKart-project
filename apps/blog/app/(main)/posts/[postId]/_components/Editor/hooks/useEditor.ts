@@ -75,19 +75,19 @@ export const useEditor = ({
     setGeneralError(null);
   }, []);
 
-  const handleTitleChange = (value: string) => {
+  const handleTitleChange = useCallback((value: string) => {
     setTitle(value);
-    if (fieldErrors.title) {
-      setFieldErrors((prev) => ({ ...prev, title: undefined }));
-    }
-  };
+    setFieldErrors((prev) =>
+      prev.title ? { ...prev, title: undefined } : prev,
+    );
+  }, []);
 
-  const handleMarkdownChange = (value: string) => {
+  const handleMarkdownChange = useCallback((value: string) => {
     setMarkdown(value);
-    if (fieldErrors.article) {
-      setFieldErrors((prev) => ({ ...prev, article: undefined }));
-    }
-  };
+    setFieldErrors((prev) =>
+      prev.article ? { ...prev, article: undefined } : prev,
+    );
+  }, []);
 
   const handleThumbnailUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
@@ -131,9 +131,9 @@ export const useEditor = ({
     }
   };
 
-  const togglePublished = () => setPublished((v) => !v);
+  const togglePublished = useCallback(() => setPublished((v) => !v), []);
 
-  const toggleShowPreview = () => setShowPreview((v) => !v);
+  const toggleShowPreview = useCallback(() => setShowPreview((v) => !v), []);
 
   const savePost = useCallback(async () => {
     setIsSaving(true);
