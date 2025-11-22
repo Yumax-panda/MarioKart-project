@@ -1,11 +1,12 @@
 "use client";
 
-import { BackButton } from "app/_components/BackButton";
+import { ImageIcon } from "app/_components/Icon/ImageIcon";
 import { cn } from "@/lib/css";
 import { urls } from "@/lib/urls";
 import { ContentWrapper } from "../ContentWrapper";
 import { MarkdownWrapper } from "../MarkdownWrapper";
 import { Thumbnail } from "../Thumbnail";
+import { BackButton } from "./BackButton";
 import { EditorInput } from "./EditorInput";
 import { EditorToolbar } from "./EditorToolbar";
 import { FieldError } from "./FieldError";
@@ -121,6 +122,18 @@ export const Editor = ({
           </MarkdownWrapper>
         </ContentWrapper>
       </form>
+
+      <button
+        type="button"
+        className="group fixed bottom-10 left-6 rounded-full bg-blue-600 p-3 text-white shadow-lg transition-colors hover:bg-blue-700"
+        aria-label="画像を挿入"
+        title="画像を挿入"
+      >
+        <ImageIcon />
+        <span className="-translate-x-1/2 pointer-events-none absolute bottom-full left-1/2 mb-2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-white text-xs opacity-0 transition-opacity group-hover:opacity-100">
+          画像を挿入
+        </span>
+      </button>
     </div>
   );
 };
