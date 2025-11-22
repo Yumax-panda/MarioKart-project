@@ -22,6 +22,15 @@ export const MarkdownPreview = memo(({ markdown }: Props) => {
       components={{
         // タイトルは別フィールドで入力するため、h1はプレーンテキストとして表示
         h1: ({ children }) => <p># {children}</p>,
+        img: (props) => (
+          //biome-ignore lint/performance/noImgElement: Next.jsから独立したパッケージの処理なので
+          <img
+            src={props.src}
+            alt={props.alt ?? ""}
+            loading="lazy"
+            className="mx-auto my-[1.5rem] table h-auto max-w-full overflow-clip"
+          />
+        ),
       }}
     >
       {markdown}
