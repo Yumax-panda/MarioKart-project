@@ -98,7 +98,7 @@ export const useEditor = ({
 
     const presignedURLRes = await client.api.v1.presignedURL.generate.$post({
       json: {
-        purpose: "uploadThumbnail",
+        purpose: "uploadPostImage",
         size: file.size,
         // @ts-expect-error: zodでバリデーションするのでOK
         imageType: file.type,

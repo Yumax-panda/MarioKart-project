@@ -28,7 +28,7 @@ export const presignedURL = new Hono<AuthRequiredEnv>().post(
     const key = `users/${c.var.user.id}/post_images/${fileId}.${ext}`;
 
     switch (purpose) {
-      case "uploadThumbnail": {
+      case "uploadPostImage": {
         const cmd = new PutObjectCommand({
           Bucket: c.env.S3_BUCKET_NAME,
           Key: key,
