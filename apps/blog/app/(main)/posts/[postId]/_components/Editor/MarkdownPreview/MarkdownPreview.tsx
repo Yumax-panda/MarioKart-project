@@ -28,7 +28,7 @@ export const MarkdownPreview = memo(({ markdown }: Props) => {
             src={props.src}
             alt={props.alt ?? ""}
             loading="lazy"
-            className="mx-auto my-[1.5rem] table h-auto max-w-full overflow-clip"
+            className="mx-auto my-6 block h-auto max-w-full rounded-lg"
           />
         ),
       }}
