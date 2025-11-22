@@ -1,6 +1,8 @@
 "use client";
 
+import { BackButton } from "app/_components/BackButton";
 import { cn } from "@/lib/css";
+import { urls } from "@/lib/urls";
 import { ContentWrapper } from "../ContentWrapper";
 import { MarkdownWrapper } from "../MarkdownWrapper";
 import { Thumbnail } from "../Thumbnail";
@@ -59,16 +61,20 @@ export const Editor = ({
           </div>
         )}
 
-        <EditorToolbar
-          currentThumbnail={currentThumbnail}
-          handleThumbnailUpload={handleThumbnailUpload}
-          currentPublished={currentPublished}
-          togglePublished={togglePublished}
-          currentShowPreview={currentShowPreview}
-          toggleShowPreview={toggleShowPreview}
-          isSaving={isSaving}
-          hasChanges={hasChanges}
-        />
+        <div className="mb-4 flex items-center justify-between">
+          <BackButton href={urls.postsDetail(postId)} label="編集を終了" />
+
+          <EditorToolbar
+            currentThumbnail={currentThumbnail}
+            handleThumbnailUpload={handleThumbnailUpload}
+            currentPublished={currentPublished}
+            togglePublished={togglePublished}
+            currentShowPreview={currentShowPreview}
+            toggleShowPreview={toggleShowPreview}
+            isSaving={isSaving}
+            hasChanges={hasChanges}
+          />
+        </div>
 
         <ContentWrapper className="mx-auto flex flex-col gap-4">
           <div>
@@ -78,7 +84,7 @@ export const Editor = ({
               value={currentTitle ?? ""}
               onChange={(e) => setTitle(e.target.value)}
               className={cn(
-                "mr-4 w-full border-none bg-transparent p-1 text-center font-bold text-3xl focus:ring-0",
+                "w-full border-none bg-transparent p-1 text-center font-bold text-3xl leading-tight focus:ring-0",
                 fieldErrors.title && "ring-2 ring-red-500",
               )}
             />
