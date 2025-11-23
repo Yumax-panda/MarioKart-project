@@ -131,6 +131,14 @@ export const useEditor = ({
     }
   };
 
+  // TODO
+  const handlePostImageUploadByButton = async (
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {};
+
+  // TODO
+  const handlePostImageUploadByDrop = async () => {};
+
   const togglePublished = useCallback(() => setPublished((v) => !v), []);
 
   const toggleShowPreview = useCallback(() => setShowPreview((v) => !v), []);
