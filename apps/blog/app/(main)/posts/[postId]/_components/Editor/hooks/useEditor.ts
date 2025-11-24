@@ -131,13 +131,63 @@ export const useEditor = ({
     }
   };
 
-  // TODO
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
   const handlePostImageUploadByButton = async (
     e: ChangeEvent<HTMLInputElement>,
-  ) => {};
+  ) => {
+    const input = e.currentTarget;
+    const files = input.files;
+    if (!files || !files.length) return;
 
-  // TODO
-  const handlePostImageUploadByDrop = async () => {};
+    const file = files[0];
+    if (!file) return;
+
+    setIsUploadingImage(true);
+
+    try {
+      const presignedURLRes = await client.api.v1.presignedURL.generate.$post({
+        json: {
+          purpose: "uploadPostImage",
+          size: file.size,
+          // @ts-expect-error: zodでバリデーションするのでOK
+          imageType: file.type,
+        },
+      });
+
+      if (!presignedURLRes.ok) {
+        setGeneralError("画像のアップロードに失敗しました");
+        return;
+      }
+
+      const { presignedURL, fileURL } = await presignedURLRes.json();
+
+      const r2Res = await fetch(presignedURL, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
+        body: file,
+      });
+
+      if (!r2Res.ok) {
+        setGeneralError("画像のアップロードに失敗しました");
+        return;
+      }
+
+      // マークダウンに画像を挿入
+      const imageMarkdown = `![](${fileURL})`;
+      setMarkdown(
+        currentMarkdown
+          ? `${currentMarkdown}\n\n${imageMarkdown}`
+          : imageMarkdown,
+      );
+    } finally {
+      setIsUploadingImage(false);
+      // input要素をリセットして同じファイルを再度選択可能に
+      input.value = "";
+    }
+  };
 
   const togglePublished = useCallback(() => setPublished((v) => !v), []);
 
@@ -238,5 +288,7 @@ export const useEditor = ({
     generalError,
     isSaving,
     hasChanges,
+    handlePostImageUploadByButton,
+    isUploadingImage,
   };
 };

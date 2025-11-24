@@ -44,6 +44,8 @@ export const Editor = ({
     generalError,
     isSaving,
     hasChanges,
+    handlePostImageUploadByButton,
+    isUploadingImage,
   } = useEditor({
     postId,
     initialMarkdown: markdown,
@@ -123,17 +125,30 @@ export const Editor = ({
         </ContentWrapper>
       </form>
 
-      <button
-        type="button"
-        className="group fixed bottom-10 left-6 rounded-full bg-blue-600 p-3 text-white shadow-lg transition-colors hover:bg-blue-700"
+      <label
+        className={cn(
+          "group fixed bottom-10 left-6 cursor-pointer rounded-full bg-blue-600 p-3 text-white shadow-lg transition-colors hover:bg-blue-700",
+          isUploadingImage && "pointer-events-none opacity-50",
+        )}
         aria-label="画像を挿入"
         title="画像を挿入"
       >
-        <ImageIcon />
+        {isUploadingImage ? (
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
+        ) : (
+          <ImageIcon />
+        )}
+        <input
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handlePostImageUploadByButton}
+          disabled={isUploadingImage}
+        />
         <span className="-translate-x-1/2 pointer-events-none absolute bottom-full left-1/2 mb-2 whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-white text-xs opacity-0 transition-opacity group-hover:opacity-100">
-          画像を挿入
+          {isUploadingImage ? "アップロード中..." : "画像を挿入"}
         </span>
-      </button>
+      </label>
     </div>
   );
 };
