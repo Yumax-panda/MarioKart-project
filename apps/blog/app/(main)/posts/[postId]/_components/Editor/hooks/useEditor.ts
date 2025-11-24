@@ -1,7 +1,7 @@
 import type { ValidationErrorDetail } from "@repo/schema/errorCodes";
 import { UpdatePostBodySchema } from "@repo/schema/post";
 import { groupErrorsByField, parseZodError } from "@repo/schema/zodErrorMapper";
-import type { ChangeEvent, FormEvent } from "react";
+import type { ChangeEvent, DragEvent, FormEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import {
   getBusinessErrorMessage,
@@ -133,6 +133,49 @@ export const useEditor = ({
 
   const [isUploadingImage, setIsUploadingImage] = useState(false);
 
+  // 画像をアップロードしてマークダウンに挿入する共通処理
+  const uploadImageAndInsertToMarkdown = async (
+    file: File,
+  ): Promise<boolean> => {
+    const presignedURLRes = await client.api.v1.presignedURL.generate.$post({
+      json: {
+        purpose: "uploadPostImage",
+        size: file.size,
+        // @ts-expect-error: zodでバリデーションするのでOK
+        imageType: file.type,
+      },
+    });
+
+    if (!presignedURLRes.ok) {
+      setGeneralError("画像のアップロードに失敗しました");
+      return false;
+    }
+
+    const { presignedURL, fileURL } = await presignedURLRes.json();
+
+    const r2Res = await fetch(presignedURL, {
+      method: "PUT",
+      headers: {
+        "Content-Type": file.type,
+      },
+      body: file,
+    });
+
+    if (!r2Res.ok) {
+      setGeneralError("画像のアップロードに失敗しました");
+      return false;
+    }
+
+    // マークダウンに画像を挿入
+    const imageMarkdown = `![](${fileURL})`;
+    setMarkdown(
+      currentMarkdown
+        ? `${currentMarkdown}\n\n${imageMarkdown}`
+        : imageMarkdown,
+    );
+    return true;
+  };
+
   const handlePostImageUploadByButton = async (
     e: ChangeEvent<HTMLInputElement>,
   ) => {
@@ -144,48 +187,35 @@ export const useEditor = ({
     if (!file) return;
 
     setIsUploadingImage(true);
-
     try {
-      const presignedURLRes = await client.api.v1.presignedURL.generate.$post({
-        json: {
-          purpose: "uploadPostImage",
-          size: file.size,
-          // @ts-expect-error: zodでバリデーションするのでOK
-          imageType: file.type,
-        },
-      });
-
-      if (!presignedURLRes.ok) {
-        setGeneralError("画像のアップロードに失敗しました");
-        return;
-      }
-
-      const { presignedURL, fileURL } = await presignedURLRes.json();
-
-      const r2Res = await fetch(presignedURL, {
-        method: "PUT",
-        headers: {
-          "Content-Type": file.type,
-        },
-        body: file,
-      });
-
-      if (!r2Res.ok) {
-        setGeneralError("画像のアップロードに失敗しました");
-        return;
-      }
-
-      // マークダウンに画像を挿入
-      const imageMarkdown = `![](${fileURL})`;
-      setMarkdown(
-        currentMarkdown
-          ? `${currentMarkdown}\n\n${imageMarkdown}`
-          : imageMarkdown,
-      );
+      await uploadImageAndInsertToMarkdown(file);
     } finally {
       setIsUploadingImage(false);
       // input要素をリセットして同じファイルを再度選択可能に
       input.value = "";
+    }
+  };
+
+  const handleDropImage = async (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    const files = e.dataTransfer.files;
+    if (!files || !files.length) return;
+
+    const file = files[0];
+    if (!file) return;
+
+    // 画像ファイルかどうかをチェック
+    if (!file.type.startsWith("image/")) {
+      setGeneralError("画像ファイルのみアップロードできます");
+      return;
+    }
+
+    setIsUploadingImage(true);
+    try {
+      await uploadImageAndInsertToMarkdown(file);
+    } finally {
+      setIsUploadingImage(false);
     }
   };
 
@@ -289,6 +319,7 @@ export const useEditor = ({
     isSaving,
     hasChanges,
     handlePostImageUploadByButton,
+    handleDropImage,
     isUploadingImage,
   };
 };

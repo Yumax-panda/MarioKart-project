@@ -45,6 +45,7 @@ export const Editor = ({
     isSaving,
     hasChanges,
     handlePostImageUploadByButton,
+    handleDropImage,
     isUploadingImage,
   } = useEditor({
     postId,
@@ -109,7 +110,11 @@ export const Editor = ({
             {currentShowPreview ? (
               <MarkdownPreview markdown={currentMarkdown} />
             ) : (
-              <div>
+              <section
+                onDrop={handleDropImage}
+                onDragOver={(e) => e.preventDefault()}
+                aria-label="画像をドロップしてアップロード"
+              >
                 <EditorInput
                   currentInputValue={currentMarkdown}
                   onChange={setMarkdown}
@@ -118,7 +123,7 @@ export const Editor = ({
                 {fieldErrors.article && (
                   <FieldError message={fieldErrors.article} className="mt-2" />
                 )}
-              </div>
+              </section>
             )}
           </MarkdownWrapper>
         </ContentWrapper>
