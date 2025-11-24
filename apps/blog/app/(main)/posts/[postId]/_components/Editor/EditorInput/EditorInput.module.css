@@ -31,9 +31,9 @@
 }
 
 .draw {
-  position: absolute;
+  position: relative;
   pointer-events: none; /* シンタックスハイライト部分はクリック不可 */
-  z-index: 0;
+  z-index: 1;
 }
 
 .write {
@@ -44,7 +44,9 @@
   print-color-adjust: exact;
   top: 0;
   left: 0;
-  z-index: 1; /* textareaを前面に */
+  right: 0;
+  bottom: 0;
+  z-index: 2; /* textareaを前面に */
   cursor: text; /* カーソルをテキスト入力可能に */
 }
 
