@@ -62,6 +62,7 @@ export const useEditor = ({
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // 変更があるかどうかをチェック（最後に保存した値と比較）
   const hasChanges =
@@ -131,12 +132,17 @@ export const useEditor = ({
     }
   };
 
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const uploadingPlaceholder = "![](uploading...)";
 
   // 画像をアップロードしてマークダウンに挿入する共通処理
   const uploadImageAndInsertToMarkdown = async (
     file: File,
   ): Promise<boolean> => {
+    // アップロード中のプレースホルダーを挿入
+    setMarkdown((prev) =>
+      prev ? `${prev}\n\n${uploadingPlaceholder}` : uploadingPlaceholder,
+    );
+
     const presignedURLRes = await client.api.v1.presignedURL.generate.$post({
       json: {
         purpose: "uploadPostImage",
@@ -148,6 +154,12 @@ export const useEditor = ({
 
     if (!presignedURLRes.ok) {
       setGeneralError("画像のアップロードに失敗しました");
+      // プレースホルダーを削除
+      setMarkdown((prev) =>
+        prev
+          .replace(`\n\n${uploadingPlaceholder}`, "")
+          .replace(uploadingPlaceholder, ""),
+      );
       return false;
     }
 
@@ -163,22 +175,27 @@ export const useEditor = ({
 
     if (!r2Res.ok) {
       setGeneralError("画像のアップロードに失敗しました");
+      // プレースホルダーを削除
+      setMarkdown((prev) =>
+        prev
+          .replace(`\n\n${uploadingPlaceholder}`, "")
+          .replace(uploadingPlaceholder, ""),
+      );
       return false;
     }
 
-    // マークダウンに画像を挿入
+    // プレースホルダーを実際の画像URLに置換
     const imageMarkdown = `![](${fileURL})`;
-    setMarkdown(
-      currentMarkdown
-        ? `${currentMarkdown}\n\n${imageMarkdown}`
-        : imageMarkdown,
-    );
+    setMarkdown((prev) => prev.replace(uploadingPlaceholder, imageMarkdown));
     return true;
   };
 
   const handlePostImageUploadByButton = async (
     e: ChangeEvent<HTMLInputElement>,
   ) => {
+    // アップロード中は追加アップロードをブロック
+    if (isUploadingImage) return;
+
     const input = e.currentTarget;
     const files = input.files;
     if (!files || !files.length) return;
@@ -196,8 +213,11 @@ export const useEditor = ({
     }
   };
 
-  const handleDropImage = async (e: DragEvent<HTMLDivElement>) => {
+  const handleDropImage = async (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+
+    // アップロード中は追加アップロードをブロック
+    if (isUploadingImage) return;
 
     const files = e.dataTransfer.files;
     if (!files || !files.length) return;
