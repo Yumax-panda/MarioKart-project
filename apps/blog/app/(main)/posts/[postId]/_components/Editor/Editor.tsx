@@ -57,7 +57,6 @@ export const Editor = ({
   return (
     <div className={cn("min-h-screen p-4 text-white")}>
       <form onSubmit={handleSubmit}>
-        {/* 全体的なエラーメッセージ */}
         {generalError && (
           <div className="mb-4 rounded border border-red-500 bg-red-500/20 p-3 text-red-300">
             {generalError}
