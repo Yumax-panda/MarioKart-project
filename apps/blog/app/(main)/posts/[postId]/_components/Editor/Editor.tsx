@@ -46,7 +46,11 @@ export const Editor = ({
     hasChanges,
     handlePostImageUploadByButton,
     handleDropImage,
+    handleDragEnter,
+    handleDragLeave,
+    handleDragOver,
     isUploadingImage,
+    isDraggingOver,
   } = useEditor({
     postId,
     initialMarkdown: markdown,
@@ -112,8 +116,15 @@ export const Editor = ({
             ) : (
               <section
                 onDrop={handleDropImage}
-                onDragOver={(e) => e.preventDefault()}
+                onDragOver={handleDragOver}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
                 aria-label="画像をドロップしてアップロード"
+                className={cn(
+                  "rounded-lg transition-all",
+                  isDraggingOver &&
+                    "ring-2 ring-blue-500 ring-offset-2 ring-offset-gray-900",
+                )}
               >
                 <EditorInput
                   currentInputValue={currentMarkdown}

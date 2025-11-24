@@ -63,6 +63,7 @@ export const useEditor = ({
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isDraggingOver, setIsDraggingOver] = useState(false);
 
   // 変更があるかどうかをチェック（最後に保存した値と比較）
   const hasChanges =
@@ -213,8 +214,26 @@ export const useEditor = ({
     }
   };
 
+  const handleDragEnter = useCallback((e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    setIsDraggingOver(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    // relatedTargetがnullまたは現在の要素外に移動した場合のみドラッグ状態を解除
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+      setIsDraggingOver(false);
+    }
+  }, []);
+
+  const handleDragOver = useCallback((e: DragEvent<HTMLElement>) => {
+    e.preventDefault();
+  }, []);
+
   const handleDropImage = async (e: DragEvent<HTMLElement>) => {
     e.preventDefault();
+    setIsDraggingOver(false);
 
     // アップロード中は追加アップロードをブロック
     if (isUploadingImage) return;
@@ -340,6 +359,10 @@ export const useEditor = ({
     hasChanges,
     handlePostImageUploadByButton,
     handleDropImage,
+    handleDragEnter,
+    handleDragLeave,
+    handleDragOver,
     isUploadingImage,
+    isDraggingOver,
   };
 };
