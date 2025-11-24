@@ -11,6 +11,7 @@ import { EditorInput } from "./EditorInput";
 import { EditorToolbar } from "./EditorToolbar";
 import { FieldError } from "./FieldError";
 import { useEditor } from "./hooks/useEditor";
+import { ImageDropzone } from "./ImageDropzone";
 import { MarkdownPreview } from "./MarkdownPreview";
 
 type Props = {
@@ -114,17 +115,12 @@ export const Editor = ({
             {currentShowPreview ? (
               <MarkdownPreview markdown={currentMarkdown} />
             ) : (
-              <section
+              <ImageDropzone
                 onDrop={handleDropImage}
                 onDragOver={handleDragOver}
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
-                aria-label="画像をドロップしてアップロード"
-                className={cn(
-                  "rounded-lg transition-all",
-                  isDraggingOver &&
-                    "ring-2 ring-blue-500 ring-offset-2 ring-offset-gray-900",
-                )}
+                isDraggingOver={isDraggingOver}
               >
                 <EditorInput
                   currentInputValue={currentMarkdown}
@@ -134,7 +130,7 @@ export const Editor = ({
                 {fieldErrors.article && (
                   <FieldError message={fieldErrors.article} className="mt-2" />
                 )}
-              </section>
+              </ImageDropzone>
             )}
           </MarkdownWrapper>
         </ContentWrapper>
