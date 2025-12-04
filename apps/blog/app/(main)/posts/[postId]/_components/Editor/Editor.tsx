@@ -1,10 +1,11 @@
 "use client";
 
 import { ImageIcon } from "app/_components/Icon/ImageIcon";
+import { ContentWrapper } from "@/app/(main)/_components/Markdown/ContentWrapper";
+import { MarkdownPreview } from "@/app/(main)/_components/Markdown/MarkdownPreview";
+import { MarkdownWrapper } from "@/app/(main)/_components/Markdown/MarkdownWrapper";
 import { cn } from "@/lib/css";
 import { urls } from "@/lib/urls";
-import { ContentWrapper } from "../ContentWrapper";
-import { MarkdownWrapper } from "../MarkdownWrapper";
 import { Thumbnail } from "../Thumbnail";
 import { BackButton } from "./BackButton";
 import { EditorInput } from "./EditorInput";
@@ -12,7 +13,6 @@ import { EditorToolbar } from "./EditorToolbar";
 import { FieldError } from "./FieldError";
 import { useEditor } from "./hooks/useEditor";
 import { ImageDropzone } from "./ImageDropzone";
-import { MarkdownPreview } from "./MarkdownPreview";
 
 type Props = {
   postId: string;

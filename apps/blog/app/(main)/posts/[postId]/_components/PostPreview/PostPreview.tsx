@@ -1,7 +1,7 @@
+import { ContentWrapper } from "@/app/(main)/_components/Markdown/ContentWrapper";
+import { MarkdownPreview } from "@/app/(main)/_components/Markdown/MarkdownPreview";
+import { MarkdownWrapper } from "@/app/(main)/_components/Markdown/MarkdownWrapper";
 import { AuthorInfo } from "../AuthorInfo";
-import { ContentWrapper } from "../ContentWrapper";
-import { MarkdownPreview } from "../Editor/MarkdownPreview";
-import { MarkdownWrapper } from "../MarkdownWrapper";
 import { Thumbnail } from "../Thumbnail";
 
 type Props = {
