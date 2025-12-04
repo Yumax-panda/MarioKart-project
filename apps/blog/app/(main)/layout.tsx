@@ -10,11 +10,17 @@ export default function MainLayout({
   return (
     <div
       className={cn(
-        "grid min-h-screen grid-cols-[100%] grid-rows-[auto_1fr_auto] bg-gradient-to-br from-[#0f0f23] to-[#1a1a2e] text-gray-200",
+        "racing-gradient racing-grid-bg relative grid min-h-screen grid-cols-[100%] grid-rows-[auto_1fr_auto] overflow-x-hidden text-gray-100",
       )}
     >
+      {/* Decorative elements */}
+      <div className="pointer-events-none fixed inset-0 opacity-30">
+        <div className="absolute top-20 right-0 h-[500px] w-[500px] rounded-full bg-[var(--color-racing-cyan)] opacity-10 blur-[120px]" />
+        <div className="absolute bottom-20 left-0 h-[500px] w-[500px] rounded-full bg-[var(--color-racing-magenta)] opacity-10 blur-[120px]" />
+      </div>
+
       <Header />
-      {children}
+      <main className="relative z-10">{children}</main>
       <Footer />
     </div>
   );
