@@ -14,13 +14,7 @@ type Props = {
 
 export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
   return (
-    <article className="group hover:-translate-y-2 relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-racing-cyan)]/20 bg-[var(--color-dark-elevated)]/80 backdrop-blur-md transition-all duration-300 hover:border-[var(--color-racing-cyan)]/50 hover:shadow-2xl hover:shadow-[var(--color-racing-cyan)]/20">
-      {/* Accent corner */}
-      <div className="absolute top-0 right-0 h-20 w-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-        <div className="absolute top-0 right-0 h-full w-1 bg-gradient-to-b from-[var(--color-racing-cyan)] to-transparent" />
-        <div className="absolute top-0 right-0 h-1 w-full bg-gradient-to-l from-[var(--color-racing-magenta)] to-transparent" />
-      </div>
-
+    <article className="group hover:-translate-y-2 relative flex h-full flex-col overflow-hidden rounded-xl border border-[var(--color-racing-cyan)]/20 bg-[var(--color-dark-elevated)]/80 backdrop-blur-md transition-all duration-300">
       <Link
         href={urls.postsDetail(id)}
         className="relative h-56 w-full overflow-hidden sm:h-64"
@@ -29,23 +23,9 @@ export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
           src={thumbnail}
           alt={`Thumbnail: "${title}"`}
           fill
-          className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
+          className="object-cover transition-all duration-500 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-dark-base)]/90 via-transparent to-transparent opacity-60" />
-
-        {/* Speed line overlay on hover */}
-        <div className="absolute inset-0 overflow-hidden opacity-0 transition-opacity group-hover:opacity-100">
-          <div
-            className="absolute top-1/2 left-0 h-[2px] w-full bg-gradient-to-r from-transparent via-[var(--color-racing-cyan)] to-transparent opacity-50"
-            style={{ animationDelay: "0s" }}
-          />
-          <div
-            className="absolute top-1/3 left-0 h-[1px] w-full bg-gradient-to-r from-transparent via-[var(--color-racing-magenta)] to-transparent opacity-30"
-            style={{ animationDelay: "0.1s" }}
-          />
-        </div>
       </Link>
 
       <div className="flex flex-1 flex-col p-6">
@@ -56,7 +36,7 @@ export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
         </div>
 
         <Link href={urls.postsDetail(id)}>
-          <h2 className="mb-4 line-clamp-2 font-bold text-white text-xl transition-all duration-300 group-hover:text-neon-cyan sm:text-2xl">
+          <h2 className="mb-4 line-clamp-2 font-bold text-white text-xl sm:text-2xl">
             {title}
           </h2>
         </Link>
@@ -82,7 +62,7 @@ export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
 
           <Link
             href={urls.postsDetail(id)}
-            className="inline-flex items-center gap-1 font-medium text-[var(--color-racing-cyan)] transition-all group-hover:gap-2"
+            className="inline-flex items-center gap-1 font-medium text-[var(--color-racing-cyan)]"
           >
             <span>続きを読む</span>
             <svg
