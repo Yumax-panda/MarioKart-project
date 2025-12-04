@@ -26,24 +26,17 @@ export const Hero = () => (
           style={{ animationDelay: "0.1s" }}
         >
           <span className="inline-block bg-gradient-to-r from-[var(--color-racing-cyan)] via-[var(--color-racing-magenta)] to-[var(--color-racing-yellow)] bg-clip-text text-transparent">
-            Start Your Engine
+            Welcome to TT !
           </span>
         </h1>
-
-        <h2
-          className="mb-8 animate-fade-in-up font-[family-name:var(--font-display)] text-2xl text-white sm:text-3xl lg:text-4xl"
-          style={{ animationDelay: "0.2s" }}
-        >
-          Welcome to <span className="text-neon-cyan">TiTech Kart</span>
-        </h2>
 
         <p
           className="mx-auto mb-12 max-w-2xl animate-fade-in-up font-[family-name:var(--font-body)] text-gray-400 text-lg leading-relaxed sm:text-xl"
           style={{ animationDelay: "0.3s" }}
         >
-          東工大マリオカートサークルの日々のサークル活動の様子を発信します。
+          チームTTは、東京科学大学で活動するマリオカート同好会です。
           <br />
-          レースの記録、イベント情報、そして熱い戦いの記録をお届けします。
+          学年にとらわれずメンバー同士仲良く日々の活動に励んでいます。
         </p>
 
         {/* CTA buttons */}
@@ -77,7 +70,7 @@ export const Hero = () => (
             href={urls.about()}
             className="group inline-flex items-center gap-2 rounded-lg border border-[var(--color-racing-cyan)]/30 bg-transparent px-8 py-4 font-[family-name:var(--font-body)] font-semibold text-lg text-white transition-all hover:scale-105 hover:border-[var(--color-racing-cyan)] hover:bg-[var(--color-racing-cyan)]/10"
           >
-            <span>About</span>
+            <span>もっと詳しく！</span>
             <svg
               className="h-5 w-5 transition-transform group-hover:translate-x-1"
               fill="none"

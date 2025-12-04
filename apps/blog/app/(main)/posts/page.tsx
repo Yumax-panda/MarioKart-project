@@ -48,7 +48,7 @@ export default async function PostsPage({ searchParams }: Props) {
             className="animate-fade-in-up font-[family-name:var(--font-body)] text-gray-400 text-lg"
             style={{ animationDelay: "0.1s" }}
           >
-            サークル活動の記録とレースの熱い戦いをチェック
+            サークルの活動記録
           </p>
         </div>
       </div>

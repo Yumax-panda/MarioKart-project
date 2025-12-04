@@ -10,7 +10,7 @@ export const Footer = () => {
         <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
           <div className="text-center sm:text-left">
             <div className="mb-2 font-[family-name:var(--font-display)] font-bold text-lg text-white">
-              TiTech Kart
+              TT
             </div>
             <p className="text-gray-400 text-sm">東工大マリオカートサークル</p>
           </div>

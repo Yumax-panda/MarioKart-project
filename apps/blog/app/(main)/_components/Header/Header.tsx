@@ -21,7 +21,7 @@ export const Header = () => {
           </div>
           <div>
             <div className="font-[family-name:var(--font-display)] font-bold text-lg text-white transition-colors group-hover:text-neon-cyan sm:text-xl">
-              TiTech Kart
+              TT
             </div>
             <div className="font-[family-name:var(--font-body)] text-gray-400 text-xs">
               東工大マリオカートサークル
