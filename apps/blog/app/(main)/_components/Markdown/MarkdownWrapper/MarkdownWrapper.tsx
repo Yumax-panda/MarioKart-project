@@ -9,7 +9,7 @@ type Props = {
 export const MarkdownWrapper = ({ children, className }: Props) => (
   <div
     className={cn(
-      "rounded-md border-1 border-[#1b324a] bg-[#0d223a] p-3",
+      "rounded-md border-1 border-[#1b324a] bg-[#0d223a] p-3 font-normal leading-relaxed",
       className,
     )}
   >

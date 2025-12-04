@@ -56,12 +56,12 @@ export const PostCard = ({ id, tags, title, date, thumbnail }: Props) => {
         </div>
 
         <Link href={urls.postsDetail(id)}>
-          <h2 className="mb-4 line-clamp-2 font-[family-name:var(--font-display)] font-bold text-white text-xl transition-all duration-300 group-hover:text-neon-cyan sm:text-2xl">
+          <h2 className="mb-4 line-clamp-2 font-bold text-white text-xl transition-all duration-300 group-hover:text-neon-cyan sm:text-2xl">
             {title}
           </h2>
         </Link>
 
-        <div className="mt-auto flex items-center justify-between border-[var(--color-racing-cyan)]/10 border-t pt-4 font-[family-name:var(--font-body)] text-sm">
+        <div className="mt-auto flex items-center justify-between border-[var(--color-racing-cyan)]/10 border-t pt-4 text-sm">
           <div className="flex items-center gap-2 text-gray-400">
             <svg
               className="h-4 w-4"

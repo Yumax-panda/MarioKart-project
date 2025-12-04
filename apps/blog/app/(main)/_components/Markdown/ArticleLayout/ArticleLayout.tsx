@@ -20,7 +20,7 @@ export const ArticleLayout = ({ title, children }: Props) => (
       <div className="relative flex items-center justify-center">
         <div className="-translate-y-1/2 absolute top-1/2 left-0 h-[2px] w-12 bg-gradient-to-r from-transparent to-[var(--color-racing-cyan)]" />
         <h1
-          className="animate-fade-in-up px-16 text-center font-[family-name:var(--font-display)] text-white leading-tight"
+          className="animate-fade-in-up px-16 text-center font-bold text-3xl text-white leading-tight sm:text-4xl lg:text-5xl"
           id={title}
         >
           {title}
