@@ -14,6 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
+      />
       <Provider>
         <body>{children}</body>
       </Provider>
