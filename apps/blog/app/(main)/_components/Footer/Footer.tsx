@@ -17,7 +17,7 @@ export const Footer = () => {
 
           <div className="flex items-center gap-2 font-[family-name:var(--font-body)] text-gray-400 text-sm">
             <div className="h-1 w-8 bg-gradient-to-r from-[var(--color-racing-cyan)] to-transparent" />
-            <span>&copy; 2024 All rights reserved</span>
+            <span>&copy; 2025 All rights reserved</span>
             <div className="h-1 w-8 bg-gradient-to-l from-[var(--color-racing-magenta)] to-transparent" />
           </div>
         </div>
