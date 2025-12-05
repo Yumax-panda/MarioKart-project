@@ -61,15 +61,15 @@ export const Editor = ({
   });
 
   return (
-    <div className={cn("min-h-screen p-4 text-white")}>
+    <div className={cn("min-h-screen p-4 text-white sm:p-6")}>
       <form onSubmit={handleSubmit}>
         {generalError && (
-          <div className="mb-4 rounded border border-red-500 bg-red-500/20 p-3 text-red-300">
+          <div className="mb-4 rounded border border-red-500 bg-red-500/20 p-3 text-red-300 text-sm sm:text-base">
             {generalError}
           </div>
         )}
 
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <BackButton href={urls.postsDetail(postId)} label="編集を終了" />
 
           <EditorToolbar
@@ -92,7 +92,7 @@ export const Editor = ({
               value={currentTitle ?? ""}
               onChange={(e) => setTitle(e.target.value)}
               className={cn(
-                "w-full border-none bg-transparent p-1 text-center font-bold text-3xl leading-tight focus:ring-0",
+                "w-full border-none bg-transparent p-1 text-center font-bold text-2xl leading-tight focus:ring-0 sm:text-3xl",
                 fieldErrors.title && "ring-2 ring-red-500",
               )}
             />

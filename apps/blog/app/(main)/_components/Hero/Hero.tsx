@@ -22,7 +22,7 @@ export const Hero = () => (
 
         {/* Main heading with staggered animation */}
         <h1
-          className="mb-6 animate-fade-in-up font-[family-name:var(--font-display)] font-bold text-5xl text-white sm:text-6xl lg:text-7xl"
+          className="mb-6 animate-fade-in-up font-[family-name:var(--font-display)] font-bold text-4xl text-white sm:text-5xl md:text-6xl lg:text-7xl"
           style={{ animationDelay: "0.1s" }}
         >
           <span className="inline-block bg-gradient-to-r from-[var(--color-racing-cyan)] via-[var(--color-racing-magenta)] to-[var(--color-racing-yellow)] bg-clip-text text-transparent">
@@ -31,22 +31,22 @@ export const Hero = () => (
         </h1>
 
         <p
-          className="mx-auto mb-12 max-w-2xl animate-fade-in-up font-[family-name:var(--font-body)] text-gray-400 text-lg leading-relaxed sm:text-xl"
+          className="mx-auto mb-8 max-w-2xl animate-fade-in-up px-4 font-[family-name:var(--font-body)] text-base text-gray-400 leading-relaxed sm:mb-12 sm:text-lg md:text-xl"
           style={{ animationDelay: "0.3s" }}
         >
           チームTTは、東京科学大学で活動するマリオカート同好会です。
-          <br />
+          <br className="hidden sm:block" />
           学年にとらわれずメンバー同士仲良く日々の活動に励んでいます。
         </p>
 
         {/* CTA buttons */}
         <div
-          className="flex animate-fade-in-scale flex-col items-center justify-center gap-4 sm:flex-row"
+          className="flex animate-fade-in-scale flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4"
           style={{ animationDelay: "0.4s" }}
         >
           <Link
             href={urls.posts()}
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[var(--color-racing-cyan)] to-[var(--color-racing-magenta)] px-8 py-4 font-[family-name:var(--font-body)] font-semibold text-lg text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-[var(--color-racing-cyan)]/50"
+            className="group relative inline-flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-[var(--color-racing-cyan)] to-[var(--color-racing-magenta)] px-6 py-3 font-[family-name:var(--font-body)] font-semibold text-base text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-[var(--color-racing-cyan)]/50 sm:w-auto sm:px-8 sm:py-4 sm:text-lg"
           >
             <span className="relative z-10">記事を読む</span>
             <svg
@@ -68,7 +68,7 @@ export const Hero = () => (
 
           <Link
             href={urls.about()}
-            className="group inline-flex items-center gap-2 rounded-lg border border-[var(--color-racing-cyan)]/30 bg-transparent px-8 py-4 font-[family-name:var(--font-body)] font-semibold text-lg text-white transition-all hover:scale-105 hover:border-[var(--color-racing-cyan)] hover:bg-[var(--color-racing-cyan)]/10"
+            className="group inline-flex w-full items-center justify-center gap-2 rounded-lg border border-[var(--color-racing-cyan)]/30 bg-transparent px-6 py-3 font-[family-name:var(--font-body)] font-semibold text-base text-white transition-all hover:scale-105 hover:border-[var(--color-racing-cyan)] hover:bg-[var(--color-racing-cyan)]/10 sm:w-auto sm:px-8 sm:py-4 sm:text-lg"
           >
             <span>もっと詳しく！</span>
             <svg

@@ -1,11 +1,19 @@
 "use client";
 import { useAccount } from "context/AccountContext";
 import Link from "next/link";
+import { useState } from "react";
 import { urls } from "@/lib/urls";
 import { AccountIcon } from "../AccountIcon";
 
 export const Header = () => {
   const { account } = useAccount();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navItems = [
+    { label: "ホーム", url: urls.index() },
+    { label: "記事", url: urls.posts() },
+    { label: "About", url: urls.about() },
+  ];
 
   return (
     <header className="relative z-20 border-[var(--color-racing-cyan)]/20 border-b px-6 py-6 backdrop-blur-md lg:px-8">
@@ -29,13 +37,10 @@ export const Header = () => {
           </div>
         </Link>
 
-        <ul className="flex items-center gap-6 lg:gap-10">
-          {[
-            { label: "ホーム", url: urls.index() },
-            { label: "記事", url: urls.posts() },
-            { label: "About", url: urls.about() },
-          ].map(({ label, url }, index) => (
-            <li key={label} className="hidden sm:block">
+        {/* Desktop Navigation */}
+        <ul className="hidden items-center gap-6 sm:flex lg:gap-10">
+          {navItems.map(({ label, url }, index) => (
+            <li key={label}>
               <Link
                 href={url}
                 className="group relative inline-block font-[family-name:var(--font-body)] font-medium text-gray-300 text-lg transition-all hover:text-white"
@@ -52,7 +57,63 @@ export const Header = () => {
             </li>
           ) : null}
         </ul>
+
+        {/* Mobile Menu Button & Account Icon */}
+        <div className="flex items-center gap-4 sm:hidden">
+          {account ? (
+            <AccountIcon name={account.name} image={account.image || ""} />
+          ) : null}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="inline-flex items-center justify-center rounded-lg border border-[var(--color-racing-cyan)]/30 bg-[var(--color-dark-elevated)]/60 p-2.5 text-gray-300 backdrop-blur-md transition-all hover:border-[var(--color-racing-cyan)] hover:bg-[var(--color-racing-cyan)]/10"
+            aria-label="メニューを開く"
+          >
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
+            >
+              {mobileMenuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="mt-6 border-[var(--color-racing-cyan)]/20 border-t pt-6 sm:hidden">
+          <ul className="flex flex-col gap-4">
+            {navItems.map(({ label, url }) => (
+              <li key={label}>
+                <Link
+                  href={url}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="group block rounded-lg border border-[var(--color-racing-cyan)]/20 bg-[var(--color-dark-elevated)]/60 px-4 py-3 font-[family-name:var(--font-body)] font-medium text-gray-300 text-lg transition-all hover:border-[var(--color-racing-cyan)] hover:bg-[var(--color-racing-cyan)]/10 hover:text-white"
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </header>
   );
 };

@@ -20,12 +20,12 @@ export const PostManagementItem = ({
   updatedAt,
 }: Props) => {
   return (
-    <article className="flex items-start justify-between gap-4 rounded-lg border border-gray-700 bg-gray-800/50 p-6 transition-colors hover:border-gray-600 hover:bg-gray-800/70">
+    <article className="flex flex-col gap-4 rounded-lg border border-gray-700 bg-gray-800/50 p-4 transition-colors hover:border-gray-600 hover:bg-gray-800/70 sm:flex-row sm:items-start sm:justify-between sm:p-6">
       <div className="min-w-0 flex-1">
-        <div className="mb-2 flex items-center gap-3">
+        <div className="mb-2 flex flex-wrap items-center gap-2 sm:gap-3">
           <Link
             href={urls.postsDetail(id)}
-            className="truncate font-semibold text-blue-400 text-lg hover:text-blue-300 hover:underline"
+            className="font-semibold text-base text-blue-400 hover:text-blue-300 hover:underline sm:text-lg"
           >
             {title}
           </Link>
@@ -41,7 +41,7 @@ export const PostManagementItem = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-4 text-sm">
+        <div className="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:gap-4">
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {tags.map((tagName) => (
@@ -49,7 +49,7 @@ export const PostManagementItem = ({
               ))}
             </div>
           )}
-          <span className="text-gray-500">
+          <span className="text-gray-500 text-xs sm:text-sm">
             更新: {formatDate(new Date(updatedAt))}
           </span>
         </div>
@@ -58,13 +58,13 @@ export const PostManagementItem = ({
       <div className="flex shrink-0 items-center gap-2">
         <Link
           href={urls.postsDetailEdit(id)}
-          className="rounded-lg border border-gray-600 bg-gray-700/50 px-4 py-2 text-gray-300 text-sm transition-colors hover:border-gray-500 hover:bg-gray-700"
+          className="flex-1 rounded-lg border border-gray-600 bg-gray-700/50 px-3 py-2 text-center text-gray-300 text-sm transition-colors hover:border-gray-500 hover:bg-gray-700 sm:flex-none sm:px-4"
         >
           編集
         </Link>
         <button
           type="button"
-          className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-2 text-red-400 text-sm transition-colors hover:border-red-500/50 hover:bg-red-500/20"
+          className="flex-1 rounded-lg border border-red-500/30 bg-red-500/10 px-3 py-2 text-red-400 text-sm transition-colors hover:border-red-500/50 hover:bg-red-500/20 sm:flex-none sm:px-4"
         >
           削除
         </button>

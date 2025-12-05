@@ -32,9 +32,10 @@ export const EditorToolbar = ({
   const isDisabled = isSaving || !hasChanges;
 
   return (
-    <div className="flex items-center space-x-4">
+    <div className="flex flex-wrap items-center gap-2 sm:gap-4">
       <label className="cursor-pointer rounded bg-blue-600 px-3 py-2 text-sm text-white hover:bg-blue-700">
-        サムネイル {currentThumbnail ? "更新" : "設定"}
+        <span className="hidden sm:inline">サムネイル </span>
+        {currentThumbnail ? "更新" : "設定"}
         <input
           type="file"
           accept="image/*"
@@ -48,16 +49,26 @@ export const EditorToolbar = ({
       <button
         type="button"
         onClick={toggleShowPreview}
-        className="w-40 rounded bg-gray-600 px-3 py-2 text-sm text-white hover:bg-gray-700"
+        className="rounded bg-gray-600 px-3 py-2 text-sm text-white hover:bg-gray-700 sm:w-40"
       >
-        {currentShowPreview ? "エディタに戻る" : "プレビューを見る"}
+        {currentShowPreview ? (
+          <>
+            <span className="sm:hidden">エディタ</span>
+            <span className="hidden sm:inline">エディタに戻る</span>
+          </>
+        ) : (
+          <>
+            <span className="sm:hidden">プレビュー</span>
+            <span className="hidden sm:inline">プレビューを見る</span>
+          </>
+        )}
       </button>
 
       <button
         type="submit"
         disabled={isDisabled}
         className={cn(
-          "w-28 rounded px-4 py-2 font-semibold text-white",
+          "rounded px-3 py-2 font-semibold text-white sm:w-28 sm:px-4",
           isDisabled
             ? "cursor-not-allowed bg-gray-400"
             : "bg-indigo-600 hover:bg-indigo-700",
