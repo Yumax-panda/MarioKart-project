@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Provider } from "context/Provider";
 import type { Metadata } from "next";
+import { ReactDOM } from "next/dist/server/route-modules/app-page/vendored/rsc/entrypoints";
 
 export const metadata: Metadata = {
   title: "東工大マリオカートサークル",
@@ -12,14 +13,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // ref: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#link-relpreload
+  ReactDOM.preload(
+    "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap",
+    { as: "style" },
+  );
   return (
     <html lang="ja">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap"
-        />
-      </head>
       <Provider>
         <body>{children}</body>
       </Provider>
