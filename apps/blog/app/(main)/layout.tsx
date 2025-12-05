@@ -20,7 +20,7 @@ export default function MainLayout({
       </div>
 
       <Header />
-      <main className="relative z-10">{children}</main>
+      <main>{children}</main>
       <Footer />
     </div>
   );

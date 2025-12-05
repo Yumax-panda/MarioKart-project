@@ -138,7 +138,7 @@ export const Editor = ({
 
       <label
         className={cn(
-          "group fixed bottom-10 left-6 cursor-pointer rounded-full bg-blue-600 p-3 text-white shadow-lg transition-colors hover:bg-blue-700",
+          "group fixed bottom-10 left-6 z-40 cursor-pointer rounded-full bg-blue-600 p-3 text-white shadow-lg transition-colors hover:bg-blue-700",
           isUploadingImage && "pointer-events-none opacity-50",
         )}
         aria-label="画像を挿入"
