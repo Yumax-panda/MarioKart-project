@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cn } from "@/lib/css";
 import { calculateTotalPages, getPageNumbers } from "./utils";
 
 type Props = {
@@ -69,11 +70,12 @@ export const Pagination = ({
             <Link
               key={page}
               href={buildUrl(page)}
-              className={`min-w-9 rounded-lg border px-3 py-2.5 text-center text-sm font-medium transition-all sm:min-w-10 sm:px-4 sm:text-base ${
+              className={cn(
+                "min-w-9 rounded-lg border px-3 py-2.5 text-center font-medium text-sm transition-all sm:min-w-10 sm:px-4 sm:text-base",
                 isCurrentPage
                   ? "border-[var(--color-racing-cyan)] bg-[var(--color-racing-cyan)]/20 text-[var(--color-racing-cyan)] shadow-[var(--color-racing-cyan)]/20 shadow-lg"
-                  : "border-[var(--color-racing-cyan)]/30 bg-[var(--color-dark-elevated)]/60 text-gray-300 backdrop-blur-md hover:border-[var(--color-racing-cyan)] hover:bg-[var(--color-racing-cyan)]/10 hover:text-[var(--color-racing-cyan)]"
-              }`}
+                  : "border-[var(--color-racing-cyan)]/30 bg-[var(--color-dark-elevated)]/60 text-gray-300 backdrop-blur-md hover:border-[var(--color-racing-cyan)] hover:bg-[var(--color-racing-cyan)]/10 hover:text-[var(--color-racing-cyan)]",
+              )}
               aria-current={isCurrentPage ? "page" : undefined}
             >
               {page}
