@@ -15,6 +15,8 @@ export const Thumbnail = memo(({ src, title }: Props) => {
         className="object-cover"
         fill
         loading="eager"
+        fetchPriority="high"
+        rel="preload"
       />
     </div>
   );
