@@ -1,3 +1,4 @@
+import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { zValidator } from "@hono/zod-validator";
 import { GetCallbackQuerySchema } from "@repo/schema/auth/discord";
 import { Hono } from "hono";
@@ -67,6 +68,47 @@ type DiscordPartialGuild = {
   approximate_member_count?: number;
   approximate_presence_count?: number;
 };
+
+/**
+ * Upload Discord avatar to R2 storage
+ */
+async function uploadAvatarToR2(
+  discordAvatarUrl: string,
+  userId: string,
+  env: Env["Bindings"],
+): Promise<string> {
+  const avatarRes = await fetch(discordAvatarUrl);
+  if (!avatarRes.ok) {
+    throw new Error("Failed to fetch Discord avatar");
+  }
+
+  const avatarBuffer = await avatarRes.arrayBuffer();
+  const contentType = avatarRes.headers.get("content-type") || "image/png";
+
+  const ext = contentType.split("/")[1] || "png";
+  const fileId = crypto.randomUUID();
+  const key = `users/${userId}/avatar/${fileId}.${ext}`;
+
+  const s3Client = new S3Client({
+    endpoint: `https://${env.S3_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    region: "apac",
+    credentials: {
+      accessKeyId: env.S3_ACCESS_KEY_ID,
+      secretAccessKey: env.S3_ACCESS_KEY_SECRET,
+    },
+  });
+
+  const cmd = new PutObjectCommand({
+    Bucket: env.S3_BUCKET_NAME,
+    Key: key,
+    Body: new Uint8Array(avatarBuffer),
+    ContentType: contentType,
+  });
+
+  await s3Client.send(cmd);
+
+  return `${env.S3_FILE_BASE_URL}/${key}`;
+}
 
 // https://discord.com/developers/docs/topics/oauth2#oauth2
 export const discord = new Hono<Env>()
@@ -203,18 +245,53 @@ export const discord = new Hono<Env>()
 
       if (discordAccount.avatar) {
         const format = discordAccount.avatar.startsWith("a_") ? "gif" : "png";
-        image = `https://cdn.discordapp.com/avatars/${discordAccount.id}/${discordAccount.avatar}.${format}`;
+        const discordAvatarUrl = `https://cdn.discordapp.com/avatars/${discordAccount.id}/${discordAccount.avatar}.${format}`;
+
+        const tempUser = await c.var.repo.user.create({
+          name: discordAccount.username,
+          email: discordAccount.email,
+          image: null,
+        });
+
+        userId = tempUser.id;
+
+        try {
+          image = await uploadAvatarToR2(discordAvatarUrl, userId, c.env);
+
+          await c.var.repo.user.update({
+            id: userId,
+            image,
+          });
+        } catch (error) {
+          console.error("Failed to upload avatar to R2:", error);
+        }
+      } else {
+        const newUser = await c.var.repo.user.create({
+          name: discordAccount.username,
+          email: discordAccount.email,
+          image: null,
+        });
+
+        userId = newUser.id;
       }
-
-      const newUser = await c.var.repo.user.create({
-        name: discordAccount.username,
-        email: discordAccount.email,
-        image,
-      });
-
-      userId = newUser.id;
     } else {
       userId = storedUser.id;
+
+      if (discordAccount.avatar) {
+        const format = discordAccount.avatar.startsWith("a_") ? "gif" : "png";
+        const discordAvatarUrl = `https://cdn.discordapp.com/avatars/${discordAccount.id}/${discordAccount.avatar}.${format}`;
+
+        try {
+          const image = await uploadAvatarToR2(discordAvatarUrl, userId, c.env);
+
+          await c.var.repo.user.update({
+            id: userId,
+            image,
+          });
+        } catch (error) {
+          console.error("Failed to upload avatar to R2:", error);
+        }
+      }
     }
 
     if (!storedAccount) {

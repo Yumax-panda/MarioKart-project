@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
   },
   images: {
     remotePatterns: [
-      { protocol: "https", hostname: "cdn.discordapp.com" },
       {
         protocol: "https",
         hostname: process.env.R2_HOSTNAME || "",

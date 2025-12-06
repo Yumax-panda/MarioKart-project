@@ -3,6 +3,7 @@ import { inject, injectable } from "tsyringe";
 import type {
   CreateUserProps,
   GetByAccountProps,
+  UpdateUserProps,
   UserRepository,
 } from "./types";
 
@@ -25,5 +26,13 @@ export class UserRepositoryImpl implements UserRepository {
 
   async create(user: CreateUserProps) {
     return await this.p.user.create({ data: user });
+  }
+
+  async update(props: UpdateUserProps) {
+    const { id, ...data } = props;
+    return await this.p.user.update({
+      where: { id },
+      data,
+    });
   }
 }

@@ -13,4 +13,5 @@ export interface UserRepository {
   getById(userId: string): Promise<User | null>;
   getByAccount(props: GetByAccountProps): Promise<User | null>;
   create(user: CreateUserProps): Promise<User>;
+  update(props: UpdateUserProps): Promise<User>;
 }
