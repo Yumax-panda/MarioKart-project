@@ -1,10 +1,10 @@
 import { Hono } from "hono";
 import { deleteCookie, getCookie } from "hono/cookie";
-import { StatusNoContent, StatusUnauthorized } from "@/lib/statusCode";
+import { StatusUnauthorized } from "@/lib/statusCode";
 import type { Env } from "@/utils/types";
 import { KEY_SESSION_ID } from "../consts/cookie";
 
-export const sessions = new Hono<Env>().delete("/logout", async (c) => {
+export const sessions = new Hono<Env>().get("/logout", async (c) => {
   const sessionToken = getCookie(c, KEY_SESSION_ID);
 
   if (!sessionToken) {
@@ -15,5 +15,5 @@ export const sessions = new Hono<Env>().delete("/logout", async (c) => {
 
   deleteCookie(c, KEY_SESSION_ID);
 
-  return c.body(null, StatusNoContent);
+  return c.redirect(c.env.FRONTEND_BASE_URL);
 });

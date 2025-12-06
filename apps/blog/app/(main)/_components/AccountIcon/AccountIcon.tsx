@@ -2,34 +2,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 import { urls } from "@/lib/urls";
+import { useAccountIcon } from "./hooks/useAccountIcon";
 
 type Props = {
   name: string;
   image: string;
 };
 
-// TODO: LinkのonClickを修正
 export const AccountIcon = ({ name, image }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpen]);
+  const { isOpen, setIsOpen, menuRef, handleLogout } = useAccountIcon();
 
   return (
     <div className="relative" ref={menuRef}>
@@ -57,13 +39,13 @@ export const AccountIcon = ({ name, image }: Props) => {
             >
               記事の管理
             </Link>
-            <Link
-              href="/logout"
-              className="block px-4 py-2 text-gray-700 text-sm transition-colors hover:bg-gray-100"
-              onClick={() => setIsOpen(false)}
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="block w-full px-4 py-2 text-left text-gray-700 text-sm transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
               ログアウト
-            </Link>
+            </button>
           </div>
         </div>
       )}
