@@ -58,6 +58,65 @@ const repo = container.resolve<Repository>("Repository");
 const app = new Hono<Env>()
   .use(prettyJSON(), logger())
   .use(async (c, next) => {
+    const startTime = Date.now();
+    const method = c.req.method;
+    const url = c.req.url;
+    const path = c.req.path;
+
+    console.log("=".repeat(80));
+    console.log(`[${new Date().toISOString()}] ${method} ${path}`);
+    console.log("-".repeat(80));
+    console.log("Full URL:", url);
+
+    const origin = c.req.header("origin");
+    const referer = c.req.header("referer");
+    console.log("\n[Origin Info]");
+    console.log("Origin:", origin || "(not set)");
+    console.log("Referer:", referer || "(not set)");
+
+    console.log("\n[Headers]");
+    const headers: Record<string, string> = {};
+    c.req.raw.headers.forEach((value, key) => {
+      headers[key] = value;
+    });
+    console.log(JSON.stringify(headers, null, 2));
+
+    const query = c.req.query();
+    if (Object.keys(query).length > 0) {
+      console.log("\n[Query Parameters]");
+      console.log(JSON.stringify(query, null, 2));
+    }
+
+    if (["POST", "PUT", "PATCH"].includes(method)) {
+      try {
+        const contentType = c.req.header("content-type");
+        if (contentType?.includes("application/json")) {
+          const body = await c.req.json();
+          console.log("\n[Request Body]");
+          console.log(JSON.stringify(body, null, 2));
+
+          c.req.raw = new Request(c.req.raw, {
+            body: JSON.stringify(body),
+            headers: c.req.raw.headers,
+          });
+        }
+      } catch (error) {
+        console.log("\n[Request Body] Failed to parse:", error);
+      }
+    }
+
+    console.log("=".repeat(80));
+
+    await next();
+
+    // レスポンス情報
+    const duration = Date.now() - startTime;
+    console.log(
+      `[Response] ${method} ${path} - Status: ${c.res.status} - Duration: ${duration}ms`,
+    );
+    console.log("=".repeat(80));
+  })
+  .use(async (c, next) => {
     c.set("repo", repo);
     await next();
   })
