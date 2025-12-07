@@ -13,7 +13,9 @@ export async function getCurrentUser() {
 
     if (!userRes.ok) {
       // 詳細なエラーログ
-      const errorText = await userRes.text().catch(() => "Unable to read error");
+      const errorText = await userRes
+        .text()
+        .catch(() => "Unable to read error");
       console.error("[getCurrentUser] Failed:", {
         status: userRes.status,
         statusText: userRes.statusText,
@@ -23,7 +25,10 @@ export async function getCurrentUser() {
     }
 
     const { user } = await userRes.json();
-    console.log("[getCurrentUser] Success:", user?.id ? `User ${user.id}` : "No user");
+    console.log(
+      "[getCurrentUser] Success:",
+      user?.id ? `User ${user.id}` : "No user",
+    );
     return user;
   } catch (error) {
     console.error("[getCurrentUser] Exception:", error);

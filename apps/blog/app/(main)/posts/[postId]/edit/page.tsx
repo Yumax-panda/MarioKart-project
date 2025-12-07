@@ -3,7 +3,6 @@ import { getCurrentUser } from "@/lib/auth";
 import { getRpc } from "@/lib/rpc-server";
 import { Editor } from "../_components/Editor";
 
-// Force dynamic rendering (required for cookies/auth)
 export const dynamic = "force-dynamic";
 
 export default async function Page(props: PageProps<"/posts/[postId]">) {
@@ -36,9 +35,9 @@ export default async function Page(props: PageProps<"/posts/[postId]">) {
   return (
     <Editor
       postId={post.id}
-      markdown={post.article}
-      title={post.title}
-      thumbnail={post.thumbnail}
+      markdown={post.article ?? ""}
+      title={post.title ?? "No title"}
+      thumbnail={post.thumbnail ?? ""}
       published={post.published}
     />
   );

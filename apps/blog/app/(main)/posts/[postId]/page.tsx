@@ -4,7 +4,6 @@ import { getRpc } from "@/lib/rpc-server";
 import { EditButton } from "./_components/EditButton";
 import { PostPreview } from "./_components/PostPreview";
 
-// Force dynamic rendering (required for cookies/auth)
 export const dynamic = "force-dynamic";
 
 export default async function Page(props: PageProps<"/posts/[postId]">) {

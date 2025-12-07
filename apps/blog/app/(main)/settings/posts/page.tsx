@@ -4,7 +4,6 @@ import { getRpc } from "@/lib/rpc-server";
 import { PostsList } from "./_components/PostsList";
 import { PostsManagementHeader } from "./_components/PostsManagementHeader";
 
-// Force dynamic rendering (required for cookies/auth)
 export const dynamic = "force-dynamic";
 
 export default async function PostsManagementPage() {
