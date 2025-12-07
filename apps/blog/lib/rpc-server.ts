@@ -1,4 +1,5 @@
 import { getTypedClient } from "api/lib/rpc";
+import { unstable_noStore as noStore } from "next/cache";
 import { cookies } from "next/headers";
 
 /**
@@ -6,6 +7,9 @@ import { cookies } from "next/headers";
  * This should only be used in Server Components, Server Actions, or Route Handlers
  */
 export async function getRpc() {
+  // Opt into dynamic rendering
+  noStore();
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   if (!apiUrl) {

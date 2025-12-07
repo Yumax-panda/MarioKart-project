@@ -4,6 +4,9 @@ import { type PostsPageSearchParams, urls } from "@/lib/urls";
 import { Pagination } from "../_components/Pagination";
 import { PostCard } from "../_components/PostCard";
 
+// Force dynamic rendering (required for cookies/auth)
+export const dynamic = "force-dynamic";
+
 const POSTS_PER_PAGE = 12;
 
 type Props = {

@@ -3,6 +3,9 @@ import { getRpc } from "@/lib/rpc-server";
 import { Hero } from "./_components/Hero";
 import { PostCard } from "./_components/PostCard";
 
+// Force dynamic rendering (required for cookies/auth)
+export const dynamic = "force-dynamic";
+
 export default async function Page() {
   const client = await getRpc();
   const res = await client.api.v1.posts.$get({
