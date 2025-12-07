@@ -20,6 +20,7 @@ export default async function PostsManagementPage() {
   });
 
   if (!res.ok) {
+    console.error("failed to fetch", res);
     notFound();
   }
 
