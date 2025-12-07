@@ -5,12 +5,14 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: process.env.R2_HOSTNAME || "",
-      },
-    ],
+    remotePatterns: process.env.R2_HOSTNAME
+      ? [
+          {
+            protocol: "https",
+            hostname: process.env.R2_HOSTNAME,
+          },
+        ]
+      : [],
   },
   compiler: {
     // https://nextjs.org/docs/architecture/nextjs-compiler#remove-console
