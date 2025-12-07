@@ -8,7 +8,7 @@ export default async function PostsManagementPage() {
   const currentUser = await getCurrentUser();
 
   if (!currentUser) {
-    notFound();
+    return <div>not logged in</div>;
   }
 
   const client = await getRpc();
@@ -20,7 +20,7 @@ export default async function PostsManagementPage() {
   });
 
   if (!res.ok) {
-    notFound();
+    return <div>{JSON.stringify(res)}</div>;
   }
 
   const { posts } = await res.json();
