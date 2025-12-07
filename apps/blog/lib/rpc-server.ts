@@ -6,13 +6,26 @@ import { cookies } from "next/headers";
  * This should only be used in Server Components, Server Actions, or Route Handlers
  */
 export async function getRpc() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (!apiUrl) {
+    console.error("[getRpc] NEXT_PUBLIC_API_URL is not set");
+    throw new Error(
+      "NEXT_PUBLIC_API_URL is not set. Please check environment variables.",
+    );
+  }
+
   const cookieStore = await cookies();
   const cookieHeader = cookieStore
     .getAll()
     .map((cookie) => `${cookie.name}=${cookie.value}`)
     .join("; ");
 
-  return getTypedClient(process.env.NEXT_PUBLIC_API_URL as string, {
+  console.log("[getRpc] API URL:", apiUrl);
+  console.log("[getRpc] Cookie count:", cookieStore.getAll().length);
+  console.log("[getRpc] Has session cookie:", cookieHeader.includes("session_id"));
+
+  return getTypedClient(apiUrl, {
     headers: {
       Cookie: cookieHeader,
     },
