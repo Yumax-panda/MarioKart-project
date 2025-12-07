@@ -129,6 +129,16 @@ export const discord = new Hono<Env>()
       opts.secure = true;
       if (isCrossDomain(c.env.FRONTEND_BASE_URL, c.env.BASE_URL)) {
         opts.sameSite = "none";
+        try {
+          const baseUrl = new URL(c.env.BASE_URL);
+          const hostParts = baseUrl.hostname.split(".");
+          if (hostParts.length >= 2) {
+            const rootDomain = hostParts.slice(-2).join(".");
+            opts.domain = `.${rootDomain}`;
+          }
+        } catch (error) {
+          console.error("Failed to parse BASE_URL for cookie domain:", error);
+        }
       }
     }
 
@@ -346,6 +356,16 @@ export const discord = new Hono<Env>()
       opts.secure = true;
       if (isCrossDomain(c.env.FRONTEND_BASE_URL, c.env.BASE_URL)) {
         opts.sameSite = "none";
+        try {
+          const baseUrl = new URL(c.env.BASE_URL);
+          const hostParts = baseUrl.hostname.split(".");
+          if (hostParts.length >= 2) {
+            const rootDomain = hostParts.slice(-2).join(".");
+            opts.domain = `.${rootDomain}`;
+          }
+        } catch (error) {
+          console.error("Failed to parse BASE_URL for cookie domain:", error);
+        }
       }
     }
 
