@@ -20,7 +20,7 @@ export default async function PostsManagementPage() {
   });
 
   if (!res.ok) {
-    return <>{res}</>;
+    notFound();
   }
 
   const { posts } = await res.json();
