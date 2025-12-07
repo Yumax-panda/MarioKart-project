@@ -86,8 +86,7 @@ async function uploadAvatarToR2(
   const contentType = avatarRes.headers.get("content-type") || "image/png";
 
   const ext = contentType.split("/")[1] || "png";
-  const fileId = crypto.randomUUID();
-  const key = `users/${userId}/avatar/${fileId}.${ext}`;
+  const key = `users/${userId}/avatar.${ext}`;
 
   const s3Client = new S3Client({
     endpoint: `https://${env.S3_ACCOUNT_ID}.r2.cloudflarestorage.com`,
@@ -277,7 +276,7 @@ export const discord = new Hono<Env>()
     } else {
       userId = storedUser.id;
 
-      if (discordAccount.avatar) {
+      if (!storedUser.image && discordAccount.avatar) {
         const format = discordAccount.avatar.startsWith("a_") ? "gif" : "png";
         const discordAvatarUrl = `https://cdn.discordapp.com/avatars/${discordAccount.id}/${discordAccount.avatar}.${format}`;
 
