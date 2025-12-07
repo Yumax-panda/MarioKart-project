@@ -13,3 +13,9 @@ pnpm i
 pnpm db:generate
 pnpm dev
 ```
+
+## デプロイ
+
+```txt
+pnpm wrangler deploy --env=production --config=wrangler.local.jsonc
+```

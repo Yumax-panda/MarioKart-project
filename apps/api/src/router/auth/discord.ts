@@ -127,6 +127,9 @@ export const discord = new Hono<Env>()
       c.env.ENV_NAME === "local-production"
     ) {
       opts.secure = true;
+      if (isCrossDomain(c.env.FRONTEND_BASE_URL, c.env.BASE_URL)) {
+        opts.sameSite = "none";
+      }
     }
 
     setCookie(c, KEY_STATE_ID, id, opts);
@@ -341,7 +344,6 @@ export const discord = new Hono<Env>()
       c.env.ENV_NAME === "local-production"
     ) {
       opts.secure = true;
-      // Only use sameSite: "none" if domains are different
       if (isCrossDomain(c.env.FRONTEND_BASE_URL, c.env.BASE_URL)) {
         opts.sameSite = "none";
       }

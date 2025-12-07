@@ -1,5 +1,6 @@
 # prod
 dist/
+wrangler.local.jsonc
 
 # dev
 .yarn/
