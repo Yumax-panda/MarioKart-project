@@ -20,8 +20,7 @@ export default async function PostsManagementPage() {
   });
 
   if (!res.ok) {
-    console.error("failed to fetch", res);
-    notFound();
+    return <>{res}</>;
   }
 
   const { posts } = await res.json();
