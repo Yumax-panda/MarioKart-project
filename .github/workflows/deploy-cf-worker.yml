@@ -34,7 +34,6 @@ jobs:
 
       - name: Set Cloudflare Worker secrets
         run: |
-          echo "${{ secrets.ENV_NAME }}" | pnpm wrangler secret put ENV_NAME --env production
           echo "${{ secrets.ALLOWED_DISCORD_SERVER_ID }}" | pnpm wrangler secret put ALLOWED_DISCORD_SERVER_ID --env production
           echo "${{ secrets.BASE_URL }}" | pnpm wrangler secret put BASE_URL --env production
           echo "${{ secrets.FRONTEND_BASE_URL }}" | pnpm wrangler secret put FRONTEND_BASE_URL --env production
