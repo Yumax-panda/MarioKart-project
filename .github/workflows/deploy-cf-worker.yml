@@ -32,6 +32,25 @@ jobs:
       - name: Build API
         run: pnpm --filter api build
 
+      - name: Set Cloudflare Worker secrets
+        run: |
+          echo "${{ secrets.ENV_NAME }}" | pnpm wrangler secret put ENV_NAME --env production
+          echo "${{ secrets.ALLOWED_DISCORD_SERVER_ID }}" | pnpm wrangler secret put ALLOWED_DISCORD_SERVER_ID --env production
+          echo "${{ secrets.BASE_URL }}" | pnpm wrangler secret put BASE_URL --env production
+          echo "${{ secrets.FRONTEND_BASE_URL }}" | pnpm wrangler secret put FRONTEND_BASE_URL --env production
+          echo "${{ secrets.DATABASE_URL }}" | pnpm wrangler secret put DATABASE_URL --env production
+          echo "${{ secrets.DISCORD_CLIENT_ID }}" | pnpm wrangler secret put DISCORD_CLIENT_ID --env production
+          echo "${{ secrets.DISCORD_CLIENT_SECRET }}" | pnpm wrangler secret put DISCORD_CLIENT_SECRET --env production
+          echo "${{ secrets.S3_BUCKET_NAME }}" | pnpm wrangler secret put S3_BUCKET_NAME --env production
+          echo "${{ secrets.S3_ACCOUNT_ID }}" | pnpm wrangler secret put S3_ACCOUNT_ID --env production
+          echo "${{ secrets.S3_ACCESS_KEY_ID }}" | pnpm wrangler secret put S3_ACCESS_KEY_ID --env production
+          echo "${{ secrets.S3_ACCESS_KEY_SECRET }}" | pnpm wrangler secret put S3_ACCESS_KEY_SECRET --env production
+          echo "${{ secrets.S3_FILE_BASE_URL }}" | pnpm wrangler secret put S3_FILE_BASE_URL --env production
+        working-directory: "apps/api"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.S3_ACCOUNT_ID }}
+
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
         with:
@@ -39,29 +58,3 @@ jobs:
           accountId: ${{ secrets.S3_ACCOUNT_ID }}
           workingDirectory: "apps/api"
           command: deploy --minify --env production
-          secrets: |
-            ENV_NAME
-            ALLOWED_DISCORD_SERVER_ID
-            BASE_URL
-            FRONTEND_BASE_URL
-            DATABASE_URL
-            DISCORD_CLIENT_ID
-            DISCORD_CLIENT_SECRET
-            S3_BUCKET_NAME
-            S3_ACCOUNT_ID
-            S3_ACCESS_KEY_ID
-            S3_ACCESS_KEY_SECRET
-            S3_FILE_BASE_URL
-        env:
-          ENV_NAME: ${{ secrets.ENV_NAME }}
-          ALLOWED_DISCORD_SERVER_ID: ${{ secrets.ALLOWED_DISCORD_SERVER_ID }}
-          BASE_URL: ${{ secrets.BASE_URL }}
-          FRONTEND_BASE_URL: ${{ secrets.FRONTEND_BASE_URL }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
-          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
-          S3_ACCOUNT_ID: ${{ secrets.S3_ACCOUNT_ID }}
-          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          S3_ACCESS_KEY_SECRET: ${{ secrets.S3_ACCESS_KEY_SECRET }}
-          S3_FILE_BASE_URL: ${{ secrets.S3_FILE_BASE_URL }}
