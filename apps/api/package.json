@@ -12,10 +12,7 @@
   "scripts": {
     "build": "pnpm db:generate && pnpm cf-typegen && tsc",
     "dev": "wrangler dev --env dev",
-    "start:local": "wrangler dev --env local-production",
-    "start": "node dist/src/index.js",
-    "deploy": "pnpm deploy:check && pnpm db:deploy && wrangler deploy --env production --minify",
-    "deploy:check": "pnpm db:generate && pnpm cf-typegen && tsc --noEmit && pnpm build",
+    "start": "wrangler dev --env local-production",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "db:generate": "prisma generate --no-engine",
     "db:migrate": "prisma migrate dev",
